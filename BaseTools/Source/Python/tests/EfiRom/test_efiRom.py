@@ -57,7 +57,8 @@ class TestEfiRom(object):
                 res = ProcessBinFile(OutPtr, self.create_source_file(input[0], FILE_FLAG_BINARY), 0, 0, 1)
                 if isinstance(res, int):
                     assert expected_output[i][0]
-                    assert os.path.exists(expected_output[i][1]) == False
+                    with open(expected_output[i][1], 'rb') as file:
+                        assert file.read() == b''
                     with pytest.raises(ValueError,match='Process bin file error') as exc_info:
                         raise ValueError("Process bin file error")
                     assert exc_info.type is ValueError
@@ -77,14 +78,14 @@ class TestEfiRom(object):
     def test_processEfiFile(self):
         input_files = [
             ('DxeIpl.efi', 'Pci23'),
-            # ('DxeIpl.efi', 'Pci30'),
+            ('DxeIpl.efi', 'Pci30'),
             (check_dos_header_magic_file, 'Pci23'),
             (check_pe_header_signature_file, 'Pci23'),
 
         ]
         expected_value = [
             [STATUS_SUCCESS, ''],
-            # [STATUS_SUCCESS, ''],
+            [STATUS_SUCCESS, ''],
             [STATUS_ERROR, ''],
             [STATUS_ERROR, ''],
         ]
@@ -104,7 +105,7 @@ class TestEfiRom(object):
                     status = res[0]
                     size = res[1]
                     assert status == expected_value[i][0]
-                    assert os.path.exists(expected_value[i][1])
+                    assert os.path.exists(expected_value[i][1]) == True
 
 
     def test_checkPE32File(self):

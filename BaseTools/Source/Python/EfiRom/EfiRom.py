@@ -299,7 +299,7 @@ def ProcessEfiFile(OutFptr,InFile:FILE_LIST,VendId:c_uint16,DevId:c_uint16,Size:
         
         #Class code and code revision from the command line (optional)
         PciDs30.ClassCode[0]  = InFile.ClassCode
-        PciDs30.ClassCode[1]  = InFile.from_addressClassCode >> 8
+        PciDs30.ClassCode[1]  = InFile.ClassCode >> 8
         PciDs30.ClassCode[2]  = InFile.ClassCode >> 16
         PciDs30.ImageLength   = RomHdr.InitializationSize
         PciDs30.CodeRevision  = InFile.CodeRevision
