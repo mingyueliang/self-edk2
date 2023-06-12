@@ -1,0 +1,61 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+ - VlanConfigNvData.h
+
+formset:
+  guid:  VLAN_CONFIG_FORM_SET_GUID
+  title:  STRING_TOKEN(STR_VLAN_FORM_SET_TITLE)
+  help:  STRING_TOKEN(STR_VLAN_FORM_SET_TITLE_HELP)
+  classguid:  EFI_HII_PLATFORM_SETUP_FORMSET_GUID # Optional Input 
+  component:  
+  - varstore:
+      type:  VLAN_CONFIGURATION
+      varid:  VLAN_CONFIGURATION_VARSTORE_ID # Optional Input, Need to assign if None
+      name:  VlanNvData
+      guid:  VLAN_CONFIG_FORM_SET_GUID
+  - form: 
+      formid:  VLAN_HEAD_FORM_ID
+      title:  STRING_TOKEN(STR_VLAN_FORM_TITLE)
+      component:  
+      - goto:
+          formid:  VLAN_CONFIGURATION_FORM_ID
+          prompt:  STRING_TOKEN(STR_GET_CURRENT_SETTING)
+          help:  STRING_TOKEN(STR_GET_CURRENT_SETTING_HELP)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  VLAN_UPDATE_QUESTION_ID # Optional Input
+  - form: 
+      formid:  VLAN_CONFIGURATION_FORM_ID
+      title:  STRING_TOKEN(STR_VLAN_FORM_TITLE)
+      component:  
+      - subtitle:
+          text:  STRING_TOKEN(STR_VLAN_CREATE_VLAN)
+      - numeric:
+          varid:  VlanNvData.VlanId  #  Optional Input
+          prompt:  STRING_TOKEN(STR_VLAN_VID_PROMPT)
+          help:  STRING_TOKEN(STR_VLAN_VID_HELP)
+          maximum:  0xffe # Optional Input
+          minimum:  0x0 # Optional Input
+      - numeric:
+          varid:  VlanNvData.Priority  #  Optional Input
+          prompt:  STRING_TOKEN(STR_VLAN_PRIORITY_PROMPT)
+          help:  STRING_TOKEN(STR_VLAN_PRIORITY_HELP)
+          maximum:  0x7 # Optional Input
+          minimum:  0x0 # Optional Input
+      - text:
+          help:  STRING_TOKEN(STR_VLAN_ADD_VLAN_HELP)
+          prompt:  STRING_TOKEN(STR_VLAN_ADD_VLAN_PROMPT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  VLAN_ADD_QUESTION_ID # Optional Input, Question QuestionId
+      - subtitle:
+          text:  STRING_TOKEN(STR_VLAN_NULL_STRING)
+      - subtitle:
+          text:  STRING_TOKEN(STR_VLAN_VLAN_LIST)
+      - label:
+          number:  LABEL_VLAN_LIST
+      - label:
+          number:  LABEL_END
+      - text:
+          help:  STRING_TOKEN(STR_VLAN_REMOVE_VLAN_HELP)
+          prompt:  STRING_TOKEN(STR_VLAN_REMOVE_VLAN_PROMPT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  VLAN_REMOVE_QUESTION_ID # Optional Input, Question QuestionId

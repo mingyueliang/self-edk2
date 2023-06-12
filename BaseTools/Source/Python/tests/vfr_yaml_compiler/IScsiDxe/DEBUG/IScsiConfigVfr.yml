@@ -1,0 +1,396 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+ - IScsiConfigNVDataStruc.h
+
+defines:
+  EFI_NETWORK_DEVICE_CLASS:  0x04
+
+formset:
+  guid:  ISCSI_CONFIG_GUID
+  title:  STRING_TOKEN(STR_ISCSI_CONFIG_FORM_TITLE)
+  help:  STRING_TOKEN(STR_ISCSI_CONFIG_FORM_HELP)
+  component:  
+  - varstore:
+      type:  ISCSI_CONFIG_IFR_NVDATA
+      varid:  CONFIGURATION_VARSTORE_ID # Optional Input, Need to assign if None
+      name:  ISCSI_CONFIG_IFR_NVDATA
+      guid:  ISCSI_CONFIG_GUID
+  - form: 
+      formid:  FORMID_MAIN_FORM
+      title:  STRING_TOKEN(STR_ISCSI_MAIN_FORM_TITLE)
+      component:  
+      - string:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.InitiatorName  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_CONFIG_INIT_NAME)
+          help:  STRING_TOKEN(STR_ISCSI_CONFIG_INIT_NAME_HELP)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  KEY_INITIATOR_NAME # Optional Input
+          minsize:  ISCSI_NAME_IFR_MIN_SIZE
+          maxsize:  ISCSI_NAME_IFR_MAX_SIZE
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - goto:
+          formid:  FORMID_MAC_FORM
+          prompt:  STRING_TOKEN(STR_ADD_ATTEMPT_ENTRY)
+          help:  STRING_TOKEN(STR_ADD_ATTEMPT_ENTRY)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  KEY_ADD_ATTEMPT # Optional Input
+      - label:
+          number:  ATTEMPT_ENTRY_LABEL
+      - label:
+          number:  LABEL_END
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - goto:
+          formid:  FORMID_DELETE_FORM
+          prompt:  STRING_TOKEN(STR_DEL_ATTEMPT_ENTRY)
+          help:  STRING_TOKEN(STR_DEL_ATTEMPT_ENTRY_HELP)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  KEY_DELETE_ATTEMPT # Optional Input
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - goto:
+          formid:  FORMID_ORDER_FORM
+          prompt:  STRING_TOKEN(STR_ORDER_ATTEMPT_ENTRY)
+          help:  STRING_TOKEN(STR_ORDER_ATTEMPT_ENTRY)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  KEY_ORDER_ATTEMPT_CONFIG # Optional Input
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+  - form: 
+      formid:  FORMID_MAC_FORM
+      title:  STRING_TOKEN(STR_ISCSI_MAC_FORM_TITLE)
+      component:  
+      - label:
+          number:  MAC_ENTRY_LABEL
+      - label:
+          number:  LABEL_END
+  - form: 
+      formid:  FORMID_ORDER_FORM
+      title:  STRING_TOKEN(STR_ORDER_ATTEMPT_ENTRY)
+      component:  
+      - label:
+          number:  ORDER_ENTRY_LABEL
+      - label:
+          number:  LABEL_END
+      - text:
+          help:  STRING_TOKEN(STR_SAVE_AND_EXIT)
+          prompt:  STRING_TOKEN(STR_SAVE_AND_EXIT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  KEY_SAVE_ORDER_CHANGES # Optional Input, Question QuestionId
+      - text:
+          help:  STRING_TOKEN(STR_NO_SAVE_AND_EXIT)
+          prompt:  STRING_TOKEN(STR_NO_SAVE_AND_EXIT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  KEY_IGNORE_ORDER_CHANGES # Optional Input, Question QuestionId
+  - form: 
+      formid:  FORMID_DELETE_FORM
+      title:  STRING_TOKEN(STR_DEL_ATTEMPT_ENTRY)
+      component:  
+      - label:
+          number:  DELETE_ENTRY_LABEL
+      - label:
+          number:  LABEL_END
+      - text:
+          help:  STRING_TOKEN(STR_SAVE_AND_EXIT)
+          prompt:  STRING_TOKEN(STR_SAVE_AND_EXIT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  KEY_SAVE_DELETE_ATTEMPT # Optional Input, Question QuestionId
+      - text:
+          help:  STRING_TOKEN(STR_NO_SAVE_AND_EXIT)
+          prompt:  STRING_TOKEN(STR_NO_SAVE_AND_EXIT)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  KEY_IGNORE_DELETE_ATTEMPT # Optional Input, Question QuestionId
+  - form: 
+      formid:  FORMID_ATTEMPT_FORM
+      title:  STRING_TOKEN(STR_ISCSI_ATTEMPT_FORM_TITLE)
+      component:  
+      - string:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.AttemptName  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_ATTEMPT_NAME)
+          help:  STRING_TOKEN(STR_ISCSI_ATTEMPT_NAME_HELP)
+          flags:  READ_ONLY  # Optional input , flags
+          key:  KEY_ATTEMPT_NAME # Optional Input
+          minsize:  0 
+          maxsize:  ATTEMPT_NAME_SIZE
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - oneof:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.Enabled  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_MODE_PROMPT)
+          help:  STRING_TOKEN(STR_ISCSI_MODE_HELP)
+          component:  
+          - option:  
+              text:  STRING_TOKEN(STR_ISCSI_MODE_DISABLED)
+              value:  ISCSI_DISABLED
+              flags:  DEFAULT # Optional Input
+          - option:  
+              text:  STRING_TOKEN(STR_ISCSI_MODE_ENABLED)
+              value:  ISCSI_ENABLED
+              flags:  0 # Optional Input
+          - option:  
+              text:  STRING_TOKEN(STR_ISCSI_MODE_ENABLED_FOR_MPIO)
+              value:  ISCSI_ENABLED_FOR_MPIO
+              flags:  0 # Optional Input
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - oneof:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.IpMode  #  Optional Input
+          questionid:  KEY_IP_MODE # Optional Input, Need to compute if None
+          prompt:  STRING_TOKEN(STR_IP_MODE_PROMPT)
+          help:  STRING_TOKEN(STR_IP_MODE_HELP)
+          component:  
+          - option:  
+              text:  STRING_TOKEN(STR_IP_MODE_IP4)
+              value:  IP_MODE_IP4
+              flags:  INTERACTIVE # Optional Input
+          - option:  
+              text:  STRING_TOKEN(STR_IP_MODE_IP6)
+              value:  IP_MODE_IP6
+              flags:  INTERACTIVE # Optional Input
+          - option:  
+              text:  STRING_TOKEN(STR_IP_MODE_AUTOCONFIG)
+              value:  IP_MODE_AUTOCONFIG
+              flags:  INTERACTIVE # Optional Input
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - numeric:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.ConnectRetryCount  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_CONFIG_RETRY)
+          help:  STRING_TOKEN(STR_ISCSI_CONFIG_RETRY_HELP)
+          flags:  0  # Optional input , flags
+          maximum:  CONNECT_MAX_RETRY # Optional Input
+          minmum:  CONNECT_MIN_RETRY # Optional Input
+          step:  0 # Optional Input
+      - numeric:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.ConnectTimeout  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_CONFIG_TIMEOUT)
+          help:  STRING_TOKEN(STR_ISCSI_CONFIG_TIMEOUT_HELP)
+          flags:  0  # Optional input , flags
+          maximum:  CONNECT_MAX_TIMEOUT # Optional Input
+          minmum:  CONNECT_MIN_TIMEOUT # Optional Input
+          step:  0 # Optional Input
+          component:  
+          - default:
+              value:  CONNECT_DEFAULT_TIMEOUT
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - string:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.IsId  #  Optional Input
+          prompt:  STRING_TOKEN(STR_ISCSI_CONFIG_ISID)
+          help:  STRING_TOKEN(STR_ISCSI_CONFIG_ISID_HELP)
+          flags:  INTERACTIVE  # Optional input , flags
+          key:  KEY_CONFIG_ISID # Optional Input
+          minsize:  ISID_CONFIGURABLE_MIN_LEN
+          maxsize:  ISID_CONFIGURABLE_MAX_LEN
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG'
+          component:  
+          - checkbox:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_ENABLE_DHCP)
+              help:  STRING_TOKEN(STR_ISCSI_ENABLE_DHCP)
+              flags:  INTERACTIVE  # Optional input , flags
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_IP6 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG'
+          component:  
+          - grayoutif:
+              expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x01'
+              component:  
+              - string:
+                  varid:  ISCSI_CONFIG_IFR_NVDATA.LocalIp  #  Optional Input
+                  prompt:  STRING_TOKEN(STR_ISCSI_LOCAL_IP_ADDRESS)
+                  help:  STRING_TOKEN(STR_ISCSI_IP_ADDRESS_HELP)
+                  flags:  INTERACTIVE  # Optional input , flags
+                  key:  KEY_LOCAL_IP # Optional Input
+                  minsize:  IP4_MIN_SIZE
+                  maxsize:  IP4_MAX_SIZE
+              - string:
+                  varid:  ISCSI_CONFIG_IFR_NVDATA.SubnetMask  #  Optional Input
+                  prompt:  STRING_TOKEN(STR_ISCSI_LOCAL_MASK)
+                  help:  STRING_TOKEN(STR_ISCSI_IP_ADDRESS_HELP)
+                  flags:  INTERACTIVE  # Optional input , flags
+                  key:  KEY_SUBNET_MASK # Optional Input
+                  minsize:  IP4_MIN_SIZE
+                  maxsize:  IP4_MAX_SIZE
+              - string:
+                  varid:  ISCSI_CONFIG_IFR_NVDATA.Gateway  #  Optional Input
+                  prompt:  STRING_TOKEN(STR_ISCSI_LOCAL_GATEWAY)
+                  help:  STRING_TOKEN(STR_ISCSI_IP_ADDRESS_HELP)
+                  flags:  INTERACTIVE  # Optional input , flags
+                  key:  KEY_GATE_WAY # Optional Input
+                  minsize:  IP4_MIN_SIZE
+                  maxsize:  IP4_MAX_SIZE
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG'
+          component:  
+          - subtitle:
+              text:  STRING_TOKEN(STR_NULL)
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG OR        ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x00'
+          component:  
+          - checkbox:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_ENABLE_DHCP_ON_TARGET)
+              help:  STRING_TOKEN(STR_ISCSI_ENABLE_DHCP_ON_TARGET)
+              flags:  0  # Optional input , flags
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG OR        ideqval ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp == 0x01'
+          component:  
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.TargetName  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_TARGET_NAME)
+              help:  STRING_TOKEN(STR_ISCSI_TARGET_NAME_HELP)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_TARGET_NAME # Optional Input
+              minsize:  ISCSI_NAME_IFR_MIN_SIZE
+              maxsize:  ISCSI_NAME_IFR_MAX_SIZE
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.TargetIp  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_TARGET_ADDRESS)
+              help:  STRING_TOKEN(STR_ISCSI_TARGET_ADDRESS_HELP)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_TARGET_IP # Optional Input
+              minsize:  ISCSI_TARGET_URI_MIN_SIZE
+              maxsize:  ISCSI_TARGET_URI_MAX_SIZE
+          - numeric:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.TargetPort  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_TARGET_PORT)
+              help:  STRING_TOKEN(STR_ISCSI_TARGET_PORT)
+              flags:  0  # Optional input , flags
+              maximum:  TARGET_PORT_MAX_NUM # Optional Input
+              minmum:  TARGET_PORT_MIN_NUM # Optional Input
+              step:  0 # Optional Input
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.BootLun  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_BOOT_LUN)
+              help:  STRING_TOKEN(STR_ISCSI_BOOT_LUN_HELP)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_BOOT_LUN # Optional Input
+              minsize:  LUN_MIN_SIZE
+              maxsize:  LUN_MAX_SIZE
+      - suppressif:
+          expression:  'ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == IP_MODE_AUTOCONFIG'
+          component:  
+          - subtitle:
+              text:  STRING_TOKEN(STR_NULL)
+      - oneof:
+          varid:  ISCSI_CONFIG_IFR_NVDATA.AuthenticationType  #  Optional Input
+          questionid:  KEY_AUTH_TYPE # Optional Input, Need to compute if None
+          prompt:  STRING_TOKEN(STR_AUTHEN_TYPE_PROMPT)
+          help:  STRING_TOKEN(STR_AUTHEN_TYPE_HELP)
+          component:  
+          - option:  
+              text:  STRING_TOKEN(STR_AUTHEN_TYPE_CHAP)
+              value:  ISCSI_AUTH_TYPE_CHAP
+              flags:  0 # Optional Input
+          - option:  
+              text:  STRING_TOKEN(STR_AUTHEN_TYPE_NONE)
+              value:  ISCSI_AUTH_TYPE_NONE
+              flags:  DEFAULT # Optional Input
+      - suppressif:
+          expression:  'NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == ISCSI_AUTH_TYPE_CHAP'
+          component:  
+          - oneof:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.CHAPType  #  Optional Input
+              prompt:  STRING_TOKEN(STR_CHAP_TYPE_PROMPT)
+              help:  STRING_TOKEN(STR_CHAP_TYPE_HELP)
+              component:  
+              - option:  
+                  text:  STRING_TOKEN(STR_CHAP_TYPE_UNI)
+                  value:  ISCSI_CHAP_UNI
+                  flags:  0 # Optional Input
+              - option:  
+                  text:  STRING_TOKEN(STR_CHAP_TYPE_MUTUAL)
+                  value:  ISCSI_CHAP_MUTUAL
+                  flags:  DEFAULT # Optional Input
+      - suppressif:
+          expression:  'NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == ISCSI_AUTH_TYPE_CHAP'
+          component:  
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.CHAPName  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_CHAP_NAME)
+              help:  STRING_TOKEN(STR_ISCSI_CHAP_NAME)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_CHAP_NAME # Optional Input
+              minsize:  0 
+              maxsize:  ISCSI_CHAP_NAME_MAX_LEN
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.CHAPSecret  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_CHAP_SECRET)
+              help:  STRING_TOKEN(STR_ISCSI_CHAP_SECRET_HELP)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_CHAP_SECRET # Optional Input
+              minsize:  ISCSI_CHAP_SECRET_MIN_LEN
+              maxsize:  ISCSI_CHAP_SECRET_MAX_LEN
+      - suppressif:
+          expression:  'NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == ISCSI_AUTH_TYPE_CHAP OR        NOT ideqval ISCSI_CONFIG_IFR_NVDATA.CHAPType == ISCSI_CHAP_MUTUAL'
+          component:  
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ReverseCHAPName  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_REVERSE_CHAP_NAME)
+              help:  STRING_TOKEN(STR_ISCSI_REVERSE_CHAP_NAME)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_REVERSE_CHAP_NAME # Optional Input
+              minsize:  0 
+              maxsize:  ISCSI_CHAP_NAME_MAX_LEN
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ReverseCHAPSecret  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_REVERSE_CHAP_SECRET)
+              help:  STRING_TOKEN(STR_ISCSI_CHAP_SECRET_HELP)
+              flags:  INTERACTIVE  # Optional input , flags
+              key:  KEY_REVERSE_CHAP_SECRET # Optional Input
+              minsize:  ISCSI_CHAP_SECRET_MIN_LEN
+              maxsize:  ISCSI_CHAP_SECRET_MAX_LEN
+      - suppressif:
+          expression:  'TRUE'
+          component:  
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ISCSIMacAddr  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_MAC_PROMPT)
+              help:  STRING_TOKEN(STR_ISCSI_MAC_PROMPT)
+              minsize:  0 
+              maxsize:  ISCSI_MAX_MAC_STRING_LEN
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ISCSIAttemptOrder  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_ATTEMPT_ORDER)
+              help:  STRING_TOKEN(STR_ISCSI_ATTEMPT_ORDER)
+              minsize:  0 
+              maxsize:  ATTEMPT_NAME_LIST_SIZE
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ISCSIAddAttemptList  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_ADD_ATTEMPTS)
+              help:  STRING_TOKEN(STR_ISCSI_ADD_ATTEMPTS)
+              minsize:  0 
+              maxsize:  ATTEMPT_NAME_LIST_SIZE
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ISCSIDeleteAttemptList  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_DELETE_ATTEMPTS)
+              help:  STRING_TOKEN(STR_ISCSI_DELETE_ATTEMPTS)
+              minsize:  0 
+              maxsize:  ATTEMPT_NAME_LIST_SIZE
+          - string:
+              varid:  ISCSI_CONFIG_IFR_NVDATA.ISCSIDisplayAttemptList  #  Optional Input
+              prompt:  STRING_TOKEN(STR_ISCSI_DISPLAY_ATTEMPTS)
+              help:  STRING_TOKEN(STR_ISCSI_DISPLAY_ATTEMPTS)
+              flags:  READ_ONLY  # Optional input , flags
+              minsize:  0 
+              maxsize:  ATTEMPT_NAME_LIST_SIZE
+          - label:
+              number:  KEYWORD_ENTRY_LABEL
+          - label:
+              number:  LABEL_END
+      - subtitle:
+          text:  STRING_TOKEN(STR_NULL)
+      - text:
+          help:  STRING_TOKEN(STR_SAVE_CHANGES_HELP)
+          prompt:  STRING_TOKEN(STR_SAVE_CHANGES)
+          flags:  INTERACTIVE  # Optional Input, Question Flags
+          key:  KEY_SAVE_ATTEMPT_CONFIG # Optional Input, Question QuestionId
+      - goto:
+          formid:  FORMID_MAIN_FORM
+          prompt:  STRING_TOKEN(STR_RETURN_MAIN_FORM)
+          help:  STRING_TOKEN(STR_RETURN_MAIN_FORM)
+          flags:  0  # Optional input , flags
