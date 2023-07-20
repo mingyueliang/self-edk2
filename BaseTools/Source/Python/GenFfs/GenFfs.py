@@ -170,10 +170,11 @@ def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib
                     logger.info("%s file no data!")
                     continue
             FileSize = len(Data)
-        except OSError as e:
+        except Exception as e:
             Status = STATUS_ERROR
-            logger.error("Error open file: %s", InputFileName[Index])
-            return EFI_ABORTED
+            logger.error(e)
+            # return Status
+            continue
 
         # Check this section is Te/Pe section, and Calculate the numbers of Te/Pe section.
         TeOffset = 0
