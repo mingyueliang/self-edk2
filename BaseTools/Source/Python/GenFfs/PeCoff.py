@@ -8,6 +8,8 @@ import logging
 
 from BaseTypes import *
 from FirmwareStorageFormat.SectionHeader import *
+from FirmwareStorageFormat.Common import *
+from Common import *
 
 # PE32+ Subsystem type for EFI images
 EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION = 10
@@ -57,34 +59,26 @@ EFI_IMAGE_DEBUG_TYPE_CODEVIEW = 2
 
 
 def EFI_ERROR(A):
-    if A < 0:
-        return True
-    else:
+    if (-2**63) < A < (2**63-1):
         return False
+    return True
 
 
 def RETURN_ERROR(A):
-    if A < 0:
-        return True
-    else:
+    if (-2 ** 63) < A < (2 ** 63 - 1):
         return False
+    return True
 
+def CheckLengthOfBuffer(buffer, target_size):
+    if len(buffer)-target_size < 0:
+        buffer += bytes(target_size - len(buffer))
+    return buffer
 
 # Support routine for th PE/COFF file Loader that reads a buffer from a PE/COFF file
-def FfsRebaseImageRead(FileOffset: c_uint64, ReadSize: c_uint32, FileHandle: str, Buffer=b''):
-    Destination8 = Buffer
-    FileHandle = FileHandle
-    Source8 = FileHandle[FileOffset:]
-    Length = ReadSize
-    # while Length - 1:
-    #     Destination8 = Source8 
-    #     Destination8 += 1
-    #     Source8 += 1
-    #     #Length -= 1
-    # Destination8 += Source8[0:Length]
-    Destination8 = Destination8.replace(Destination8[0:Length], Source8[0:Length])
+def FfsRebaseImageRead(FileOffset: c_uint64, ReadSize: c_uint32, FileHandle: bytes):
+    Destination8 = FileHandle[FileOffset:FileOffset+ReadSize]
     Status = EFI_SUCCESS
-    return Status, ReadSize, Destination8
+    return Status, Destination8
 
 
 # Retrieves the PE or TE Header from a PE/COFF or te image
@@ -92,43 +86,42 @@ def PeCoffLoaderGetPeHeader(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT, PeHdr: E
                             TeHdr: EFI_TE_IMAGE_HEADER):
     # DosHdr = EFI_IMAGE_DOS_HEADER()
 
-    DosHdrBuffer = b''
+    # DosHdrBuffer = ImageContext.Handle
     ImageContext.IsTeImage = False
 
     # Read the DOS image header
     Size = sizeof(EFI_IMAGE_DOS_HEADER)
-    res = FfsRebaseImageRead(0, Size, ImageContext.Handle, DosHdrBuffer)
-    # if type(res) == 'int':
-    #     Status = res
+    Status, DosHdrBuffer = FfsRebaseImageRead(0, Size, ImageContext.Handle)
+    # # if type(res) == 'int':
+    # #     Status = res
+    #
+    # # else:
 
-    # else:
-    Status = ImageContext.ImageRead = res[0]
-    Size = res[1]
-    DosHdrBuffer = res[2]
-
-    DosHdr = EFI_IMAGE_DOS_HEADER.from_buffer_copy(DosHdrBuffer)
     if RETURN_ERROR(Status):
         ImageContext.ImageError = IMAGE_ERROR_IMAGE_READ
         return Status
+
+    DosHdr = EFI_IMAGE_DOS_HEADER.from_buffer_copy(CheckLengthOfBuffer(DosHdrBuffer, Size))
 
     ImageContext.PeCoffHeaderOffset = 0
     if DosHdr.e_magic == EFI_IMAGE_DOS_SIGNATURE:
         # DOS image header is present ,so read the PE header after the DOS image header
         ImageContext.PeCoffHeaderOffset = DosHdr.e_lfanew
 
-    # Get the PE/COFF Header pointer
+    # Get the PE/COFF Header pointer and check length of buffer
     PeHdrBuffer = ImageContext.Handle
-    PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION.from_buffer_copy(PeHdrBuffer[ImageContext.PeCoffHeaderOffset:])
+
+    PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION.from_buffer_copy(CheckLengthOfBuffer(PeHdrBuffer[ImageContext.PeCoffHeaderOffset:], sizeof(EFI_IMAGE_OPTIONAL_HEADER_UNION)))
     if PeHdr.Pe32.Signature != EFI_IMAGE_NT_SIGNATURE:
         # Check the PE/COFF Header Signature.If not,then try to get a TE header
 
-        TeHdr = EFI_TE_IMAGE_HEADER.from_buffer_copy(PeHdrBuffer[ImageContext.PeCoffHeaderOffset:])
+        TeHdr = EFI_TE_IMAGE_HEADER.from_buffer_copy(CheckLengthOfBuffer(PeHdrBuffer[ImageContext.PeCoffHeaderOffset:], sizeof(EFI_TE_IMAGE_HEADER)))
         if TeHdr.Signature != EFI_TE_IMAGE_HEADER_SIGNATURE:
             return RETURN_UNSUPPORTED
         ImageContext.IsTeImage = True
 
     Status = RETURN_SUCCESS
-    return Status, PeHdr, TeHdr
+    return Status, PeHdr, TeHdr, ImageContext
 
 
 # Checks the PE or TE header of a PE/COFF or TE image to determine if it supported
@@ -145,13 +138,13 @@ def PeCoffLoaderCheckImageType(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT, PeHdr
             and ImageContext.Machine != EFI_IMAGE_MACHINE_ARMT and ImageContext.Machine != EFI_IMAGE_MACHINE_EBC \
             and ImageContext.Machine != EFI_IMAGE_MACHINE_AARCH64 and ImageContext.Machine != EFI_IMAGE_MACHINE_RISCV64 \
             and ImageContext.Machine != EFI_IMAGE_MACHINE_LOONGARCH64:
-        if ImageContext.Machine == IMAGE_FILE_MACHINE_ARM:
-            ImageContext.Machine = EFI_IMAGE_MACHINE_ARMT
-            if ImageContext.IsTeImage == False:
-                PeHdr.Pe32.FileHeader.Machine = ImageContext.Machine
-            else:
-                TeHdr.Machine = ImageContext.Machine
-        else:
+        # if ImageContext.Machine == IMAGE_FILE_MACHINE_ARM:
+        #     ImageContext.Machine = EFI_IMAGE_MACHINE_ARMT
+        #     if ImageContext.IsTeImage == False:
+        #         PeHdr.Pe32.FileHeader.Machine = ImageContext.Machine
+        #     else:
+        #         TeHdr.Machine = ImageContext.Machine
+        # else:
             # Unsupported PeImage machine type
             return RETURN_UNSUPPORTED
 
@@ -166,7 +159,7 @@ def PeCoffLoaderCheckImageType(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT, PeHdr
         # Unsupported PeImage subsystem type
         return RETURN_UNSUPPORTED
     Status = RETURN_SUCCESS
-    return Status, PeHdr, TeHdr
+    return Status, ImageContext
 
 
 # Retrieves information on a PE/COFF image
@@ -186,33 +179,30 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
     ImageContext.ImageError = IMAGE_ERROR_SUCCESS
 
     res = PeCoffLoaderGetPeHeader(ImageContext, PeHdr, TeHdr)
-    if type(res) == 'int':
+    if isinstance(res, int):
         Status = res
-
     else:
         Status = res[0]
         PeHdr = res[1]
         TeHdr = res[2]
+        ImageContext = res[3]
 
     if RETURN_ERROR(Status):
         return Status
 
     # Verify machine type
-    res = PeCoffLoaderCheckImageType(ImageContext, PeHdr, TeHdr)
-    if type(res) == 'int':
-        Status = res
+    Status, ImageContext = PeCoffLoaderCheckImageType(ImageContext, PeHdr, TeHdr)
 
-    else:
-        Status = res[0]
-        PeHdr = res[1]
-        TeHdr = res[2]
 
     if RETURN_ERROR(Status):
         return Status
-    OptionHeader.Header = PeHdr.Pe32.OptionalHeader
+    # TODO: define OptionHeader.Header type is c_char_p?
+    OptionHeader = EFI_IMAGE_OPTIONAL_HEADER_POINTER.from_buffer_copy(CheckLengthOfBuffer(struct2stream(PeHdr.Pe32.OptionalHeader), sizeof(EFI_IMAGE_OPTIONAL_HEADER_POINTER)))
+    # OptionHeader.Header = PeHdr.Pe32.OptionalHeader
+
 
     # Retrieve the base address of the image
-    if ImageContext.IsTeImage == 0:
+    if not ImageContext.IsTeImage:
         if PeHdr.Pe32.OptionalHeader.Magic == EFI_IMAGE_NT_OPTIONAL_HDR32_MAGIC:
             ImageContext.ImageAddress = OptionHeader.Optional32.ImageBase
         else:
@@ -228,15 +218,26 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
     ImageContext.CodeView = 0
     ImageContext.PdbPointer = 0
 
-    if (ImageContext.IsTeImage == 0) and (PeHdr.Pe32.FileHeader.Characteristics & EFI_IMAGE_FILE_RELOCS_STRIPPED) != 0:
+    #
+    # Three cases with regards to relocations:
+    # - Image has base relocs, RELOCS_STRIPPED==0    => image is relocatable
+    # - Image has no base relocs, RELOCS_STRIPPED==1 => Image is not relocatable
+    # - Image has no base relocs, RELOCS_STRIPPED==0 => Image is relocatable but
+    #   has no base relocs to apply
+    # Obviously having base relocations with RELOCS_STRIPPED==1 is invalid.
+    #
+    # Look at the file header to determine if relocations have been stripped, and
+    # save this info in the image context for later use.
+    #
+    if (not ImageContext.IsTeImage) and (PeHdr.Pe32.FileHeader.Characteristics & EFI_IMAGE_FILE_RELOCS_STRIPPED) != 0:
         ImageContext.RelocationsStripped = True
-    elif ImageContext.IsTeImage != 0 and TeHdr.DataDirectory[0].Size == 0 and TeHdr.DataDirectory[
+    elif ImageContext.IsTeImage and TeHdr.DataDirectory[0].Size == 0 and TeHdr.DataDirectory[
         0].VirtualAddress == 0:
         ImageContext.RelocationsStripped = True
     else:
         ImageContext.RelocationsStripped = False
 
-    if ImageContext.IsTeImage == 0:
+    if not ImageContext.IsTeImage:
         if PeHdr.Pe32.OptionalHeader.Magic == EFI_IMAGE_NT_OPTIONAL_HDR32_MAGIC:
             ImageContext.ImageSize = OptionHeader.Optional32.SizeOfImage
             ImageContext.SectionAlignment = OptionHeader.Optional32.SectionAlignment
@@ -269,17 +270,16 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
             for Index in range(PeHdr.Pe32.FileHeader.NumberOfSections):
                 # Read section header from file
                 Size = sizeof(EFI_IMAGE_SECTION_HEADER)
-                SectionHeaderBuffer = b''
+
                 res = FfsRebaseImageRead(SectionHeaderOffset,
-                                         Size, ImageContext.Handle, SectionHeaderBuffer)
+                                         Size, ImageContext.Handle)
                 # if type(res)== 'int':
                 #     Status = res
                 #     logger.error("Status is not successful, Status value is 0x%X",int(Status))
                 #     return STATUS_ERROR
                 # else:
                 Status = ImageContext.ImageRead = res[0]
-                Size = res[1]
-                SectionHeaderBuffer = res[2]
+                SectionHeaderBuffer = res[1]
 
                 SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(SectionHeaderBuffer)
                 if RETURN_ERROR(Status):
@@ -295,17 +295,11 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
                 for Index in range(0, DebugDirectoryEntry.Size, sizeof(EFI_IMAGE_DEBUG_DIRECTORY_ENTRY)):
                     # Read next debug directory entry
                     Size = sizeof(EFI_IMAGE_DEBUG_DIRECTORY_ENTRY)
-                    DebugEntryBuffer = b''
                     res = FfsRebaseImageRead(DebugDirectoryEntryFileOffset + Index,
-                                             Size, ImageContext.Handle, DebugEntryBuffer)
-                    # if type(res) == 'int':
-                    #     Status = res
-                    #     logger.error("Status is not successful, Status value is 0x%X",int(Status))
-                    #     return STATUS_ERROR
-                    # else:
+                                             Size, ImageContext.Handle)
+
                     Status = ImageContext.ImageRead = res[0]
-                    Size = res[1]
-                    DebugEntryBuffer = res[2]
+                    DebugEntryBuffer = res[1]
                     DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(DebugEntryBuffer)
                     if RETURN_ERROR(Status):
                         ImageContext.ImageError = IMAGE_ERROR_IMAGE_READ
@@ -331,7 +325,7 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
                 # Read section header from file
                 Size = sizeof(EFI_IMAGE_SECTION_HEADER)
                 SectionHeaderBuffer = b''
-                res = FfsRebaseImageRead(SectionHeaderOffset, Size, ImageContext.Handle, SectionHeaderBuffer)
+                res = FfsRebaseImageRead(SectionHeaderOffset, Size, ImageContext.Handle)
                 # if type(res)== 'int':
                 #     Status = res
                 #     logger.error("Status is not successful, Status value is 0x%X",int(Status))
@@ -340,7 +334,7 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT) -> int:
                 Status = ImageContext.ImageRead = res[0]
                 Size = res[1]
                 SectionHeaderBuffer = res[2]
-                SectionHeader = SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(SectionHeaderBuffer)
+                SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(SectionHeaderBuffer)
                 if RETURN_ERROR(Status):
                     ImageContext.ImageError = IMAGE_ERROR_IMAGE_READ
                     return Status

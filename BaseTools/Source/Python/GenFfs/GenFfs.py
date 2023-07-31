@@ -3,7 +3,8 @@
 # Copyright (c) 2004 - 2018, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 
-import argparse
+
+import os.path
 import sys
 
 sys.path.append('..')
@@ -74,37 +75,6 @@ EFI_FILE_HEADER_CONSTRUCTION = 0x01
 EFI_FILE_HEADER_VALID = 0x02
 EFI_FILE_DATA_VALID = 0x04
 
-parser = argparse.ArgumentParser(
-    description="This file contains functions required to generate a Firmware File System file.")
-parser.add_argument("-o", "--outputfile", dest="output", help="File is FFS file to be created.")
-parser.add_argument("-t", "--filetype", dest="type", help="Type is one FV file type defined in PI spec,which is\
-                    EFI_FV_FILETYPE_RAW, EFI_FV_FILETYPE_FREEFORM,EFI_FV_FILETYPE_SECURITY_CORE, \
-                    EFI_FV_FILETYPE_PEIM, EFI_FV_FILETYPE_PEI_CORE,EFI_FV_FILETYPE_DXE_CORE, EFI_FV_FILETYPE_DRIVER,\
-                    EFI_FV_FILETYPE_APPLICATION, EFI_FV_FILETYPE_COMBINED_PEIM_DRIVER,EFI_FV_FILETYPE_SMM, EFI_FV_FILETYPE_SMM_CORE,\
-                    EFI_FV_FILETYPE_MM_STANDALONE,EFI_FV_FILETYPE_MM_CORE_STANDALONE, EFI_FV_FILETYPE_COMBINED_SMM_DXE,\
-                    EFI_FV_FILETYPE_FIRMWARE_VOLUME_IMAGE.")
-parser.add_argument("-g", "--fileguid", dest="FileGuid", help="FileGuid is one module guid.\
-                    Its format is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
-parser.add_argument("-x", "--fixed", dest="fix", help="Indicates that the file may not be moved\
-                    from its present location.")
-parser.add_argument("-s", "--checksum", dest="checksum", help="Indicates to calculate file checksum.")
-parser.add_argument("-a", "--align", dest="FileAlign", help="FileAlign points to file alignment, which only support\
-                    the following align: 1,2,4,8,16,128,512,1K,4K,32K,64K\
-                    128K,256K,512K,1M,2M,4M,8M,16M")
-parser.add_argument("-i", "--sectionfile", dest="SectionFile", action='append',
-                    help="Section file will be contained in this FFS file.")
-parser.add_argument("-oi", "--optionalsectionfile", dest="OptionalSectionFile", action='append',
-                    help="If the Section file exists, it will be contained in this FFS file, otherwise, it will be ignored.")
-parser.add_argument("-n", "--sectionalign", dest="SectionAlign", help="SectionAlign points to section alignment, which support\
-                    the alignment scope 0~16M. If SectionAlign is specified\
-                    as 0, tool get alignment value from SectionFile. It is\
-                    specified together with sectionfile to point its alignment in FFS file.")
-parser.add_argument("-v", "--verbose", dest="verbose", help="Turn on verbose output with informational messages.")
-parser.add_argument("-q", "--quiet", dest="quiet", help="Disable all messages except key message and fatal error")
-parser.add_argument("-d", "--debug", dest="debug", help="Enable debug messages, at input debug level.")
-parser.add_argument("--version", action="version",
-                    version='%s Version %d.%d' % (UTILITY_NAME, UTILITY_MINOR_VERSION, UTILITY_MAJOR_VERSION),
-                    help="Show program's version number and exit.")
 #
 # Set log config.
 #
@@ -113,13 +83,60 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger('GenFfs')
 
 
+def Version():
+    print("%s Version %s.%s \n" % (UTILITY_NAME, UTILITY_MINOR_VERSION, UTILITY_MINOR_VERSION))
+
+
+def Usage():
+    print("\nUsage: %s [options]\n" % UTILITY_NAME)
+    print("Copyright (c) 2007 - 2018, Intel Corporation. All rights reserved.\n")
+    print("Options:\n")
+    print("  -o FileName, --outputfile FileName\n\
+                        File is FFS file to be created.")
+    print("  -t Type, --filetype Type\n\
+                        Type is one FV file type defined in PI spec, which is\n\
+                        EFI_FV_FILETYPE_RAW, EFI_FV_FILETYPE_FREEFORM,\n\
+                        EFI_FV_FILETYPE_SECURITY_CORE, EFI_FV_FILETYPE_PEIM,\n\
+                        EFI_FV_FILETYPE_PEI_CORE, EFI_FV_FILETYPE_DXE_CORE,\n\
+                        EFI_FV_FILETYPE_DRIVER, EFI_FV_FILETYPE_APPLICATION,\n\
+                        EFI_FV_FILETYPE_COMBINED_PEIM_DRIVER,\n\
+                        EFI_FV_FILETYPE_SMM, EFI_FV_FILETYPE_SMM_CORE,\n\
+                        EFI_FV_FILETYPE_MM_STANDALONE,\n\
+                        EFI_FV_FILETYPE_MM_CORE_STANDALONE,\n\
+                        EFI_FV_FILETYPE_COMBINED_SMM_DXE, \n\
+                        EFI_FV_FILETYPE_FIRMWARE_VOLUME_IMAGE.")
+    print("  -g FileGuid --fileguid FileGuid\n\
+                        FileGuid is one module guid.\n\
+                        Its format is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
+    print("  -x, --fixed  Indicates that the file may not be moved\n\
+                        from its present location.")
+    print("  -a FileAlign, --align FileAlign\n\
+                        FileAlign points to file alignment, which only support\n\
+                        the following align: 1,2,4,8,16,128,512,1K,4K,32K,64K\n\
+                        128K,256K,512K,1M,2M,4M,8M,16M")
+    print("  -i SectionFile, --sectionfile SectionFile\n\
+                        Section file will be contained in this FFS file.")
+    print("  -oi SectionFile, --optionalsectionfile SectionFile\n\
+                        If the Section file exists, it will be contained in this FFS file, otherwise, it will be ignored.")
+    print("  -n SectionAlign, --sectionalign SectionAlign\n\
+                        SectionAlign points to section alignment, which support\n\
+                        the alignment scope 0~16M. If SectionAlign is specified\n\
+                        as 0, tool get alignment value from SectionFile. It is\n\
+                        specified together with sectionfile to point its\n\
+                        alignment in FFS file.")
+    print("  -v, --verbose         Turn on verbose output with informational messages.")
+    print("  -q, --quiet           Disable all messages except key message and fatal error")
+    print("  -d, --debug level     Enable debug messages, at input debug level.")
+    print("  --version             Show program's version number and exit.")
+    print("  -h, --help            Show this help message and exit.")
+
+
 #
 # Converts a string to an EFI_GUID.
 #
 def StringToGuid(AsciiGuidBuffer: str):
-    Status = EFI_SUCCESS
     GuidBuffer = ModifyGuidFormat(AsciiGuidBuffer)
-    return Status, GuidBuffer
+    return GuidBuffer
 
 
 #
@@ -127,7 +144,7 @@ def StringToGuid(AsciiGuidBuffer: str):
 #
 def StringtoAlignment(AlignBuffer: str):
     # Check AlignBuffer
-    if AlignBuffer == None:
+    if not AlignBuffer:
         return EFI_INVALID_PARAMETER
 
     for ch in mAlignName:
@@ -148,33 +165,30 @@ def StringToType(String: str):
 
 
 # Get the contents of all section files specified in InputFileName into FileBuffer
-def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib: c_uint8, MaxAlignment: c_uint32,
-                       PESectionNum: c_uint8, InputFileName=[], InputFileAlign=[], FileBuffer=b'', ):
+def GetSectionContents(InputFileNum: c_uint32, FfsAttrib: c_uint8,
+                       InputFileName, InputFileAlign):
     Size = 0
     MaxEncounteredAlignment = 1
     Status = EFI_SUCCESS
+    FileBuffer = b''
+    PESectionNum = 0
 
     # Go through array of file names and copy their contents
     for Index in range(InputFileNum):
         # Make sure section ends on a DWORD boundary
         while Size & 0x03 != 0:
             # if FileBuffer != None and Size < BufferLength:
-            FileBuffer = FileBuffer + b'\0'
+            FileBuffer += bytes(1)
             Size += 1
 
         # Open file and read contents
         try:
             with open(InputFileName[Index], 'rb') as InFile:
                 Data = InFile.read()
-                if len(Data) == 0:
-                    logger.info("%s file no data!")
-                    continue
             FileSize = len(Data)
         except Exception as e:
-            Status = STATUS_ERROR
-            logger.error(e)
-            # return Status
-            continue
+            logger.error("Error open file: %s" % InputFileName[Index])
+            return EFI_ABORTED
 
         # Check this section is Te/Pe section, and Calculate the numbers of Te/Pe section.
         TeOffset = 0
@@ -183,7 +197,8 @@ def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib
         else:
             HeaderSize = sizeof(EFI_COMMON_SECTION_HEADER)
 
-        TempSectHeader = EFI_COMMON_SECTION_HEADER2.from_buffer_copy(Data)
+        TempSectHeader = EFI_COMMON_SECTION_HEADER2.from_buffer_copy(
+            CheckLengthOfBuffer(Data, sizeof(EFI_COMMON_SECTION_HEADER2)))
         if TempSectHeader.Type == EFI_SECTION_TE:
             PESectionNum += 1
             # TeHeaderSize = sizeof(EFI_TE_IMAGE_HEADER)
@@ -217,19 +232,16 @@ def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib
 
         # Make sure section data meet its alignment requirement by adding one raw pad section.
         if (InputFileAlign[Index] != 0 and (Size + HeaderSize + TeOffset) % InputFileAlign[Index]) != 0:
-            Offset = (Size + sizeof(EFI_COMMON_SECTION_HEADER) + HeaderSize + TeOffset + InputFileAlign[
-                Index] - 1) & ~ (InputFileAlign[Index] - 1)
+            Offset = (Size + sizeof(EFI_COMMON_SECTION_HEADER) + HeaderSize + TeOffset + InputFileAlign[Index] - 1) & (
+                ~(InputFileAlign[Index] - 1))
+
             Offset = Offset - Size - HeaderSize - TeOffset
-            # Offset1 = Offset
 
             # The maximal alignment is 64K, the raw section size must be less than 0xffffff
-            if FileBuffer != None and ((Size + Offset) < BufferLength):
-
+            if len(FileBuffer) != 0:
                 SectHeader = EFI_FREEFORM_SUBTYPE_GUID_SECTION()
                 SectHeader.CommonHeader.SET_SECTION_SIZE(Offset)
                 # FileBuffer = struct2stream(SectHeader)
-                FileBuffer = FileBuffer + struct2stream(SectHeader) + b'\0' * (
-                        Offset - sizeof(EFI_COMMON_SECTION_HEADER))
 
                 if (FfsAttrib & FFS_ATTRIB_FIXED) != 0 and MaxEncounteredAlignment <= 1 and Offset >= sizeof(
                         EFI_FREEFORM_SUBTYPE_GUID_SECTION):
@@ -237,7 +249,15 @@ def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib
                     SectHeader.SubTypeGuid = mEfiFfsSectionAlignmentPaddingGuid
                 else:
                     SectHeader.CommonHeader.Type = EFI_SECTION_RAW
-            Size = Size + Offset
+
+                FileBuffer = FileBuffer + struct2stream(SectHeader) + b'\0' * (
+                        Offset - sizeof(EFI_COMMON_SECTION_HEADER))
+
+            Size += Offset
+
+        # Get the Max alignment of all input file datas
+        if MaxEncounteredAlignment < InputFileAlign[Index]:
+            MaxEncounteredAlignment = InputFileAlign[Index]
 
         #
         # Now read the contents of the file into the buffer
@@ -247,45 +267,30 @@ def GetSectionContents(InputFileNum: c_uint32, BufferLength: c_uint32, FfsAttrib
 
         Size += FileSize
 
-    # Get the Max alignment of all input file datas
-    if MaxEncounteredAlignment < max(InputFileAlign):
-        MaxEncounteredAlignment = max(InputFileAlign)
-    MaxAlignment = MaxEncounteredAlignment
+    # MaxAlignment = MaxEncounteredAlignment
 
     # Set the real required buffer size.
     BufferLength = Size
     Status = EFI_SUCCESS
-    return Status, FileBuffer, BufferLength, MaxAlignment, PESectionNum
+    return Status, FileBuffer, BufferLength, MaxEncounteredAlignment, PESectionNum
 
 
-# TODO: Function is Not used.
-# Support routine for th PE/COFF file Loader that reads a buffer from a PE/COFF file
-def FfsRebaseImageRead(FileOffset: c_uint64, ReadSize: c_uint32, FileHandle: str, Buffer=b''):
-    Destination8 = Buffer
-    FileHandle = FileHandle.encode()
-    Source8 = FileHandle[FileOffset:]
-    Length = ReadSize
-    # while Length - 1:
-    #     Destination8 = Source8 
-    #     Destination8 += 1
-    #     Source8 += 1
-    #     #Length -= 1
-    Destination8 = Destination8.replace(Destination8[0:Length], Source8[0:Length])
-    Status = EFI_SUCCESS
-    return Status, ReadSize, Destination8
-
-
+#
 # InFile is input file for getting alignment
 # return the alignment
+#
 def GetAlignmentFromFile(InFile: str):
-    with open(InFile, 'rb') as InFileHandle:
-        if InFileHandle == None:
-            logger.error("Error opening file")
-            return EFI_ABORTED
-        Data = InFileHandle.read()
+    try:
+        with open(InFile, 'rb') as InFileHandle:
+            Data = InFileHandle.read()
+    except Exception as exe:
+        logger.error("Error opening file: %s" % InFile)
+        return EFI_ABORTED
+
     PeFileBuffer = Data
 
-    CommonHeader = EFI_COMMON_SECTION_HEADER.from_buffer_copy(PeFileBuffer)
+    CommonHeader = EFI_COMMON_SECTION_HEADER.from_buffer_copy(
+        CheckLengthOfBuffer(PeFileBuffer, sizeof(EFI_COMMON_SECTION_HEADER)))
     CurSecHdrSize = sizeof(CommonHeader)
 
     ImageContext = PE_COFF_LOADER_IMAGE_CONTEXT()
@@ -293,7 +298,6 @@ def GetAlignmentFromFile(InFile: str):
     ImageContext.Handle = PeFileBuffer[CurSecHdrSize:]
 
     # For future use in PeCoffLoaderGetImageInfo like EfiCompress
-    # ImageContext.ImageRead = FfsRebaseImageRead
     Status = PeCoffLoaderGetImageInfo(ImageContext)
     if EFI_ERROR(Status):
         logger.error("Invalid PeImage,he input file is %s and return status is %x" % (InFile, Status))
@@ -334,124 +338,163 @@ def main():
     FileBuffer = b''
     FfsFiletype = EFI_FV_FILETYPE_ALL
     PeSectionNum = 0
+    Index = 0
 
-    args = parser.parse_args()
+    # TODO: Need manual parser command line, because args: -n vaild only of one file.
+    # args = parser.parse_args()
+
+    #
+    # Parser command line
+    #
+    args = sys.argv
     argc = len(sys.argv)
 
     if argc == 1:
-        parser.print_help()
-        logger.error("Missing options")
+        logger.error("Missing options, no options input")
+        Usage()
         return STATUS_ERROR
+    arg_index = 1
+    argc -= 1
 
-    #
-    # Parse command line
-    #
-    if args.verbose:
-        pass
+    if args[arg_index] == "-h" or args[arg_index] == "--help":
+        Version()
+        Usage()
+        return EFI_SUCCESS
 
-    if args.quiet:
-        pass
+    if args[arg_index] == "--version":
+        Version()
+        return EFI_SUCCESS
 
-    if args.debug:
-        pass
+    while argc > 0:
+        if args[arg_index] == "-t" or args[arg_index] == "--filetype":
+            if args[arg_index + 1] == None or args[arg_index + 1] == "-":
+                logger.error("Invalid options value, file type is missing for -t option")
+                return STATUS_ERROR
+            FfsFiletype = StringToType(args[arg_index + 1])
+            if FfsFiletype == EFI_FV_FILETYPE_ALL:
+                logger.error("Invalid option value, %s is not a valid file type" % args[arg_index + 1])
+                return STATUS_ERROR
+            argc -= 2
+            arg_index += 2
+            continue
 
-    if args.type:
-        FfsFiletype = StringToType(args.type)
-        if FfsFiletype == EFI_FV_FILETYPE_ALL:
-            logger.error("Invalid option value, %s is not a valid file type" % args.type)
-            Status = STATUS_ERROR
-            return Status
+        if args[arg_index] == "-o" or args[arg_index] == "--outputfile":
+            if args[arg_index + 1] == None or args[arg_index + 1] == "-":
+                logger.error("Invalid options value, file type is missing for -o option")
+                return STATUS_ERROR
 
-    if args.output:
-        OutputFileName = args.output
+            OutputFileName = args[arg_index + 1]
+            argc -= 2
+            arg_index += 2
+            continue
 
-    if args.FileGuid:
-        FileGuid = ModifyGuidFormat(args.FileGuid)
+        if args[arg_index] == "-g" or args[arg_index] == "fileguid":
+            FileGuid = StringToGuid(args[arg_index + 1])
+            argc -= 2
+            arg_index += 2
+            continue
 
-    if args.fix:
-        FfsAttrib = FfsAttrib | FFS_ATTRIB_FIXED
+        if args[arg_index] == "-x" or args[arg_index] == "--fixed":
+            FfsAttrib = FfsAttrib | FFS_ATTRIB_FIXED
+            argc -= 1
+            arg_index += 1
+            continue
 
-    if args.checksum:
-        FfsAttrib = FfsAttrib | FFS_ATTRIB_CHECKSUM
+        if args[arg_index] == "-s" or args[arg_index] == "--checksum":
+            FfsAttrib = FfsAttrib | FFS_ATTRIB_CHECKSUM
+            argc -= 1
+            arg_index += 1
+            continue
 
-    if args.FileAlign:
-        for index in range(len(mFfsValidAlignName)):
-            if args.FileAlign == mFfsValidAlignName[index]:
-                Index = index
-                break
-        if args.FileAlign not in mFfsValidAlignName:
-            if args.FileAlign == '1' or args.FileAlign == '2' or args.FileAlign == '4':
-                Index = 0
+        if args[arg_index] == "-a" or args[arg_index] == "--align":
+            if args[arg_index + 1] == None or args[arg_index + 1] == '-':
+                logger.error("Invalid option value, Align value is missing for -a option")
+                return STATUS_ERROR
+            for index in range(len(mFfsValidAlignName)):
+                if args[arg_index + 1] in mFfsValidAlignName:
+                    Index = mFfsValidAlignName.index(args[arg_index + 1])
+                    break
             else:
-                logger.error("Invalid option value, FileAlign=%s", args.FileAlign)
-                Status = STATUS_ERROR
-                return Status
-        FfsAlign = Index
+                if args[arg_index + 1] == "1" or args[arg_index + 1] == "2" or args[arg_index + 1] == "4":
+                    # 1, 2, 4 byte alignment same to 8 byte alignment
+                    Index = 0
+                else:
+                    logger.error("Invaild options value, %s = %s" % (args[arg_index], args[arg_index + 1]))
+                    return STATUS_ERROR
+            FfsAlign = Index
+            argc -= 2
+            arg_index += 2
+            continue
 
-    if args.SectionFile or args.OptionalSectionFile:
-        # Get input file
-        if args.SectionFile:
-            InputFileName += args.SectionFile
-        if args.OptionalSectionFile:
-            InputFileName += args.OptionalSectionFile
+        if args[arg_index] == "-oi" or args[arg_index] == "--optionalsectionfile" or args[arg_index] == "-i" or args[
+            arg_index] == "--sectionfile":
+            # Get Input file name and its alignment
+            if args[arg_index + 1] == None or args[arg_index + 1] == "-":
+                logger.error("Invalid option value, input section file is missing for -i option")
+                return STATUS_ERROR
+            if not os.path.exists(args[arg_index + 1]):
+                logger.warning("File is not found.", args[arg_index + 1])
+                argc -= 2
+                arg_index += 2
+                continue
 
-        InputFileNum = len(InputFileName)
-
-        # Allocate file align
-        for i in range(InputFileNum):
             InputFileAlign.append(0)
+            InputFileName.append(args[arg_index + 1])
+            argc -= 2
+            arg_index += 2
 
-        # Section File alignment requirement
-        if args.SectionAlign:
-            # if args.SectionAlign != None and args.SectionAlign == "0":
-            # TODO: Set alignment of each file to store in InputFileAlign list
-            for index in range(len(InputFileName)):
-                if args.SectionAlign == "0":
-                    res = GetAlignmentFromFile(InputFileName[index])
-                    if type(res) == int:
-                        Status = res
-                    else:
-                        Status = res[0]
-                        Alignment = res[1]
+            if argc <= 0:
+                InputFileNum += 1
+                break
+
+            # Section File alignment requirement
+            if args[arg_index] == "-n" or args[arg_index] == "--sectionalign":
+                if args[arg_index + 1] != None and args[arg_index + 1] == "0":
+                    Status, Alignment = GetAlignmentFromFile(InputFileName[InputFileNum])
                     if EFI_ERROR(Status):
-                        logger.error("Fail to get Alignment from %s" % InputFileName[index])
-                        Status = STATUS_ERROR
-                        return Status
-
+                        logger.error("Fail to get Alignment from %s" % InputFileName[InputFileNum])
+                        return STATUS_ERROR
                     if Alignment < 0x400:
                         AlignmentBuffer = str(Alignment)
-                        print(AlignmentBuffer)
                     elif Alignment >= 0x100000:
-                        AlignmentBuffer = str(int(Alignment // 0x100000)) + 'M'
-                        print(AlignmentBuffer)
+                        AlignmentBuffer = str(Alignment // 0x100000) + "M"
                     else:
-                        AlignmentBuffer = str(int(Alignment // 0x400)) + 'K'
-                        print(AlignmentBuffer)
+                        AlignmentBuffer = str(Alignment // 0x400) + "K"
                     res = StringtoAlignment(AlignmentBuffer)
-                    if type(res) == int:
+                    if isinstance(res, int):
                         Status = res
                     else:
                         Status = res[0]
-                        InputFileAlign[index] = res[1]
+                        InputFileAlign[InputFileNum] = res[1]
                 else:
-                    res = StringtoAlignment(args.SectionAlign)
-                    if type(res) == int:
+                    res = StringtoAlignment(args[arg_index + 1])
+                    if isinstance(res, int):
                         Status = res
                     else:
                         Status = res[0]
-                        InputFileAlign[index] = res[1]
-            if EFI_ERROR(Status):
-                logger.error("Invalid option value", "%s = %s" % ("-n", args.SectionAlign))
-                Status = STATUS_ERROR
-                return Status
+                        InputFileAlign[InputFileNum] = res[1]
+                if EFI_ERROR(Status):
+                    logger.error("Invalid option value, %s = %s" % (args[arg_index], args[arg_index + 1]))
+                    return STATUS_ERROR
+                argc -= 2
+                arg_index += 2
+            InputFileNum += 1
+            continue
 
-    # Sectionalign should be accompanied by -oi/-i
-    if args.SectionAlign:
-        if InputFileNum == 0:
-            # if not args.SectionFile and not args.OptionalSectionFile:
+        if args[arg_index] == "-n" or args[arg_index] == "--sectionalign":
             logger.error("Unknown option, SectionAlign option must be specified with section file.")
-            Status = STATUS_ERROR
-            return Status
+            return STATUS_ERROR
+
+        if args[arg_index] == "-v" or args[arg_index] == "--verbose":
+            pass
+
+        if args[arg_index] == "-q" or args[arg_index] == "--quiet":
+            pass
+
+        if args[arg_index] == "-d" or args[arg_index] == "--debug":
+            pass
+
+        logger.error("Unknown option, %s" % args[arg_index])
 
     #
     # Check the complete input parameters.
@@ -459,13 +502,11 @@ def main():
     # TODO: GUID().__cmp__(guid:GUID)
     if GUID().__cmp__(FileGuid):
         logger.error("Missing option, fileguid")
-        Status = STATUS_ERROR
-        return Status
+        return STATUS_ERROR
 
     if InputFileNum == 0:
         logger.error("Missing option, Input files")
-        Status = STATUS_ERROR
-        return Status
+        return STATUS_ERROR
 
     #
     # Minimum alignment is 1 byte.
@@ -475,11 +516,11 @@ def main():
             InputFileAlign[index] = 1
 
     #
-    # Read all input file contents into a buffer.
+    # read all input file contents into a buffer
     #
-    res = GetSectionContents(InputFileNum, FileSize, FfsAttrib, MaxAlignment, PeSectionNum,
-                             InputFileName, InputFileAlign, FileBuffer)
-    if type(res) == int:
+    res = GetSectionContents(InputFileNum, FfsAttrib, InputFileName,
+                             InputFileAlign)
+    if isinstance(res, int):
         Status = res
     else:
         Status = res[0]
@@ -493,8 +534,7 @@ def main():
         logger.error(
             "Invalid parameter, Fv File type %s must have one and only one Pe or Te section, but %u Pe/Te section are input" % (
                 mFfsFileType[FfsFiletype], PeSectionNum))
-        Status = STATUS_ERROR
-        return Status
+        return STATUS_ERROR
 
     if (FfsFiletype == EFI_FV_FILETYPE_PEIM or FfsFiletype == EFI_FV_FILETYPE_DRIVER or
         FfsFiletype == EFI_FV_FILETYPE_COMBINED_PEIM_DRIVER or FfsFiletype == EFI_FV_FILETYPE_APPLICATION) and \
@@ -502,12 +542,13 @@ def main():
         logger.error(
             "Invalid parameter, Fv File type %s must have at least one Pe or Te section, but no Pe/Te section is input" %
             mFfsFileType[FfsFiletype])
-        Status = STATUS_ERROR
-        return Status
+
+        return STATUS_ERROR
+
+    # if Status == EFI_BUFFER_TOO_SMALL:
 
     if EFI_ERROR(Status):
-        Status = STATUS_ERROR
-        return Status
+        return STATUS_ERROR
 
     #
     # Create Ffs file header.
@@ -529,7 +570,7 @@ def main():
         FfsFileHeader.Type = FfsFiletype
 
         HeaderSize = sizeof(EFI_FFS_FILE_HEADER2)
-        FileSize += sizeof(EFI_FFS_FILE_HEADER2)
+        FileSize += HeaderSize
         FfsFileHeader.ExtendedSize = FileSize
         FfsFileHeader.Size[0] = 0
         FfsFileHeader.Size[1] = 0
@@ -541,7 +582,7 @@ def main():
         FfsFileHeader.Type = FfsFiletype
 
         HeaderSize = sizeof(EFI_FFS_FILE_HEADER)
-        FileSize += sizeof(EFI_FFS_FILE_HEADER)
+        FileSize += HeaderSize
         FfsFileHeader.Size[0] = FileSize & 0xFF
         FfsFileHeader.Size[1] = (FileSize & 0xFF00) >> 8
         FfsFileHeader.Size[2] = (FileSize & 0xFF0000) >> 16
@@ -583,3 +624,4 @@ def main():
 
 if __name__ == "__main__":
     exit(main())
+    # Usage()
