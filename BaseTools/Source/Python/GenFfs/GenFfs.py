@@ -238,20 +238,19 @@ def GetSectionContents(InputFileNum: c_uint32, FfsAttrib: c_uint8,
             Offset = Offset - Size - HeaderSize - TeOffset
 
             # The maximal alignment is 64K, the raw section size must be less than 0xffffff
-            if len(FileBuffer) != 0:
-                SectHeader = EFI_FREEFORM_SUBTYPE_GUID_SECTION()
-                SectHeader.CommonHeader.SET_SECTION_SIZE(Offset)
-                # FileBuffer = struct2stream(SectHeader)
+            SectHeader = EFI_FREEFORM_SUBTYPE_GUID_SECTION()
+            SectHeader.CommonHeader.SET_SECTION_SIZE(Offset)
+            # FileBuffer = struct2stream(SectHeader)
 
-                if (FfsAttrib & FFS_ATTRIB_FIXED) != 0 and MaxEncounteredAlignment <= 1 and Offset >= sizeof(
-                        EFI_FREEFORM_SUBTYPE_GUID_SECTION):
-                    SectHeader.CommonHeader.Type = EFI_SECTION_FREEFORM_SUBTYPE_GUID
-                    SectHeader.SubTypeGuid = mEfiFfsSectionAlignmentPaddingGuid
-                else:
-                    SectHeader.CommonHeader.Type = EFI_SECTION_RAW
+            if (FfsAttrib & FFS_ATTRIB_FIXED) != 0 and MaxEncounteredAlignment <= 1 and Offset >= sizeof(
+                    EFI_FREEFORM_SUBTYPE_GUID_SECTION):
+                SectHeader.CommonHeader.Type = EFI_SECTION_FREEFORM_SUBTYPE_GUID
+                SectHeader.SubTypeGuid = mEfiFfsSectionAlignmentPaddingGuid
+            else:
+                SectHeader.CommonHeader.Type = EFI_SECTION_RAW
 
-                FileBuffer = FileBuffer + struct2stream(SectHeader) + b'\0' * (
-                        Offset - sizeof(EFI_COMMON_SECTION_HEADER))
+            FileBuffer += struct2stream(SectHeader.CommonHeader) + bytes(
+                    Offset - sizeof(EFI_COMMON_SECTION_HEADER))
 
             Size += Offset
 
