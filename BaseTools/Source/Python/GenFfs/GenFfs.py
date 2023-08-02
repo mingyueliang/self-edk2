@@ -202,7 +202,7 @@ def GetSectionContents(InputFileNum: c_uint32, FfsAttrib: c_uint8,
         if TempSectHeader.Type == EFI_SECTION_TE:
             PESectionNum += 1
             # TeHeaderSize = sizeof(EFI_TE_IMAGE_HEADER)
-            TeHeader = EFI_TE_IMAGE_HEADER.from_buffer_copy(Data)
+            TeHeader = EFI_TE_IMAGE_HEADER.from_buffer_copy(Data[HeaderSize:])
             if TeHeader.Signature == EFI_TE_IMAGE_HEADER_SIGNATURE:
                 TeOffset = TeHeader.StrippedSize - sizeof(TeHeader)
 

@@ -86,7 +86,7 @@ class EFI_GUID_DEFINED_SECTION(Structure):
     _pack_ = 1
     _fields_ = [
         ('CommonHeader', EFI_COMMON_SECTION_HEADER),
-        ('SectionDefinitionGuid', EFI_GUID),
+        ('SectionDefinitionGuid', GUID),
         ('DataOffset', c_uint16),
         ('Attributes', c_uint16)
     ]
@@ -114,8 +114,8 @@ class EFI_GUID_DEFINED_SECTION2(Structure):
 #                 ('DataOffset', c_uint16),
 #                 ('Attributes', c_uint16)
 #                 ]
-
-
+#
+#
 # class EFI_GUID_DEFINED_SECTION2(Structure):
 #     _pack_ = 1
 #     _fields_ = [('CommonHeader', EFI_COMMON_SECTION_HEADER2),
@@ -141,7 +141,7 @@ class EFI_FREEFORM_SUBTYPE_GUID_SECTION(Structure):
     _pack_ = 1
     _fields_ = [
         ('CommonHeader', EFI_COMMON_SECTION_HEADER),
-        ('SubTypeGuid', EFI_GUID)
+        ('SubTypeGuid', GUID)
     ]
 
     def ExtHeaderSize(self) -> int:
@@ -152,7 +152,7 @@ class EFI_FREEFORM_SUBTYPE_GUID_SECTION2(Structure):
     _pack_ = 1
     _fields_ = [
         ('CommonHeader', EFI_COMMON_SECTION_HEADER2),
-        ('SubTypeGuid', EFI_GUID)
+        ('SubTypeGuid', GUID)
     ]
 
 
