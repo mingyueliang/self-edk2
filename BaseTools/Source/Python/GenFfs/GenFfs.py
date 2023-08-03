@@ -210,14 +210,18 @@ def GetSectionContents(InputFileNum: c_uint32, FfsAttrib: c_uint8,
             PESectionNum += 1
 
         elif TempSectHeader.Type == EFI_SECTION_GUID_DEFINED:
-            if FileSize >= MAX_SECTION_SIZE:
-                GuidSectHeader2 = EFI_GUID_DEFINED_SECTION2.from_buffer_copy(Data)
-                if (GuidSectHeader2.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED) == 0:
-                    HeaderSize = GuidSectHeader2.DataOffset
-            else:
-                GuidSectHeader = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data)
-                if (GuidSectHeader.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED) == 0:
-                    HeaderSize = GuidSectHeader.DataOffset
+            # if FileSize >= MAX_SECTION_SIZE:
+                # EFI_GUID_DEFINED_SECTION2
+            #     GuidSectHeader2 = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data)
+            #     if (GuidSectHeader2.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED) == 0:
+            #         HeaderSize = GuidSectHeader2.DataOffset
+            # else:
+            #     GuidSectHeader = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data)
+            #     if (GuidSectHeader.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED) == 0:
+            #         HeaderSize = GuidSectHeader.DataOffset
+            GuidSectionHeader = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data[HeaderSize:])
+            if (GuidSectionHeader.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED) == 0:
+                HeaderSize = GuidSectionHeader.DataOffset
             PESectionNum += 1
 
         elif TempSectHeader.Type == EFI_SECTION_COMPRESSION or TempSectHeader.Type == EFI_SECTION_FIRMWARE_VOLUME_IMAGE:
@@ -238,18 +242,19 @@ def GetSectionContents(InputFileNum: c_uint32, FfsAttrib: c_uint8,
             Offset = Offset - Size - HeaderSize - TeOffset
 
             # The maximal alignment is 64K, the raw section size must be less than 0xffffff
-            SectHeader = EFI_FREEFORM_SUBTYPE_GUID_SECTION()
-            SectHeader.CommonHeader.SET_SECTION_SIZE(Offset)
+            SubGuidSectHeader = EFI_FREEFORM_SUBTYPE_GUID_SECTION()
+            CommonHeader = EFI_COMMON_SECTION_HEADER()
+            CommonHeader.SET_SECTION_SIZE(Offset)
             # FileBuffer = struct2stream(SectHeader)
 
-            if (FfsAttrib & FFS_ATTRIB_FIXED) != 0 and MaxEncounteredAlignment <= 1 and Offset >= sizeof(
-                    EFI_FREEFORM_SUBTYPE_GUID_SECTION):
-                SectHeader.CommonHeader.Type = EFI_SECTION_FREEFORM_SUBTYPE_GUID
-                SectHeader.SubTypeGuid = mEfiFfsSectionAlignmentPaddingGuid
+            if (FfsAttrib & FFS_ATTRIB_FIXED) != 0 and MaxEncounteredAlignment <= 1 and Offset >= (sizeof(
+                    EFI_FREEFORM_SUBTYPE_GUID_SECTION) + CommonHeader.Common_Header_Size()):
+                CommonHeader.Type = EFI_SECTION_FREEFORM_SUBTYPE_GUID
+                SubGuidSectHeader.SubTypeGuid = mEfiFfsSectionAlignmentPaddingGuid
             else:
-                SectHeader.CommonHeader.Type = EFI_SECTION_RAW
+                CommonHeader.Type = EFI_SECTION_RAW
 
-            FileBuffer += struct2stream(SectHeader.CommonHeader) + bytes(
+            FileBuffer += struct2stream(CommonHeader) + bytes(
                     Offset - sizeof(EFI_COMMON_SECTION_HEADER))
 
             Size += Offset

@@ -4,7 +4,7 @@
 # Copyright (c) 2021-, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
-from struct import *
+
 from ctypes import *
 from FirmwareStorageFormat.Common import *
 
@@ -53,7 +53,6 @@ class EFI_COMMON_SECTION_HEADER2(Structure):
 class EFI_COMPRESSION_SECTION(Structure):
     _pack_ = 1
     _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER),
         ('UncompressedLength', c_uint32),
         ('CompressionType', c_uint8),
     ]
@@ -61,31 +60,10 @@ class EFI_COMPRESSION_SECTION(Structure):
     def ExtHeaderSize(self) -> int:
         return 5
 
-
-class EFI_COMPRESSION_SECTION2(Structure):
-    _pack_ = 1
-    _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER2),
-        ('UncompressedLength', c_uint32),
-        ('CompressionType', c_uint8),
-    ]
-
-    def ExtHeaderSize(self) -> int:
-        return 5
-
-
-class EFI_GUID(Structure):
-    _pack_ = 1
-    _fields_ = [('Data1', c_uint32),
-                ('Data2', c_uint16),
-                ('Data3', c_uint16),
-                ('Data4', ARRAY(c_uint8, 8))
-                ]
 
 class EFI_GUID_DEFINED_SECTION(Structure):
     _pack_ = 1
     _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER),
         ('SectionDefinitionGuid', GUID),
         ('DataOffset', c_uint16),
         ('Attributes', c_uint16)
@@ -95,67 +73,14 @@ class EFI_GUID_DEFINED_SECTION(Structure):
         return 20
 
 
-class EFI_GUID_DEFINED_SECTION2(Structure):
-    _pack_ = 1
-    _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER2),
-        ('SectionDefinitionGuid', GUID),
-        ('DataOffset', c_uint16),
-        ('Attributes', c_uint16)
-    ]
-
-    def ExtHeaderSize(self) -> int:
-        return 36
-
-# class EFI_GUID_DEFINED_SECTION(Structure):
-#     _pack_ = 1
-#     _fields_ = [('CommonHeader', EFI_COMMON_SECTION_HEADER),
-#                 ('SectionDefinitionGuid', EFI_GUID),
-#                 ('DataOffset', c_uint16),
-#                 ('Attributes', c_uint16)
-#                 ]
-#
-#
-# class EFI_GUID_DEFINED_SECTION2(Structure):
-#     _pack_ = 1
-#     _fields_ = [('CommonHeader', EFI_COMMON_SECTION_HEADER2),
-#                 ('SectionDefinitionGuid', EFI_GUID),
-#                 ('DataOffset', c_uint16),
-#                 ('Attributes', c_uint16)
-#                 ]
-
-
-class CRC32_SECTION_HEADER(Structure):
-    _pack_ = 1
-    _fields_ = [('GuidSectionHeader', EFI_GUID_DEFINED_SECTION),
-                ('CRC32Checksum', c_uint32)]
-
-
-class CRC32_SECTION_HEADER2(Structure):
-    _pack_ = 1
-    _fields_ = [('GuidSectionHeader', EFI_GUID_DEFINED_SECTION2),
-                ('CRC32Checksum', c_uint32)]
-
-
 class EFI_FREEFORM_SUBTYPE_GUID_SECTION(Structure):
     _pack_ = 1
     _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER),
         ('SubTypeGuid', GUID)
     ]
 
     def ExtHeaderSize(self) -> int:
         return 16
-
-
-class EFI_FREEFORM_SUBTYPE_GUID_SECTION2(Structure):
-    _pack_ = 1
-    _fields_ = [
-        ('CommonHeader', EFI_COMMON_SECTION_HEADER2),
-        ('SubTypeGuid', GUID)
-    ]
-
-
 
 
 class EFI_IMAGE_DATA_DIRECTORY(Structure):
@@ -182,14 +107,6 @@ class EFI_TE_IMAGE_HEADER(Structure):
 
     def ExtHeaderSize(self) -> int:
         return 40
-
-
-# class PE_COFF_LOADER_READ_FILE(Structure):
-#     _pack_=  1
-#     _fields_ =[('FileOffset',c_uint64),
-#                ('ReadSize',c_uint64),
-#                ('FileHandle',c_void_p),
-#                ('Buffer',c_void_p)]
 
 
 class PE_COFF_LOADER_IMAGE_CONTEXT(Structure):
