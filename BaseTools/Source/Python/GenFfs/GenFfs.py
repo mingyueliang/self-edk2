@@ -7,7 +7,7 @@
 import os.path
 import sys
 
-sys.path.append('..')
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from FirmwareStorageFormat.SectionHeader import *
 from FirmwareStorageFormat.FfsFileHeader import *

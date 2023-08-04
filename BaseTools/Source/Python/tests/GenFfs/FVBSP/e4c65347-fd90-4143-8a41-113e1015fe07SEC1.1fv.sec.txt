@@ -1,0 +1,1 @@
+GenSec -s EFI_SECTION_FIRMWARE_VOLUME_IMAGE -o z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\e4c65347-fd90-4143-8a41-113e1015fe07FVBSP\e4c65347-fd90-4143-8a41-113e1015fe07SEC1.1fv.sec z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\FVBSPUNCOMPRESSED.Fv

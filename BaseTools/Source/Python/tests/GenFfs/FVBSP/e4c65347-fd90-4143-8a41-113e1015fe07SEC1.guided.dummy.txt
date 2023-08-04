@@ -1,0 +1,1 @@
+GenSec --sectionalign 128 -o z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\e4c65347-fd90-4143-8a41-113e1015fe07FVBSP\e4c65347-fd90-4143-8a41-113e1015fe07SEC1.guided.dummy z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\e4c65347-fd90-4143-8a41-113e1015fe07FVBSP\e4c65347-fd90-4143-8a41-113e1015fe07SEC1.1fv.sec

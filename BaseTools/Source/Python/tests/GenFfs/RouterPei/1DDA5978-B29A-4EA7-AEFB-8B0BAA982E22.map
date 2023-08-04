@@ -1,0 +1,101 @@
+ ExReportStatusCodeRouterPei
+
+ Timestamp is 64c9ac41 (Wed Aug  2 09:07:13 2023)
+
+ Preferred load address is 00000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 000000bdH .text                   CODE
+ 0001:000000bd 00000947H .text$mn                CODE
+ 0002:00000000 00000554H .rdata                  DATA
+ 0002:00000554 00000144H .rdata$zzzdbg           DATA
+ 0003:00000000 000000c2H .data                   DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_count     00000000     <absolute>
+ 0000:00000000       ___guard_iat_table         00000000     <absolute>
+ 0000:00000000       ___guard_iat_count         00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_table     00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000000       ___dynamic_value_reloc_table 00000000     <absolute>
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0001:00000000       _InternalMemSetMem         00000260     BaseMemoryLibRepStr:SetMem.obj
+ 0001:00000020       _InternalMemSetMem64       00000280     BaseMemoryLibRepStr:SetMem64.obj
+ 0001:00000040       _InternalMemSetMem32       000002a0     BaseMemoryLibRepStr:SetMem32.obj
+ 0001:00000060       _InternalMemCopyMem        000002c0     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:000000a0       _InternalMemZeroMem        00000300     BaseMemoryLibRepStr:ZeroMem.obj
+ 0001:000000bd       __ModuleEntryPoint         0000031d f   PeimEntryPoint:PeimEntryPoint.obj
+ 0001:000000c2       _Register                  00000322 f   ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0001:0000011d       _Unregister                0000037d f   ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0001:0000015e       _ReportDispatcher          000003be f   ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0001:000001a5       _GenericStatusCodePeiEntry 00000405 f   ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0001:00000299       _SetMem                    000004f9 f   BaseMemoryLibRepStr:SetMemWrapper.obj
+ 0001:000002cf       _GetHobList                0000052f f   PeiHobLib:HobLib.obj
+ 0001:0000032f       _GetNextHob                0000058f f   PeiHobLib:HobLib.obj
+ 0001:0000036c       _GetFirstGuidHob           000005cc f   PeiHobLib:HobLib.obj
+ 0001:000003a6       _InternalPeiCreateHob      00000606 f   PeiHobLib:HobLib.obj
+ 0001:000003f1       _BuildGuidHob              00000651 f   PeiHobLib:HobLib.obj
+ 0001:0000042e       _DebugPrint                0000068e f   PeiDebugLibDebugPpi:DebugLib.obj
+ 0001:00000464       _DebugBPrint               000006c4 f   PeiDebugLibDebugPpi:DebugLib.obj
+ 0001:000004c0       _VaListToBaseList          00000720 f   PeiDebugLibDebugPpi:DebugLib.obj
+ 0001:000005c1       _DebugAssert               00000821 f   PeiDebugLibDebugPpi:DebugLib.obj
+ 0001:00000612       _GetPeiServicesTablePointer 00000872 f   PeiServicesTablePointerLibIdt:PeiServicesTablePointer.obj
+ 0001:00000644       _GetErrorLevel             000008a4 f   DebugPrintErrorLevelLibPdaRO:DebugPrintErrorLevelLibPdaCommon.obj
+ 0001:000006bd       _AsmReadIdtr               0000091d f   BaseLib:X86ReadIdtr.obj
+ 0001:000006e0       _CopyGuid                  00000940 f   BaseMemoryLibRepStr:MemLibGuid.obj
+ 0001:00000710       _CompareGuid               00000970 f   BaseMemoryLibRepStr:MemLibGuid.obj
+ 0001:0000076f       _CopyMem                   000009cf f   BaseMemoryLibRepStr:CopyMemWrapper.obj
+ 0001:000007d0       _ReadPlatformDataArea      00000a30 f   PdaReadLib:PdaReadLib.obj
+ 0001:00000839       _ReadUnaligned64           00000a99 f   BaseLib:Unaligned.obj
+ 0001:0000085c       _WriteUnaligned64          00000abc f   BaseLib:Unaligned.obj
+ 0001:00000887       _GetPlatformDataAreaListEntryById 00000ae7 f   PdaVerificationLib:PdaVerification.obj
+ 0001:000008f3       _VerifyPlatformDataAreaSize 00000b53 f   PdaVerificationLib:PdaVerification.obj
+ 0001:00000974       _VerifyPlatformDataAreaList 00000bd4 f   PdaVerificationLib:PdaVerification.obj
+ 0002:00000000       ??_C@_0CA@PMLNFAND@NumberOfEntries?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000c80     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0002:00000020       ??_C@_0GH@NDCFBHI@z?3?2birchstreamrp?2intel?2ServerPla@ 00000ca0     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0002:00000088       ??_C@_0CB@DMEJJJHA@?6ASSERT_EFI_ERROR?5?$CIStatus?5?$DN?5?$CFr?$CJ?6@ 00000d08     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0002:000000ac       ??_C@_0CH@BBNBJKHK@?$CB?$CI?$CI?$CIINTN?$CJ?$CIRETURN_STATUS?$CJ?$CIStatus?$CJ@ 00000d2c     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0002:000000d4       ??_C@_0CN@BPIPMCPJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00000d54     BaseMemoryLibRepStr:SetMemWrapper.obj
+ 0002:00000108       ??_C@_0EJ@GEPKNHIC@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 00000d88     BaseMemoryLibRepStr:SetMemWrapper.obj
+ 0002:00000154       ??_C@_0BH@IACGKAP@Buffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000dd4     BaseMemoryLibRepStr:SetMem64Wrapper.obj
+ 0002:0000016c       ??_C@_0DI@JJDICIBB@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 00000dec     PeiHobLib:HobLib.obj
+ 0002:000001a4       ??_C@_0BI@NCGMODPG@HobList?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000e24     PeiHobLib:HobLib.obj
+ 0002:000001bc       ??_C@_0BJ@NOLLDKJB@HobStart?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000e3c     PeiHobLib:HobLib.obj
+ 0002:000001d8       ??_C@_0BE@PICCCCHF@Hob?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000e58     PeiHobLib:HobLib.obj
+ 0002:000001ec       ??_C@_0BF@PEDOPNMP@Guid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000e6c     PeiHobLib:HobLib.obj
+ 0002:00000204       ??_C@_0BC@FEDIJHFF@?$CI?$CIBOOLEAN?$CJ?$CI0?$DN?$DN1?$CJ?$CJ?$AA@ 00000e84     PeiHobLib:HobLib.obj
+ 0002:00000218       ??_C@_0BH@LKMBFCBF@Format?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000e98     PeiDebugLibDebugPpi:DebugLib.obj
+ 0002:00000230       ??_C@_0EK@CJOHJJOF@Z?3?2BirchStreamRp?2Edk2?2MdeModuleP@ 00000eb0     PeiDebugLibDebugPpi:DebugLib.obj
+ 0002:0000027c       ??_C@_0BP@CHOJLGEH@BaseListMarker?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000efc     PeiDebugLibDebugPpi:DebugLib.obj
+ 0002:0000029c       ??_C@_0BM@DAJCEFAH@PeiServices?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000f1c     PeiServicesTablePointerLibIdt:PeiServicesTablePointer.obj
+ 0002:000002b8       ??_C@_0FN@FEGFANCE@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 00000f38     PeiServicesTablePointerLibIdt:PeiServicesTablePointer.obj
+ 0002:00000318       ??_C@_0BF@KGOGCKLE@Idtr?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00000f98     BaseLib:X86ReadIdtr.obj
+ 0002:00000330       ??_C@_0DL@OILHDEJ@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 00000fb0     BaseLib:X86ReadIdtr.obj
+ 0002:0000036c       ??_C@_0DI@PHOMHDKH@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00000fec     BaseMemoryLibRepStr:CopyMemWrapper.obj
+ 0002:000003a8       ??_C@_0EK@EHDIKBHK@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 00001028     BaseMemoryLibRepStr:CopyMemWrapper.obj
+ 0002:000003f4       ??_C@_0DD@DCDOHCDJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00001074     BaseMemoryLibRepStr:CopyMemWrapper.obj
+ 0002:00000428       ??_C@_0EL@OPICMLA@z?3?2birchstreamrp?2intel?2ServerPla@ 000010a8     PdaReadLib:PdaReadLib.obj
+ 0002:00000474       ??_C@_0DJ@DCGEOAEE@Z?3?2BirchStreamRp?2Edk2?2MdePkg?2Lib@ 000010f4     BaseLib:Unaligned.obj
+ 0002:000004b0       ??_C@_0FA@HAIGGFEM@z?3?2birchstreamrp?2intel?2ServerPla@ 00001130     PdaVerificationLib:PdaVerification.obj
+ 0003:00000000       _gEfiPeiRscHandlerPpiGuid  00001320     ExReportStatusCodeRouterPei:AutoGen.obj
+ 0003:00000010       _gEdkiiDebugPpiGuid        00001330     ExReportStatusCodeRouterPei:AutoGen.obj
+ 0003:00000020       _gEfiPeiStatusCodePpiGuid  00001340     ExReportStatusCodeRouterPei:AutoGen.obj
+ 0003:00000030       _gErrorLevelDataCacheGuid  00001350     ExReportStatusCodeRouterPei:AutoGen.obj
+ 0003:00000040       _gStatusCodeCallbackGuid   00001360     ExReportStatusCodeRouterPei:AutoGen.obj
+ 0003:00000050       _mRscHandlerPpi            00001370     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0003:00000058       _mStatusCodePpi            00001378     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0003:0000005c       _mRscHandlerPpiList        0000137c     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0003:00000068       _mStatusCodePpiList        00001388     ExReportStatusCodeRouterPei:ExReportStatusCodeRouterPei.obj
+ 0003:00000074       _mDebugPrintErrorLevel     00001394     DebugPrintErrorLevelLibPdaRO:DebugPrintErrorLevelLibPdaCommon.obj
+
+ entry point at        0001:000000bd
+
+ Static symbols
+
+ 0001:00000031       _InternalMemSetMem64.0     00000291     BaseMemoryLibRepStr:SetMem64.obj
+ 0001:0000007a       _InternalMemCopyMem.0      000002da     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:00000086       @CopyBackward              000002e6     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:0000008d       @CopyBytes                 000002ed     BaseMemoryLibRepStr:CopyMem.obj
+ 0003:00000080       _mPlatformDataAreaList     000013a0     PdaVerificationLib:PdaVerification.obj

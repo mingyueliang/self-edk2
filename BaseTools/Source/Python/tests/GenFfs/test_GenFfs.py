@@ -3,6 +3,11 @@ import os
 import filecmp
 import tempfile
 import shutil
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+
 
 
 class TestGenFfs:
@@ -20,13 +25,14 @@ class TestGenFfs:
             return False
         except Exception as e:
             print(e)
-
+            
     def test_output_ffs(self):
         input_command_lines = [
+            # pe32: No -n
             [
                 "-t EFI_FV_FILETYPE_DRIVER",
                 "-g 1A1E4886-9517-440e-9FDE-3BE44CEE2136",
-                "-o %s" % os.path.join(self.tmpdir, "demo.ffs"),
+                "-o %s" % os.path.join(self.tmpdir, "CpuDxe.ffs"),
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
                                         "CpuDxe\\1A1E4886-9517-440e-9FDE-3BE44CEE2136SEC1.1.dpx"),
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
@@ -36,28 +42,54 @@ class TestGenFfs:
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
                                         "CpuDxe\\1A1E4886-9517-440e-9FDE-3BE44CEE2136SEC4.ver")
             ],
+            # pe32: -n 0
             [
-                "-t EFI_FV_FILETYPE_DRIVER",
-                "-g 9FB1A1F3-3B71-4324-B39A-745CBB015FFF",
-                "-o %s" % os.path.join(self.tmpdir, "demo1.ffs"),
+                "-t EFI_FV_FILETYPE_PEI_CORE",
+                "-g 52C05B14-0B98-496c-BC3B-04B50211D680",
+                "-o %s" % os.path.join(self.tmpdir, "PeiCore.ffs"),
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
-                                        "Ip4Dex\\9FB1A1F3-3B71-4324-B39A-745CBB015FFFSEC1.1.dpx"),
-                "-oi %s" % os.path.join(os.path.dirname(__file__), "Ip4Dex\\Ip4DxeOffset.raw"),
+                                        "PeiCore\\52C05B14-0B98-496c-BC3B-04B50211D680SEC1.1.pe32"),
+                "-n 0",
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
-                                        "Ip4Dex\\9FB1A1F3-3B71-4324-B39A-745CBB015FFFSEC2.1.pe32"),
+                                        "PeiCore\\52C05B14-0B98-496c-BC3B-04B50211D680SEC2.ui"),
                 "-oi %s" % os.path.join(os.path.dirname(__file__),
-                                        "Ip4Dex\\9FB1A1F3-3B71-4324-B39A-745CBB015FFFSEC3.ui"),
-                "-oi %s" % os.path.join(os.path.dirname(__file__),
-                                        "Ip4Dex\\9FB1A1F3-3B71-4324-B39A-745CBB015FFFSEC4.ver"),
-
+                                        "PeiCore\\52C05B14-0B98-496c-BC3B-04B50211D680SEC3.ver"),
             ],
+            # te:
+            [
+                "-t EFI_FV_FILETYPE_PEIM",
+                "-g 1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22",
+                "-o %s" % os.path.join(self.tmpdir, "RouterPei.ffs"),
+                "-oi %s" % os.path.join(os.path.dirname(__file__),
+                                        "RouterPei\\1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22SEC1.1.dpx"),
+                "-oi %s" % os.path.join(os.path.dirname(__file__),
+                                        "RouterPei\\1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22SEC2.1.te"),
+                "-n 32",
+                "-oi %s" % os.path.join(os.path.dirname(__file__),
+                                        "RouterPei\\1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22SEC3.ui"),
+                "-oi %s" % os.path.join(os.path.dirname(__file__),
+                                        "RouterPei\\1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22SEC4.ver"),
+            ],
+            # guided:
+            [
+                "-t EFI_FV_FILETYPE_FIRMWARE_VOLUME_IMAGE",
+                "-g e4c65347-fd90-4143-8a41-113e1015fe07",
+                "-o %s" % os.path.join(self.tmpdir, "FVBSP.ffs"),
+                "-i %s" % os.path.join(os.path.dirname(__file__),
+                                       "FVBSP\\e4c65347-fd90-4143-8a41-113e1015fe07SEC1.guided")
+            ],
+
         ]
 
         output_files = [
             {"oldffs": os.path.join(os.path.dirname(__file__), 'CpuDxe\\1A1E4886-9517-440e-9FDE-3BE44CEE2136.ffs'),
-             "newffs": os.path.join(self.tmpdir, 'demo.ffs')},
-            {"oldffs": os.path.join(os.path.dirname(__file__), 'Ip4Dex\\9FB1A1F3-3B71-4324-B39A-745CBB015FFF.ffs'),
-             "newffs": os.path.join(self.tmpdir, 'demo1.ffs')},
+             "newffs": os.path.join(self.tmpdir, 'CpuDxe.ffs')},
+            {"oldffs": os.path.join(os.path.dirname(__file__), 'PeiCore\\52C05B14-0B98-496c-BC3B-04B50211D680.ffs'),
+             "newffs": os.path.join(self.tmpdir, 'PeiCore.ffs')},
+            {"oldffs": os.path.join(os.path.dirname(__file__), 'RouterPei\\1DDA5978-B29A-4EA7-AEFB-8B0BAA982E22.ffs'),
+             "newffs": os.path.join(self.tmpdir, 'RouterPei.ffs')},
+            {"oldffs": os.path.join(os.path.dirname(__file__), 'FVBSP\\e4c65347-fd90-4143-8a41-113e1015fe07.ffs'),
+             "newffs": os.path.join(self.tmpdir, 'FVBSP.ffs')},
         ]
 
         for index in range(len(input_command_lines)):
