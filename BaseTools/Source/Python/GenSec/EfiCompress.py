@@ -79,7 +79,7 @@ PERC_FLAG = 0x8000
 def HASH(a,b):
     return a + (b <<(WNDBIT - 9)) + WNDSIZ * 2
 
-
+#TODO: Error
 def EFI_ERROR(A):
     if A < 0:
         return True
@@ -88,7 +88,7 @@ def EFI_ERROR(A):
 
 
 #Put a dword to output stream
-def PutDword(Data:c_uint32):
+def PutDword(Data:int):
     global mDst, mDstAdd
     if mDstAdd < mDstUpperLimit:
         mDst = mDst + Data.to_bytes(1,byteorder='little')
@@ -764,11 +764,14 @@ def Encode() -> int:
     mOrigSize += n
     
     Index = WNDSIZ
-    while i - 1 >= 0:
-        UPDATE_CRC(mText[Index])
-        Index += 1
-        i -= 1
-    
+    try:
+        while i - 1 >= 0:
+            UPDATE_CRC(mText[Index])
+            Index += 1
+            i -= 1
+    except Exception as e:
+        print(Index)
+        raise
     mRemainder = n
        
     mMatchLen = 0
@@ -798,9 +801,9 @@ def Encode() -> int:
 
 
 #The main compression routine.
-def EfiCompress(SrcSize:c_uint32,DstSize:c_uint32,SrcBuffer = b'',DstBuffer = b''):
+def EfiCompress(SrcSize:int,DstSize:int,SrcBuffer = b'',DstBuffer = b''):
     
-    global mSrc,mSrcAdd,mSrcUpperLimit,mDst,mDstAdd,mDstUpperLimit,mOrigSize, mCompSize
+    # global mSrc,mSrcAdd,mSrcUpperLimit,mDst,mDstAdd,mDstUpperLimit,mOrigSize, mCompSize
     Status = EFI_SUCCESS
     
     mSrc = SrcBuffer

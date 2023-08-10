@@ -8,12 +8,14 @@ import sys
 sys.path.append("..") 
 
 from FirmwareStorageFormat.SectionHeader import *
+from FirmwareStorageFormat.Common import *
+
 import logging
 from BaseTypes import *
 
 
 #Compares to GUIDs
-def CompareGuid(Guid1:EFI_GUID,Guid2:EFI_GUID):
+def CompareGuid(Guid1:GUID,Guid2:GUID):
     r = Guid1.Data1 - Guid2.Data1
     r += Guid1.Data2 - Guid2.Data2
     r += Guid1.Data3 - Guid2.Data3
@@ -42,7 +44,7 @@ def AsciiStringToUint64(AsciiString:str,IsHex:bool,ReturnValue:int):
     #Index = 0
 
     #Check input parameter
-    if AsciiString == None or ReturnValue == None or len(AsciiString) > 0xff:
+    if ("-" in AsciiString) or len(AsciiString) > 0xff:
         return EFI_INVALID_PARAMETER
     # while AsciiString[Index] == ' ':
     #     Index += 1
@@ -62,7 +64,7 @@ def AsciiStringToUint64(AsciiString:str,IsHex:bool,ReturnValue:int):
                 break
             
             #Verify Hex string
-            if isxdigit(ch) == 0:
+            if not isxdigit(ch):
                 return EFI_ABORTED
         
         Value = int(AsciiString,16)
@@ -75,7 +77,7 @@ def AsciiStringToUint64(AsciiString:str,IsHex:bool,ReturnValue:int):
                 break
             
             #Verify Dec string
-            if isdigit(CurrentChar) == 0:
+            if not isdigit(CurrentChar):
                 return EFI_ABORTED
         Value = int(AsciiString)
         ReturnValue = Value
@@ -88,7 +90,7 @@ def isdigit(c:c_char):
     
 
 #Converts a string to an EFI_GUID.
-def StringToGuid(AsciiGuidBuffer:str,GuidBuffer:EFI_GUID):
+def StringToGuid(AsciiGuidBuffer:str,GuidBuffer:GUID):
     Data4 = [0]*8
     logger =logging.getLogger('GenSec')
     
