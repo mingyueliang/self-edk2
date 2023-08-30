@@ -1,0 +1,15 @@
+
+
+!IF EXIST(c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\AutoGen.c.deps)
+!INCLUDE c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\AutoGen.c.deps
+!ENDIF
+
+!IF EXIST(c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\ComponentName.c.deps)
+!INCLUDE c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\ComponentName.c.deps
+!ENDIF
+
+!IF EXIST(c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\ScsiDisk.c.deps)
+!INCLUDE c:\users\mliang2x\workspace\github_edk2\edk2\Build\OvmfX64\DEBUG_VS2015x86\X64\MdeModulePkg\Bus\Scsi\ScsiDiskDxe\ScsiDiskDxe\OUTPUT\ScsiDisk.c.deps
+!ENDIF
+
+               

@@ -295,7 +295,6 @@ def GenSectionCompressionSection(InputFileNum: int, SectCompSubType: c_uint8, In
 
         # Copy file buffer to the none compressed data
         OutputBuffer = FileBuffer
-
     elif SectCompSubType == EFI_STANDARD_COMPRESSION:
         CompressFunction = EfiCompress
 
@@ -304,7 +303,6 @@ def GenSectionCompressionSection(InputFileNum: int, SectCompSubType: c_uint8, In
         return EFI_ABORTED
 
     # Actual compressing
-    #TODO: issue ????
     if CompressFunction != None:
         res = CompressFunction(InputLength, CompressedLength, FileBuffer, OutputBuffer)
         if isinstance(res, int):
@@ -315,20 +313,20 @@ def GenSectionCompressionSection(InputFileNum: int, SectCompSubType: c_uint8, In
             CompressedLength = res[2]
 
 
-        if Status == EFI_BUFFER_TOO_SMALL:
-            HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER) + sizeof(EFI_COMPRESSION_SECTION)
-            if CompressedLength + HeaderLength >= MAX_SECTION_SIZE:
-                HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER2) + sizeof(EFI_COMPRESSION_SECTION2)
-            TotalLength = CompressedLength + HeaderLength
-            # OutputBuffer = b'\0' * TotalLength
-            res = CompressFunction(InputLength, CompressedLength, FileBuffer, OutputBuffer)
-            if isinstance(res, int):
-                Status = res
-            else:
-                Status = res[0]
-                OutputBuffer = res[1]
-                CompressedLength = res[2]
-                # print(res)
+        # if Status == EFI_BUFFER_TOO_SMALL:
+        #     HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER) + sizeof(EFI_COMPRESSION_SECTION)
+        #     if CompressedLength + HeaderLength >= MAX_SECTION_SIZE:
+        #         HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER2) + sizeof(EFI_COMPRESSION_SECTION2)
+        #     TotalLength = CompressedLength + HeaderLength
+        #     # OutputBuffer = b'\0' * TotalLength
+        #     res = CompressFunction(InputLength, CompressedLength, FileBuffer, OutputBuffer)
+        #     if isinstance(res, int):
+        #         Status = res
+        #     else:
+        #         Status = res[0]
+        #         OutputBuffer = res[1]
+        #         CompressedLength = res[2]
+        #         # print(res)
 
         FileBuffer = OutputBuffer
 
