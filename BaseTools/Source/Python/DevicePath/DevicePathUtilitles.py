@@ -15,6 +15,12 @@ def GetNextParamStr(List: str) -> tuple:
     return SplitStr(List, ',')
 
 
+def SetDevicePathNodeLength(Node: EFI_DEVICE_PATH_PROTOCOL, Length: int) -> EFI_DEVICE_PATH_PROTOCOL:
+    assert (Length >= sizeof(EFI_DEVICE_PATH_PROTOCOL) and Length < SIZE_64KB)
+    Node.Length[0] = Length
+    return Node
+
+
 def UefiDevicePathLibCreateDeviceNode(NodeType: int, NodeSubType: int,
                                       NodeLength: int) -> EFI_DEVICE_PATH_PROTOCOL:
     DevicePath = EFI_DEVICE_PATH_PROTOCOL()
@@ -46,7 +52,7 @@ def DevPathFromTextGenericPath(Type: int, TextDeviceNode: str):
         if Index & BIT0 == 0:
             Node.Data[Index // 2] = InternalHexCharToUintn(DataStr[Index]) << 4
         else:
-            Node.Data[Index // 2] = InternalHexCharToUintn(DataStr[Index])
+            Node.Data[Index // 2] |= InternalHexCharToUintn(DataStr[Index])
     return Node
 
 
@@ -221,7 +227,7 @@ def DevPathFromTextAcpiExp(TextDeviceNode: str) -> ACPI_EXTENDED_HID_DEVICE_PATH
     return AcpiEx
 
 
-def DevPathFromTextAcpiAdr(TextDeviceNode: str) -> ACPI_ADR_DEVICE_PATH:
+def DevPathFromTextAcpiAdr(TextDeviceNode: str):
     nums = 0
     DeviceStrList = list()
     while TextDeviceNode:
@@ -622,7 +628,7 @@ def StrDecimalToUint64S(Str: str, EndPointer=None):
                                    the range defined by UINT64.
     """
     Status = RETURN_SUCCESS
-    assert (ord(Str[0]) & BIT0 == 0)
+    # assert (ord(Str[0]) & BIT0 == 0)
     # Neither String nor Data shall be a null pointer.
     if not Str:
         return RETURN_INVALID_PARAMETER
@@ -630,27 +636,29 @@ def StrDecimalToUint64S(Str: str, EndPointer=None):
     if len(Str) > RSIZE_MAX:
         return RETURN_INVALID_PARAMETER
     # Ignore the pad spaces (space or tab)
-    Index = 0
+    # Index = 0
     if EndPointer != None:
-        EndPointer = Index
-    while (Str[Index] == " " or Str[Index] == "\t"):
-        Index += 1
+        EndPointer = EndPointer
+    while (Str[EndPointer] == " " or Str[EndPointer] == "\t"):
+        EndPointer += 1
     # Ignore leading Zeros after the spaces
-    while Str[Index] == '0':
-        Index += 1
+    while Str[EndPointer] == '0':
+        EndPointer += 1
 
     Data = 0
-    while InternalIsDecimalDigitCharacter(Str[Index]):
-        if Data > ((MAX_UINT64 - (ord(Str[Index]) - ord('0'))) // 10):
+    while EndPointer < len(Str):
+        if not InternalIsDecimalDigitCharacter(Str[EndPointer]):
+            break
+        if Data > ((MAX_UINT64 - (ord(Str[EndPointer]) - ord('0'))) // 10):
             Data = MAX_UINT64
             if EndPointer != None:
-                EndPointer = Index
+                EndPointer = EndPointer
             return RETURN_UNSUPPORTED
-        Data = Data * 10 + (ord(Str[Index]) - ord('0'))
-        Index += 1
+        Data = Data * 10 + (ord(Str[EndPointer]) - ord('0'))
+        EndPointer += 1
 
     if EndPointer != None:
-        EndPointer = Index
+        EndPointer = EndPointer
     return Status, Data, EndPointer
 
 
@@ -708,7 +716,7 @@ def StrHexToUint64S(Str: str, EndPointer=None):
                                    the range defined by UINT64.
     """
     Status = RETURN_SUCCESS
-    assert (ord(Str[0]) & BIT0 == 0)
+    # assert (ord(Str[0]) & BIT0 == 0)
     # 1. Neither String nor Data shall be a null pointer.
     if not Str:
         return RETURN_UNSUPPORTED
@@ -716,61 +724,65 @@ def StrHexToUint64S(Str: str, EndPointer=None):
     if len(Str) > RSIZE_MAX:
         return RETURN_UNSUPPORTED
 
-    # Ignore the pad spaces (space or tab)
-    Index = 0
     if EndPointer != None:
-        EndPointer = Index
+        EndPointer = EndPointer
 
-    while Str[Index] == ' ' or Str[Index] == '\t':
-        Index += 1
+    # Ignore the pad spaces (space or tab)
+    # Index = 0
+
+    while Str[EndPointer] == ' ' or Str[EndPointer] == '\t':
+        EndPointer += 1
 
     # Ignore leading Zeros after the spaces
-    while Str[Index] == '0':
-        Index += 1
+    while Str[EndPointer] == '0':
+        EndPointer += 1
     Data = 0
-    if Str[Index].upper() == 'X':
-        if (Str[Index - 1]) != '0':
+    if Str[EndPointer].upper() == 'X':
+        if (Str[EndPointer - 1]) != '0':
             Data = 0
             return RETURN_SUCCESS
-        Index += 1
+        EndPointer += 1
     Data = 0
-    while InternalIsHexaDecimalDigitCharacter(Str[Index]):
-        if Data > ((MAX_UINT64 - InternalHexCharToUintn(Str[Index])) >> 4):
+    while EndPointer < len(Str):
+        if not InternalIsHexaDecimalDigitCharacter(Str[EndPointer]):
+            break
+        if Data > ((MAX_UINT64 - InternalHexCharToUintn(Str[EndPointer])) >> 4):
             Data = MAX_UINT64
             if EndPointer != None:
-                EndPointer = Index
+                EndPointer = EndPointer
             return RETURN_UNSUPPORTED
-        Data = (Data << 4) + InternalHexCharToUintn(Str[Index])
-        Index += 1
-
+        Data = (Data << 4) + InternalHexCharToUintn(Str[EndPointer])
+        EndPointer += 1
     if EndPointer != None:
-        EndPointer = Index
+        EndPointer = EndPointer
 
     return Status, Data, EndPointer
 
 
-def StrToIpv4Address(Str: str, PrefixLength=None):
-    Addr = EFI_IPv4_ADDRESS()
-    assert (ord(Str[0]) & BIT0 == 0)
+def StrToIpv4Address(Str: str, PrefixLength=None, EndPointer=None):
+    Address = EFI_IPv4_ADDRESS()
+    LocalPrefixLength = MAX_UINT8
+    # assert (ord(Str[0]) & BIT0 == 0)
     if not Str:
         # logger.error("Invalid parameter")
         raise Exception('Invalid parameter: Str is empty')
     AddressIndex = 0
+    Offset = 0
     while AddressIndex < sizeof(EFI_IPv4_ADDRESS) + 1:
-        if not InternalIsDecimalDigitCharacter(Str[AddressIndex]):
+        if not InternalIsDecimalDigitCharacter(Str[Offset]):
             break
         Uint64 = None
-        res = StrDecimalToUint64S(Str[AddressIndex])
+        res = StrDecimalToUint64S(Str, Offset)
         if isinstance(res, int):
             Status = res
         else:
             Status = res[0]
             Uint64 = res[1]
+            Offset = res[2]
 
-        if EFI_ERROE(Status):
+        if EFI_ERROR(Status):
             raise Exception('Unsupported')
 
-        LocalPrefixLength = None
         if AddressIndex == sizeof(EFI_IPv4_ADDRESS):
             if Uint64 > 32:
                 raise Exception('Unsupported')
@@ -778,129 +790,151 @@ def StrToIpv4Address(Str: str, PrefixLength=None):
         else:
             if Uint64 > MAX_UINT8:
                 raise Exception('Unsupported')
-            Addr[AddressIndex] = c_uint8(Uint64).value
+            Address.Addr[AddressIndex] = c_uint8(Uint64).value
             AddressIndex += 1
         # Check the '.' or '/', depending on the AddressIndex.
         if AddressIndex == sizeof(EFI_IPv4_ADDRESS):
-            if Str[AddressIndex] == '/':
-                AddressIndex += 1
+            if Offset <= len(Str) and Str[Offset] == '/':
+                Offset += 1
             else:
                 break
         elif AddressIndex < sizeof(EFI_IPv4_ADDRESS):
-            if Str[AddressIndex] == '.':
-                AddressIndex += 1
+            if Str[Offset] == '.':
+                Offset += 1
             else:
                 raise Exception('Unsupported')
 
-        if AddressIndex < sizeof(EFI_IPv4_ADDRESS):
-            raise Exception('Unsupported')
+    if AddressIndex < sizeof(EFI_IPv4_ADDRESS):
+        raise Exception('Unsupported')
 
-        if PrefixLength != None:
-            PrefixLength = LocalPrefixLength
+    if PrefixLength != None:
+        PrefixLength = LocalPrefixLength
 
-    return Addr
+    if EndPointer != None:
+        EndPointer = Offset
+
+    return Address, EndPointer, PrefixLength
 
 
 def StrToIpv6Address(Str: str, EndPointer=None, PrefixLength=None):
     Address = EFI_IPv6_ADDRESS()
-    Status = RETURN_SUCCESS
-
+    LocalAddress = EFI_IPv6_ADDRESS()
     LocalPrefixLength = MAX_UINT8
-    CompressStart = sizeof(EFI_IPv4_ADDRESS)
+    CompressStart = sizeof(EFI_IPv6_ADDRESS)
     ExpectPrefix = False
 
-    assert (ord(Str[0]) & BIT0 == 0)
+    # assert (ord(Str[0]) & BIT0 == 0)
     # None of String or Guid shall be a null pointer.
     if not Str:
         raise Exception('Invalid parameter: Str is empty')
 
     AddressIndex = 0
-    while AddressIndex < CompressStart + 1:
-        if not InternalIsHexaDecimalDigitCharacter(Str[AddressIndex]):
-            if Str[AddressIndex] == ':':
+    Pointer = 0
+    while AddressIndex < sizeof(EFI_IPv6_ADDRESS) + 1 and Pointer < len(Str):
+        if not InternalIsHexaDecimalDigitCharacter(Str[Pointer]):
+            if Pointer <= len(Str) and Str[Pointer] != ':':
                 raise Exception('Unsupported')
 
             if ExpectPrefix:
                 raise Exception('Unsupported')
 
-            if CompressStart != sizeof(EFI_IPv4_ADDRESS) or AddressIndex == sizeof(EFI_IPv4_ADDRESS):
+            if CompressStart != sizeof(EFI_IPv6_ADDRESS) or AddressIndex == sizeof(EFI_IPv6_ADDRESS):
                 return RETURN_UNSUPPORTED
             else:
                 CompressStart = AddressIndex
-                AddressIndex += 1
+                Pointer += 1
                 if CompressStart == 0:
-                    if Str[AddressIndex] != ':':
+                    if Pointer < len(Str):
+                        if Str[Pointer] != ':':
+                            raise Exception('Unsupported')
+                    Pointer += 1
+        if Pointer < len(Str):
+            if not InternalIsHexaDecimalDigitCharacter(Str[Pointer]):
+                if Str[Pointer] == '/':
+                    if CompressStart != AddressIndex:
                         raise Exception('Unsupported')
-                    AddressIndex += 1
-        if not InternalIsHexaDecimalDigitCharacter(Str[AddressIndex]):
-            if Str[AddressIndex] == '/':
-                if CompressStart != AddressIndex:
-                    raise Exception('Unsupported')
-            else:
-                break
-        else:
-            if not ExpectPrefix:
-                Uint64 = None
-                res = StrHexToUint64S(Str[AddressIndex], EndPointer)
-                if isinstance(res, int):
-                    Status = res
                 else:
-                    Status = res[0]
-                    Uint64 = res[1]
-                    EndPointer = res[2]
-                if EFI_ERROR(Status) or EndPointer - AddressIndex > 4:
-                    raise Exception('Unsupported')
+                    break
+            else:
+                if not ExpectPrefix:
+                    Uint64 = None
+                    res = StrHexToUint64S(Str, Pointer)
+                    if isinstance(res, int):
+                        Status = res
+                    else:
+                        Status = res[0]
+                        Uint64 = res[1]
+                        EndPointer = res[2]
+                    if EFI_ERROR(Status) or EndPointer - Pointer > 4:
+                        raise Exception('Unsupported')
 
-                AddressIndex = EndPointer
-                # Uint64 won't exceed MAX_UINT16 if number of hexadecimal digit characters is no more than 4.
-                assert (AddressIndex + 1 < sizeof(EFI_IPv6_ADDRESS))
-                Address[AddressIndex] = c_uint8(c_uint16(Uint64 >> 8).value).value
-                Address[AddressIndex + 1] = c_uint8(Uint64).value
-                AddressIndex += 2
-            else:
-                Uint64 = None
-                res = StrDecimalToUint64S(Str[AddressIndex], True)
-                if isinstance(res, int):
-                    Status = res
+                    Pointer = EndPointer
+
+                    # AddressIndex = EndPointer
+                    # Uint64 won't exceed MAX_UINT16 if number of hexadecimal digit characters is no more than 4.
+                    assert (AddressIndex + 1 < sizeof(EFI_IPv6_ADDRESS))
+                    LocalAddress.Addr[AddressIndex] = c_uint8(c_uint16(Uint64).value >> 8).value
+                    LocalAddress.Addr[AddressIndex + 1] = c_uint8(Uint64).value
+                    AddressIndex += 2
                 else:
-                    Status = res[0]
-                    Uint64 = res[1]
-                    EndPointer = res[2]
-                if EFI_ERROR(Status) or EndPointer == AddressIndex or Uint64 > 128:
-                    raise Exception('Unsupported')
-                LocalPrefixLength = c_uint8(Uint64).value
-                AddressIndex = EndPointer
-                break
+                    Uint64 = None
+                    res = StrDecimalToUint64S(Str, Pointer)
+                    if isinstance(res, int):
+                        Status = res
+                    else:
+                        Status = res[0]
+                        Uint64 = res[1]
+                        EndPointer = res[2]
+                    if EFI_ERROR(Status) or EndPointer == Pointer or Uint64 > 128:
+                        raise Exception('Unsupported')
+                    LocalPrefixLength = c_uint8(Uint64).value
+                    Pointer = EndPointer
+                    break
 
         # Skip ':' or "/"
-        if Str[AddressIndex] == '/':
-            ExpectPrefix = True
-        elif Str[AddressIndex] == ':':
-            if AddressIndex == sizeof(EFI_IPv6_ADDRESS):
+        if Pointer < len(Str):
+            if Str[Pointer] == '/':
+                ExpectPrefix = True
+            elif Str[Pointer] == ':':
+                if AddressIndex == sizeof(EFI_IPv6_ADDRESS):
+                    break
+            else:
                 break
-        else:
-            break
-        AddressIndex += 1
+            Pointer += 1
 
-    if AddressIndex == sizeof(EFI_IPv6_ADDRESS) and CompressStart != sizeof(EFI_IPv6_ADDRESS) or (
+
+    if (AddressIndex == sizeof(EFI_IPv6_ADDRESS) and CompressStart != sizeof(EFI_IPv6_ADDRESS)) or (
             AddressIndex != sizeof(EFI_IPv6_ADDRESS) and CompressStart == sizeof(EFI_IPv6_ADDRESS)):
         raise Exception('Unsupported')
 
     # Full length of address shall not have compressing zeros.
     # Non-full length of address shall have compressing zeros.
     # Address = EFI_IPv6_ADDRESS() deafult value is zeros
+    for i in range(CompressStart):
+        Address.Addr[i] = LocalAddress.Addr[i]
+    if AddressIndex > CompressStart:
+        for j in range(AddressIndex-CompressStart):
+            Address.Addr[CompressStart+sizeof(EFI_IPv6_ADDRESS)-AddressIndex + j] = LocalAddress.Addr[CompressStart+j]
 
     if PrefixLength != None:
         PrefixLength = LocalPrefixLength
 
     if EndPointer != None:
-        EndPointer = AddressIndex
+        EndPointer = Pointer
 
-    return Address, EndPointer
+    return Address, EndPointer, PrefixLength
 
 
 def IS_NULL(Str: str):
     return Str == '\0'
+
+
+def NetworkProtocolFromText(Text: str) -> int:
+    if Text == 'UDP':
+        return RFC_1700_UDP_PROTOCOL
+    if Text == 'TCP':
+        return RFC_1700_TCP_PROTOCOL
+    return Strtoi(Text)
 
 
 def DevPathFromTextIPv4(TextDeviceNode: str) -> IPv4_DEVICE_PATH:
@@ -917,7 +951,7 @@ def DevPathFromTextIPv4(TextDeviceNode: str) -> IPv4_DEVICE_PATH:
     if isinstance(res, int):
         pass
     else:
-        IPv4.RemoteIpAddress = res[1]
+        IPv4.RemoteIpAddress = res[0]
     IPv4.Protocol = NetworkProtocolFromText(ProtocolStr)
     if TypeStr == 'Static':
         IPv4.StaticIpAddress = True
@@ -925,17 +959,13 @@ def DevPathFromTextIPv4(TextDeviceNode: str) -> IPv4_DEVICE_PATH:
         IPv4.StaticIpAddress = False
 
     res = StrToIpv4Address(LocalIPStr)
-    if isinstance(res, int):
-        pass
+    IPv4.LocalIpAddress = res[0]
+    if not GatewayIPStr and not SubnetMaskStr:
+        IPv4.GatewayIpAddress = StrToIpv4Address(GatewayIPStr)[0]
+        IPv4.SubnetMask = StrToIpv4Address(SubnetMaskStr)[0]
     else:
-        IPv4.LocalIpAddress = res[1]
-    if IS_NULL(GatewayIPStr) and IS_NULL(SubnetMaskStr):
-
-        IPv4.GatewayIpAddress = StrToIpv4Address(GatewayIPStr)
-        IPv4.SubnetMask = StrToIpv4Address(SubnetMaskStr)
-    else:
-        IPv4.GatewayIpAddress = StrToIpv4Address('0.0.0.0.')
-        IPv4.GatewayIpAddress = StrToIpv4Address('0.0.0.0.')
+        IPv4.GatewayIpAddress = StrToIpv4Address('0.0.0.0.')[0]
+        IPv4.GatewayIpAddress = StrToIpv4Address('0.0.0.0.')[0]
     IPv4.LocalPort = 0
     IPv4.RemotePort = 0
     return IPv4
@@ -959,10 +989,8 @@ def DevPathFromTextIPv6(TextDeviceNode: str) -> IPv6_DEVICE_PATH:
         IPv6.IpAddressOrigin = 1
     else:
         IPv6.IpAddressOrigin = 2
-    # StrToIpv6Address (LocalIPStr, NULL, &IPv6->LocalIpAddress, NULL);
     IPv6.LocalIpAddress = StrToIpv6Address(LocalIPStr)[0]
-    if IS_NULL(GatewayIPStr) == 0 and IS_NULL(PrefixLengthStr) == 0:
-        # StrToIpv6Address (GatewayIPStr, NULL, &IPv6->GatewayIpAddress, NULL);
+    if not GatewayIPStr and not PrefixLengthStr:
         IPv6.GatewayIpAddress = StrToIpv6Address(GatewayIPStr)[0]
         IPv6.PrefixLength = StrToIpv6Address(PrefixLengthStr)[0]
     else:
@@ -1468,13 +1496,11 @@ def DevPathFromTextVirtualCd(TextDeviceNode: str) -> MEDIA_RAM_DISK_DEVICE_PATH:
     return CreateMediaRamDiskDevicePath(TextDeviceNode, gEfiVirtualCdGuid)
 
 
-
 gEfiPersistentVirtualDiskGuid = GUID(0x5CEA02C9, 0x4D07, 0x69D3, (0x26, 0x9F, 0x44, 0x96, 0xFB, 0xE0, 0x96, 0xF9))
 
 
 def DevPathFromTextPersistentVirtualDisk(TextDeviceNode: str) -> MEDIA_RAM_DISK_DEVICE_PATH:
     return CreateMediaRamDiskDevicePath(TextDeviceNode, gEfiPersistentVirtualDiskGuid)
-
 
 
 gEfiPersistentVirtualCdGuid = GUID(0x08018188, 0x42CD, 0xBB48, (0x10, 0x0F, 0x53, 0x87, 0xD5, 0x3D, 0xED, 0x3D))
@@ -1520,12 +1546,26 @@ def DevPathFromTextSata(TextDeviceNode: str) -> SATA_DEVICE_PATH:
     Param3, TextDeviceNode = GetNextParamStr(TextDeviceNode)
     Sata.Header = CreateDeviceNode(MESSAGING_DEVICE_PATH, MSG_SATA_DP, sizeof(SATA_DEVICE_PATH))
     Sata.HBAPortNumber = Strtoi(Param1)
-    if Param2 == '\0':
+    if not Param2:
         Sata.PortMultiplierPortNumber = 0xFFFF
     else:
         Sata.PortMultiplierPortNumber = Strtoi(Param2)
     Sata.Lun = Strtoi(Param3)
     return Sata
+
+
+def DevPathFromTextFilePath(TextDeviceNode: str):
+    nums = len(TextDeviceNode)
+    File = Get_FILEPATH_DEVICE_PATH(nums)()
+    #
+    # Calculate the number of bytes occupied by PathName
+    #
+    File.Header = CreateDeviceNode(MEDIA_DEVICE_PATH, MEDIA_FILEPATH_DP,
+                                   sizeof(EFI_DEVICE_PATH_PROTOCOL) + nums * 2 + 2)
+    Enc = TextDeviceNode[0:len(TextDeviceNode)].encode()
+    for i in range(nums):
+        File.PathName[i] = Enc[i]
+    return File
 
 
 mUefiDevicePathLibDevPathFromTextList = [

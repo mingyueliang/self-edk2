@@ -116,7 +116,6 @@ BIT4 = 0x00000001
 
 SIZE_64KB = 0x00010000
 
-
 #
 # ERROR Code
 #
@@ -131,9 +130,10 @@ RETURN_UNSUPPORTED = 0x8000000000000000 | (3)
 
 
 def EFI_ERROR(A):
-    if (-2**63) < A < (2**63-1):
+    if (-2 ** 63) < A < (2 ** 63 - 1):
         return False
     return True
+
 
 #############Structures
 class EFI_GUID(Structure):
@@ -516,6 +516,7 @@ class EFI_IP_ADDRESS(Union):
         ('v6', EFI_IPv6_ADDRESS),
     ]
 
+
 def Get_DNS_DEVICE_PATH(nums: int):
     class DNS_DEVICE_PATH(Structure):
         _pack_ = 1
@@ -527,6 +528,7 @@ def Get_DNS_DEVICE_PATH(nums: int):
 
     return DNS_DEVICE_PATH
 
+
 def Get_URI_DEVICE_PATH(nums: int):
     class URI_DEVICE_PATH(Structure):
         _pack_ = 1
@@ -534,7 +536,9 @@ def Get_URI_DEVICE_PATH(nums: int):
             ('Header', EFI_DEVICE_PATH_PROTOCOL),
             ('Uri', ARRAY(c_char, nums)),
         ]
+
     return URI_DEVICE_PATH
+
 
 class BLUETOOTH_ADDRESS(Structure):
     _pack_ = 1
@@ -572,7 +576,7 @@ class BLUETOOTH_LE_DEVICE_PATH(Structure):
     _fields_ = [
         ('Header', EFI_DEVICE_PATH_PROTOCOL),
         ('Address', BLUETOOTH_LE_ADDRESS)
-        ]
+    ]
 
 
 class HARDDRIVE_DEVICE_PATH(Structure):
@@ -687,6 +691,7 @@ def Get_GENERIC_PATH(nums: int):
 
     return GENERIC_PATH
 
+
 def InternalIsDecimalDigitCharacter(char: str):
     return '0' <= char <= '9'
 
@@ -702,6 +707,7 @@ def InternalHexCharToUintn(char: str):
     if InternalIsDecimalDigitCharacter(char):
         return ord(char) - ord('0')
     return 10 + ord(char.upper()) - ord('A')
+
 
 def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int):
     """
@@ -771,13 +777,13 @@ def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int):
         return RETURN_UNSUPPORTED
 
     # Convert the hex string to bytes.
-    # for i in range(Length):
-    #     if i & BIT0 == 0:
-    #         Buffer[i // 2] = InternalHexCharToUintn(Str[i]) << 4
-    #     else:
-    #         pass
-
-    return Data
+    for index in range(Length):
+        if i & BIT0 == 0:
+            Buffer[index // 2] = InternalHexCharToUintn(Str[index]) << 4
+        else:
+            pass
+    #
+    # return Data
 
 
 ############Functions
@@ -789,155 +795,8 @@ def Strtoi(Str: str):
         return int(Str)
 
 
-def DevPathFromTextGenericPath(Type: int, TextDeviceNode: str) -> EFI_DEVICE_PATH_PROTOCOL:
-    SubtypeStr, TextDeviceNode = GetNextParamStr(TextDeviceNode)
-    DataStr, TextDeviceNode = GetNextParamStr(TextDeviceNode)
-
-    if not DataStr:
-        DataLength = 0
-    else:
-        DataLength = int(len(DataStr) / 2)
-
-    Node = CreateDeviceNode(Type, Strtoi(SubtypeStr), sizeof(EFI_DEVICE_PATH_PROTOCOL) + DataLength)
-    # StrHexToBytes(DataStr, DataLength * 2, Node + 1, DataLength)
-    return Node
-
-
-def SetDevicePathNodeLength(Node: EFI_DEVICE_PATH_PROTOCOL, Length: int) -> EFI_DEVICE_PATH_PROTOCOL:
-    assert (Length >= sizeof(EFI_DEVICE_PATH_PROTOCOL) and Length < SIZE_64KB)
-    Node.Length[0] = Length
-    return Node
-
-
 def EFI_PNP_ID(_Id):
     return PNP_EISA_ID_CONST | _Id << 16
-
-
-def NetworkProtocolFromText(Text: str) -> int:
-    if Text == 'UDP':
-        return RFC_1700_UDP_PROTOCOL
-    if Text == 'TCP':
-        return RFC_1700_TCP_PROTOCOL
-    return Strtoi(Text)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-gEfiVirtualDiskGuid = Guid(0x77AB535A, 0x45FC, 0x624B, (0x55, 0x60, 0xF7, 0xB2, 0x81, 0xD1, 0xF9, 0x6E))
-
-
-def DevPathFromTextVirtualDisk(TextDeviceNode: str) -> EFI_DEVICE_PATH_PROTOCOL:
-    RamDisk = MEDIA_RAM_DISK_DEVICE_PATH()
-    StartingAddrStr = GetNextParamStr(TextDeviceNode)
-    EndingAddrStr = GetNextParamStr(TextDeviceNode)
-    InstanceStr = GetNextParamStr(TextDeviceNode)
-    RamDisk.Header = CreateDeviceNode(MEDIA_DEVICE_PATH, MEDIA_RAM_DISK_DP, sizeof(MEDIA_RAM_DISK_DEVICE_PATH))
-    StartingAddrStr = Strtoi(StartingAddrStr)
-    RamDisk.StartingAddr = StartingAddrStr
-    EndingAddrStr = Strtoi(EndingAddrStr)
-    RamDisk.Instance = EndingAddrStr
-    RamDisk.TypeGuid = gEfiVirtualDiskGuid
-    return RamDisk
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def DevPathFromTextFilePath(TextDeviceNode: str):
-    nums = len(TextDeviceNode)
-    File = Get_FILEPATH_DEVICE_PATH(nums)()
-    #
-    # Calculate the number of bytes occupied by PathName
-    #
-    File.Header = CreateDeviceNode(MEDIA_DEVICE_PATH, MEDIA_FILEPATH_DP,
-                                   sizeof(EFI_DEVICE_PATH_PROTOCOL) + nums * 2 + 2)
-    Enc = TextDeviceNode[0:len(TextDeviceNode)].encode()
-    for i in range(nums):
-        File.PathName[i] = Enc[i]
-    return File
 
 
 def IS_SLASH(a):
