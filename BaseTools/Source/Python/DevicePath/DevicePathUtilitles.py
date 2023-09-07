@@ -11,6 +11,8 @@ def SplitStr(List, separator):
 
 
 def GetNextParamStr(List: str) -> tuple:
+    if not List:
+        return '0', None
     # The separator is comma
     return SplitStr(List, ',')
 
@@ -46,13 +48,17 @@ def DevPathFromTextGenericPath(Type: int, TextDeviceNode: str):
         DataLength = 0
     else:
         DataLength = int(len(DataStr) / 2)
-    Node = Get_GENERIC_PATH(DataLength)
-    Node.Header = CreateDeviceNode(Type, Strtoi(SubtypeStr), sizeof(EFI_DEVICE_PATH_PROTOCOL) + DataLength)
-    for Index in range(DataLength):
-        if Index & BIT0 == 0:
-            Node.Data[Index // 2] = InternalHexCharToUintn(DataStr[Index]) << 4
-        else:
-            Node.Data[Index // 2] |= InternalHexCharToUintn(DataStr[Index])
+    if DataLength == 0:
+        Node = CreateDeviceNode(Type, Strtoi(SubtypeStr), sizeof(EFI_DEVICE_PATH_PROTOCOL))
+    else:
+        Node = Get_GENERIC_PATH(DataLength)
+        Node.Header = CreateDeviceNode(Type, Strtoi(SubtypeStr), sizeof(EFI_DEVICE_PATH_PROTOCOL) + DataLength)
+
+        for Index in range(DataLength):
+            if Index & BIT0 == 0:
+                Node.Data[Index // 2] = InternalHexCharToUintn(DataStr[Index]) << 4
+            else:
+                Node.Data[Index // 2] |= InternalHexCharToUintn(DataStr[Index])
     return Node
 
 
@@ -1802,7 +1808,7 @@ def IsDevicePathValid(DevicePath: bytearray, MaxSize: int) -> bool:
         if Count >= MAX_DEVICE_PATH_NODE_COUNT:
             return False
 
-        DevicePath = NextDevicePathNode(DevicePath, Size)
+        DevicePath = NextDevicePathNode(DevicePath, NodeLength)
     #
     # Only return TRUE when the End Device Path node is valid.
     #
@@ -1819,9 +1825,9 @@ def UefiDevicePathLibGetDevicePathSize(DevicePath: bytearray) -> int:
     # Start = DevicePath
     Size = 0
     while not IsDevicePathEnd(DevicePath):
-        Size += DevicePathNodeLength(DevicePath)
-        DevicePath = NextDevicePathNode(DevicePath, Size)
-    # return DevicePath - Start + DevicePathNodeLength(DevicePath)
+        NodeLength = DevicePathNodeLength(DevicePath)
+        Size += NodeLength
+        DevicePath = NextDevicePathNode(DevicePath, NodeLength)
     return Size
 
 

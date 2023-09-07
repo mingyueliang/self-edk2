@@ -788,7 +788,7 @@ def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int, Buffer):
 ############Functions
 def Strtoi(Str: str):
     Str = Str.strip()
-    if ('0x' in Str) and ('0X' in str):
+    if Str.startswith('0x') or Str.startswith('0X'):
         return int(Str, 16)
     else:
         return int(Str)

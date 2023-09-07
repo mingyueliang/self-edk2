@@ -21,7 +21,8 @@ def UefiDevicePathLibConvertTextToDevicePath(TextDevicePath: str) -> bytearray:
 
     while DeviceNodeStr:
         DeviceNode = UefiDevicePathLibConvertTextToDeviceNode(DeviceNodeStr)
-        DevicePath = AppendDevicePathNode(DevicePath, bytearray(struct2stream(DeviceNode)))
+        DevicePath = AppendDevicePathNode(DevicePath,
+                                          bytearray(struct2stream(DeviceNode)))
 
         res = GetNextDeviceNodeStr(Str)
         if res == None:
@@ -37,7 +38,6 @@ def AppendDevicePathNode(DevicePath: bytearray,
     return UefiDevicePathLibAppendDevicePathNode(DevicePath, DevicePathNode)
 
 
-# TODO: Fix
 # Fills in all the fields of a device path node that is the end of an entire device path
 def SetDevicePathEndNode(Node):
     Node = mUefiDevicePathLibEndDevicePath
@@ -53,7 +53,8 @@ def GetNextDeviceNodeStr(DevicePath: str):
     # Skip the leading '/','(',')' and ','
     i = 0
     for i in range(len(Str)):
-        if not IS_SLASH(Str[i]) and not IS_SLASH(Str[i]) and not IS_LEFT_PARENTH(
+        if not IS_SLASH(Str[i]) and not IS_SLASH(
+                Str[i]) and not IS_LEFT_PARENTH(
                 Str[i]) and not IS_RIGHT_PARENTH(Str[i]):
             break
     ReturnStr = Str[i:]
@@ -61,7 +62,8 @@ def GetNextDeviceNodeStr(DevicePath: str):
     ParenthesesStack = 0
     i = 0
     for i in range(len(ReturnStr)):
-        if (IS_COMMA(ReturnStr[i]) or IS_SLASH(ReturnStr[i])) and ParenthesesStack == 0:
+        if (IS_COMMA(ReturnStr[i]) or IS_SLASH(
+                ReturnStr[i])) and ParenthesesStack == 0:
             break
         if IS_LEFT_PARENTH(ReturnStr[i]):
             ParenthesesStack = ParenthesesStack + 1
@@ -75,4 +77,3 @@ def GetNextDeviceNodeStr(DevicePath: str):
     DevicePath = Str[i + 1:]
 
     return ReturnStr, DevicePath
-
