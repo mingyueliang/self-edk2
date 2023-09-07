@@ -68,9 +68,6 @@ def DevPathFromTextHardwarePath(TextDeviceNode: str):
 
 def DevPathFromTextPci(TextDeviceNode: str) -> PCI_DEVICE_PATH:
     Pci = PCI_DEVICE_PATH()
-    # TextDeviceNodeList = TextDeviceNode.split(',')
-    # DeviceStr = TextDeviceNodeList[0]
-    # FunctionStr = TextDeviceNodeList[1]
     DeviceStr, TextDeviceNode = GetNextParamStr(TextDeviceNode)
     FunctionStr, TextDeviceNode = GetNextParamStr(TextDeviceNode)
     Pci.Header = CreateDeviceNode(HARDWARE_DEVICE_PATH, HW_PCI_DP, sizeof(PCI_DEVICE_PATH))
@@ -108,7 +105,6 @@ def ConvertFromTextVendor(TextDeviceNode: str, Type: int, SubType: int) -> VENDO
     Vendor = VENDOR_DEVICE_PATH()
     Vendor.Header = CreateDeviceNode(Type, SubType, sizeof(VENDOR_DEVICE_PATH) + Length)
     Vendor.Guid = ModifyGuidFormat(GuidStr)
-    # Vendor = DataStr.encode()
     return Vendor
 
 
@@ -157,7 +153,6 @@ def DevPathFromTextAcpi(TextDeviceNode: str) -> ACPI_HID_DEVICE_PATH:
 
 def ConvertFromTextAcpi(TextDeviceNode: str, PnPId: int) -> ACPI_HID_DEVICE_PATH:
     Acpi = ACPI_HID_DEVICE_PATH()
-    # UIDStr = TextDeviceNode.split(",")[0]
     UIDStr, TextDeviceNode = GetNextParamStr(TextDeviceNode)
     Acpi.Header = CreateDeviceNode(ACPI_DEVICE_PATH, ACPI_DP, sizeof(ACPI_HID_DEVICE_PATH))
     Acpi.HID = EFI_PNP_ID(PnPId)
@@ -442,7 +437,7 @@ def DevPathFromTextSAS(TextDeviceNode: str) -> SAS_DEVICE_PATH:
             Info = 0x2 | ((Uint16 - 1) << 8)
 
         if SASSATAStr == 'SATA':
-            Info = Info | BIT4
+            Info |= BIT4
         if LocationStr == 'External':
             Uint16 = 1
         elif LocationStr == 'Internal':
@@ -571,10 +566,10 @@ def DevPathFromTextMAC(TextDeviceNode: str) -> MAC_ADDR_DEVICE_PATH:
     MACDevPath.Header = CreateDeviceNode(MESSAGING_DEVICE_PATH, MSG_MAC_ADDR_DP, sizeof(MAC_ADDR_DEVICE_PATH))
     MACDevPath.IfType = Strtoi(IfTypeStr)
 
-    # Length = sizeof(EFI_MAC_ADDRESS)
-    # if MACDevPath.IfType == 0x01 or MACDevPath.IfType == 0x00:
-    #     Length = 6
-    MACDevPath.Addr = bytes.fromhex(AddressStr)
+    Length = sizeof(EFI_MAC_ADDRESS)
+    if MACDevPath.IfType == 0x01 or MACDevPath.IfType == 0x00:
+        Length = 6
+    MACDevPath.Addr = StrHexToBytes(AddressStr, Length * 2, Length, MACDevPath.Addr)
 
     return MACDevPath
 

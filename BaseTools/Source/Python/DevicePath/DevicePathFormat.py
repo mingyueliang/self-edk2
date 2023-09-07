@@ -709,7 +709,7 @@ def InternalHexCharToUintn(char: str):
     return 10 + ord(char.upper()) - ord('A')
 
 
-def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int):
+def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int, Buffer):
     """
       Convert a Null-terminated Unicode hexadecimal string to a byte array.
 
@@ -757,16 +757,16 @@ def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int):
 
     # 1. None of String shall be a null pointer.
     if not Str:
-        return RETURN_INVALID_PARAMETER
+        raise Exception("None of String shall be a None.")
     # 2. The length of String shall not be greater than RSIZE_MAX.
     if len(Str) > RSIZE_MAX:
-        return RETURN_INVALID_PARAMETER
+        raise Exception("The length of String shall not be greater than RSIZE_MAX.")
     # 3. Length shall not be odd.
     if Length & BIT0 != 0:
-        return RETURN_INVALID_PARAMETER
+        raise Exception("Length shall not be odd.")
 
     if MaxBufferSize >= Length / 2:
-        return EFI_BUFFER_TOO_SMALL
+        raise Exception("MaxBufferSize is less than (Length / 2)")
 
     Index = 0
     for Index in range(Length):
@@ -774,17 +774,16 @@ def StrHexToBytes(Str: str, Length: int, MaxBufferSize: int):
             break
 
     if (Index != Length):
-        return RETURN_UNSUPPORTED
+        raise Exception("String length mismatch")
 
     # Convert the hex string to bytes.
     for index in range(Length):
-        if i & BIT0 == 0:
+        if index & BIT0 == 0:
             Buffer[index // 2] = InternalHexCharToUintn(Str[index]) << 4
         else:
-            pass
-    #
-    # return Data
+            Buffer[index // 2] |= InternalHexCharToUintn(Str[index])
 
+    return Buffer
 
 ############Functions
 def Strtoi(Str: str):
