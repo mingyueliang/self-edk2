@@ -8,10 +8,7 @@ import ctypes
 import os.path
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from struct import *
 from ctypes import *
-from Common import *
 from FirmwareStorageFormat.Common import *
 
 END_DEVICE_PATH_TYPE = 0x7f

@@ -1,7 +1,6 @@
-from DevicePathFormat import *
-from DevicePathFromText import *
+from DevicePath.DevicePathFormat import *
 from FirmwareStorageFormat.Common import *
-from DevicePath import logger
+
 
 
 def SplitStr(List, separator):
@@ -769,7 +768,7 @@ def StrToIpv4Address(Str: str, PrefixLength=None, EndPointer=None):
         raise Exception('Invalid parameter: Str is empty')
     AddressIndex = 0
     Offset = 0
-    while AddressIndex < sizeof(EFI_IPv4_ADDRESS) + 1:
+    while AddressIndex < sizeof(EFI_IPv4_ADDRESS) + 1 and Offset < len(Str):
         if not InternalIsDecimalDigitCharacter(Str[Offset]):
             break
         Uint64 = None
@@ -795,10 +794,11 @@ def StrToIpv4Address(Str: str, PrefixLength=None, EndPointer=None):
             AddressIndex += 1
         # Check the '.' or '/', depending on the AddressIndex.
         if AddressIndex == sizeof(EFI_IPv4_ADDRESS):
-            if Offset <= len(Str) and Str[Offset] == '/':
-                Offset += 1
-            else:
-                break
+            if Offset < len(Str):
+                if Str[Offset] == '/':
+                    Offset += 1
+                else:
+                    break
         elif AddressIndex < sizeof(EFI_IPv4_ADDRESS):
             if Str[Offset] == '.':
                 Offset += 1

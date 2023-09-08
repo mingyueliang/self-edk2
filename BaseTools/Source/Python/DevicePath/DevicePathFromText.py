@@ -1,5 +1,5 @@
-from DevicePathFormat import *
-from DevicePathUtilitles import *
+from DevicePath.DevicePathFormat import *
+from DevicePath.DevicePathUtilitles import *
 
 
 # Convert text to the binary representation of a device path
