@@ -48,6 +48,7 @@ class TestVfrCompiler:
                 break
         return all_opcode_record_list
 
+    # Parse list
 
 if __name__ == '__main__':
     pytest.main(['-vs', 'test_Vfrcompiler.py'])
