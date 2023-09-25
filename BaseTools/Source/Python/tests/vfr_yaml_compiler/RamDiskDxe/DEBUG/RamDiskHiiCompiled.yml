@@ -1,0 +1,110 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+- RamDiskNVData.h
+
+formset:
+  guid:  '{0x2a46715f, 0x3581, 0x4a55, { 0x8e, 0x73, 0x2b, 0x76, 0x9a, 0xaa, 0x30, 0xc5}}'
+  help:  '0x0003'
+  title:  '0x0002'
+  classguid1: '{0x93039971, 0x8545, 0x4b04, { 0xb4, 0x5e, 0x32, 0xeb, 0x83, 0x26, 0x4, 0xe}}'
+  component:  
+  - form: 
+      formid:  4096
+      title:  '0x0004'
+      component:  
+      - oneof:
+          questionid:  8196
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0011'
+          help:  '0x0012'
+          opcodeflags:  0x10  # optional input
+          maximum: 1 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0x0 # Optional Input
+          component:  
+          - option:  
+              text: '0x0013'
+              flags: 16 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0x00
+          - option:  
+              text: '0x0014'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0x01
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - goto:
+          questionid:  1
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0008'
+          help:  '0x0009'
+          formid:  0x2000
+          question: 0x0001 # Optional Input
+      - goto:
+          questionid:  4097
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000A'
+          help:  '0x000B'
+          formid:  0x1000
+          question: 0x1001 # Optional Input
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - subtitle:
+          prompt: '0x0006'
+          flags:  0  # Optional Input
+      - label:
+          number: 0x1003  # Number
+      - label:
+          number: 0x1004  # Number
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x000C'
+          prompt:  '0x000D'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1002  # Optional Input, Question QuestionId
+  - form: 
+      formid:  8192
+      title:  '0x000E'
+      component:  
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - numeric:
+          questionid:  8193
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000F'
+          help:  '0x0010'
+          opcodeflags:  0x23  # optional input
+          maximum: 18446744073709551615 # Optional Input
+          minimum: 1 # Optional Input
+          step: 0 # Optional Input
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x0015'
+          prompt:  '0x0016'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x2002  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x0017'
+          prompt:  '0x0018'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x2003  # Optional Input, Question QuestionId

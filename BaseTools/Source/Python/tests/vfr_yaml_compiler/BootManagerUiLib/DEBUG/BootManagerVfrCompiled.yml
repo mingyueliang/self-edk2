@@ -1,0 +1,36 @@
+## DO NOT REMOVE -- YAML Mode
+formset:
+  guid:  '{0x847bc3fe, 0xb974, 0x446d, { 0x94, 0x49, 0x5a, 0xd5, 0x41, 0x2e, 0x99, 0x3b}}'
+  help:  '0x0003'
+  title:  '0x0002'
+  classguid1: '{0xe58809f8, 0xfbc1, 0x48e2, { 0x88, 0x3a, 0xa3, 0xf, 0xdc, 0x4b, 0x44, 0x1e}}'
+  component:  
+  - form: 
+      formid:  4096
+      title:  '0x0002'
+      component:  
+      - subtitle:
+          prompt: '0x0007'
+          flags:  0  # Optional Input
+      - subtitle:
+          prompt: '0x0005'
+          flags:  0  # Optional Input
+      - subtitle:
+          prompt: '0x0007'
+          flags:  0  # Optional Input
+      - text:
+          condition:  'suppressif TRUE'
+          help:  '0x0007'
+          prompt:  '0x0007'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1212  # Optional Input, Question QuestionId
+      - label:
+          number: 0x0  # Number
+      - label:
+          number: 0x1  # Number
+      - subtitle:
+          prompt: '0x0007'
+          flags:  0  # Optional Input
+      - subtitle:
+          prompt: '0x0004'
+          flags:  0  # Optional Input

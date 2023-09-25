@@ -1,0 +1,51 @@
+## DO NOT REMOVE -- YAML Mode
+formset:
+  guid:  '{0x9e0c30bc, 0x3f06, 0x4ba6, { 0x82, 0x88, 0x9, 0x17, 0x9b, 0x85, 0x5d, 0xbe}}'
+  help:  '0x000C'
+  title:  '0x0002'
+  classguid1: '{0x9e0c30bc, 0x3f06, 0x4ba6, { 0x82, 0x88, 0x9, 0x17, 0x9b, 0x85, 0x5d, 0xbe}}'
+  component:  
+  - form: 
+      formid:  4096
+      title:  '0x0002'
+      component:  
+      - banner:
+          title: '0x0003' # Optional Input
+          line: 1
+          align: 0
+      - banner:
+          title: '0x0004' # Optional Input
+          line: 2
+          align: 0
+      - banner:
+          title: '0x0005' # Optional Input
+          line: 2
+          align: 2
+      - banner:
+          title: '0x0007' # Optional Input
+          line: 3
+          align: 0
+      - banner:
+          title: '0x0006' # Optional Input
+          line: 3
+          align: 2
+      - banner:
+          title: '0x000E' # Optional Input
+          line: 4
+          align: 0
+      - banner:
+          title: '0x000F' # Optional Input
+          line: 4
+          align: 2
+      - banner:
+          title: '0x0010' # Optional Input
+          line: 5
+          align: 0
+      - banner:
+          title: '0x0011' # Optional Input
+          line: 5
+          align: 2
+      - label:
+          number: 0x1000  # Number
+      - label:
+          number: 0xffff  # Number

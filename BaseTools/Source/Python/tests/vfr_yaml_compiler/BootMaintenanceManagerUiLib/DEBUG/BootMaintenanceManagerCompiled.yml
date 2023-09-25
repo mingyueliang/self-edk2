@@ -1,0 +1,418 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+- FormGuid.h
+
+formset:
+  guid:  '{0x642237c7, 0x35d4, 0x472d, { 0x83, 0x65, 0x12, 0xe0, 0xcc, 0xf2, 0x7a, 0x22}}'
+  help:  '0x0007'
+  title:  '0x0005'
+  classguid1: '{0xe58809f8, 0xfbc1, 0x48e2, { 0x88, 0x3a, 0xa3, 0xf, 0xdc, 0x4b, 0x44, 0x1e}}'
+  component:  
+  - varstore:
+      guid: '{0x642237c7, 0x35d4, 0x472d, { 0x83, 0x65, 0x12, 0xe0, 0xcc, 0xf2, 0x7a, 0x22}}'
+      varid:  0x1000 # Optional Input
+      size:  3576 # Need to Compute
+      name:  BmmData
+  - form: 
+      formid:  4097
+      title:  '0x0005'
+      component:  
+      - text:
+          condition:  'suppressif TRUE'
+          help:  '0x0003'
+          prompt:  '0x0003'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1117  # Optional Input, Question QuestionId
+      - label:
+          number: 0xfffc  # Number
+      - label:
+          number: 0xfffd  # Number
+  - form: 
+      formid:  4116
+      title:  '0x0006'
+      component:  
+      - goto:
+          questionid:  1
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x005D'
+          help:  '0x005D'
+          formid:  0x1001
+          question: 0x0001 # Optional Input
+      - goto:
+          questionid:  4098
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000B'
+          help:  '0x000C'
+          formid:  0x1014
+          question: 0x1002 # Optional Input
+      - goto:
+          questionid:  4099
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000D'
+          help:  '0x000E'
+          formid:  0x1003
+          question: 0x1003 # Optional Input
+      - goto:
+          questionid:  4100
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000F'
+          help:  '0x000E'
+          formid:  0x1004
+          question: 0x1004 # Optional Input
+  - form: 
+      formid:  4117
+      title:  '0x0009'
+      component:  
+      - goto:
+          questionid:  2
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x005D'
+          help:  '0x005D'
+          formid:  0x1001
+          question: 0x0002 # Optional Input
+      - goto:
+          questionid:  4101
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0010'
+          help:  '0x0011'
+          formid:  0x1005
+          question: 0x1005 # Optional Input
+      - goto:
+          questionid:  4102
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0012'
+          help:  '0x0014'
+          formid:  0x1006
+          question: 0x1006 # Optional Input
+      - goto:
+          questionid:  4103
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0013'
+          help:  '0x0014'
+          formid:  0x1007
+          question: 0x1007 # Optional Input
+  - form: 
+      formid:  4098
+      title:  '0x0023'
+      component:  
+      - label:
+          number: 0x1002  # Number
+      - label:
+          number: 0xffff  # Number
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - string:
+          questionid:  4367
+          varstoreid:  4096  #  Optional Input
+          varname:  2662  # Question VarName
+          varoffset:  2662  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0029'
+          help:  '0x0002'
+          opcodeflags:  0x0  # optional input
+          minsize: 6
+          maxsize: 75
+      - string:
+          questionid:  4368
+          varstoreid:  4096  #  Optional Input
+          varname:  2862  # Question VarName
+          varoffset:  2862  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0060'
+          help:  '0x0002'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 120
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x002B'
+          prompt:  '0x002B'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1113  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x002C'
+          prompt:  '0x002C'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1114  # Optional Input, Question QuestionId
+  - form: 
+      formid:  4099
+      title:  '0x000D'
+      component:  
+      - label:
+          number: 0x1003  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4100
+      title:  '0x000F'
+      component:  
+      - label:
+          number: 0x1004  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4101
+      title:  '0x0010'
+      component:  
+      - goto:
+          questionid:  3
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x005D'
+          help:  '0x005D'
+          formid:  0x1001
+          question: 0x0003 # Optional Input
+      - goto:
+          questionid:  4110
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0021'
+          help:  '0x0021'
+          formid:  0x1015
+          question: 0x100e # Optional Input
+  - form: 
+      formid:  4110
+      title:  '0x0024'
+      component:  
+      - label:
+          number: 0x100e  # Number
+      - label:
+          number: 0xffff  # Number
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - string:
+          questionid:  4369
+          varstoreid:  4096  #  Optional Input
+          varname:  3116  # Question VarName
+          varoffset:  3116  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0029'
+          help:  '0x0002'
+          opcodeflags:  0x0  # optional input
+          minsize: 6
+          maxsize: 75
+      - string:
+          questionid:  4370
+          varstoreid:  4096  #  Optional Input
+          varname:  3316  # Question VarName
+          varoffset:  3316  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0060'
+          help:  '0x0002'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 120
+      - checkbox:
+          questionid:  4
+          varstoreid:  4096  #  Optional Input
+          varname:  3573  # Question VarName
+          varoffset:  3573  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x002A'
+          help:  '0x002A'
+          opcodeflags:  0x1  # optional input
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x002B'
+          prompt:  '0x002B'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1115  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x002C'
+          prompt:  '0x002C'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x1116  # Optional Input, Question QuestionId
+  - form: 
+      formid:  4102
+      title:  '0x0012'
+      component:  
+      - label:
+          number: 0x1006  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4103
+      title:  '0x0013'
+      component:  
+      - label:
+          number: 0x1007  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4104
+      title:  '0x0015'
+      component:  
+      - goto:
+          questionid:  5
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x005D'
+          help:  '0x005D'
+          formid:  0x1001
+          question: 0x0005 # Optional Input
+      - goto:
+          questionid:  4105
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0017'
+          help:  '0x0018'
+          formid:  0x1009
+          question: 0x1009 # Optional Input
+      - goto:
+          questionid:  4106
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0019'
+          help:  '0x001A'
+          formid:  0x100a
+          question: 0x100a # Optional Input
+      - goto:
+          questionid:  4107
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x001B'
+          help:  '0x001C'
+          formid:  0x100b
+          question: 0x100b # Optional Input
+      - goto:
+          questionid:  4129
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x001D'
+          help:  '0x001E'
+          formid:  0x1021
+          question: 0x1021 # Optional Input
+      - goto:
+          questionid:  4119
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x001F'
+          help:  '0x0020'
+          formid:  0x1017
+          question: 0x1017 # Optional Input
+  - form: 
+      formid:  4129
+      title:  '0x001D'
+      component:  
+      - label:
+          number: 0x1021  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4119
+      title:  '0x001F'
+      component:  
+      - label:
+          number: 0x1017  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4120
+      title:  '0x002E'
+      component:  
+      - label:
+          number: 0x1018  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4108
+      title:  '0x000B'
+      component:  
+      - label:
+          number: 0x100c  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4109
+      title:  '0x000B'
+      component:  
+      - label:
+          number: 0x100d  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4111
+      title:  '0x0022'
+      component:  
+      - label:
+          number: 0x100f  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4112
+      title:  '0x0024'
+      component:  
+      - label:
+          number: 0x1010  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4105
+      title:  '0x0017'
+      component:  
+      - label:
+          number: 0x1009  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4106
+      title:  '0x0019'
+      component:  
+      - label:
+          number: 0x100a  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4107
+      title:  '0x001B'
+      component:  
+      - label:
+          number: 0x100b  # Number
+      - label:
+          number: 0xffff  # Number

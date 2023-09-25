@@ -1,0 +1,537 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+- IScsiConfigNVDataStruc.h
+
+formset:
+  guid:  '{0x4b47d616, 0xa8d6, 0x4552, { 0x9d, 0x44, 0xcc, 0xad, 0x2e, 0xf, 0x4c, 0xf9}}'
+  help:  '0x0003'
+  title:  '0x0002'
+  component:  
+  - varstore:
+      guid: '{0x4b47d616, 0xa8d6, 0x4552, { 0x9d, 0x44, 0xcc, 0xad, 0x2e, 0xf, 0x4c, 0xf9}}'
+      varid:  0x6666 # Optional Input
+      size:  17724 # Need to Compute
+      name:  ISCSI_CONFIG_IFR_NVDATA
+  - form: 
+      formid:  1
+      title:  '0x0004'
+      component:  
+      - string:
+          questionid:  257
+          varstoreid:  26214  #  Optional Input
+          varname:  0  # Question VarName
+          varoffset:  0  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0006'
+          help:  '0x0007'
+          opcodeflags:  0x0  # optional input
+          minsize: 4
+          maxsize: 223
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - goto:
+          questionid:  270
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000E'
+          help:  '0x000E'
+          formid:  0x2
+          question: 0x010e # Optional Input
+      - label:
+          number: 0x9000  # Number
+      - label:
+          number: 0xffff  # Number
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - goto:
+          questionid:  278
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0010'
+          help:  '0x0011'
+          formid:  0x5
+          question: 0x0116 # Optional Input
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - goto:
+          questionid:  272
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0012'
+          help:  '0x0012'
+          formid:  0x4
+          question: 0x0110 # Optional Input
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+  - form: 
+      formid:  2
+      title:  '0x0005'
+      component:  
+      - label:
+          number: 0x3000  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  4
+      title:  '0x0012'
+      component:  
+      - label:
+          number: 0x4000  # Number
+      - label:
+          number: 0xffff  # Number
+      - text:
+          help:  '0x003B'
+          prompt:  '0x003B'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x0111  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x003C'
+          prompt:  '0x003C'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x0112  # Optional Input, Question QuestionId
+  - form: 
+      formid:  5
+      title:  '0x0010'
+      component:  
+      - label:
+          number: 0x5000  # Number
+      - label:
+          number: 0xffff  # Number
+      - text:
+          help:  '0x003B'
+          prompt:  '0x003B'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x0114  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x003C'
+          prompt:  '0x003C'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x0115  # Optional Input, Question QuestionId
+  - form: 
+      formid:  3
+      title:  '0x000F'
+      component:  
+      - string:
+          questionid:  1
+          varstoreid:  26214  #  Optional Input
+          varname:  448  # Question VarName
+          varoffset:  448  # Question VarOffset
+          questionflags:  1 # Optional Input
+          prompt:  '0x0008'
+          help:  '0x0009'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 12
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - oneof:
+          questionid:  2
+          varstoreid:  26214  #  Optional Input
+          varname:  472  # Question VarName
+          varoffset:  472  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0013'
+          help:  '0x0014'
+          opcodeflags:  0x10  # optional input
+          maximum: 2 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0x0 # Optional Input
+          component:  
+          - option:  
+              text: '0x0015'
+              flags: 16 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0
+          - option:  
+              text: '0x0016'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 1
+          - option:  
+              text: '0x0017'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 2
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - oneof:
+          questionid:  284
+          varstoreid:  26214  #  Optional Input
+          varname:  473  # Question VarName
+          varoffset:  473  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0018'
+          help:  '0x0019'
+          opcodeflags:  0x10  # optional input
+          maximum: 2 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0x0 # Optional Input
+          component:  
+          - option:  
+              text: '0x001A'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0
+          - option:  
+              text: '0x001B'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 1
+          - option:  
+              text: '0x001C'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 2
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - numeric:
+          questionid:  3
+          varstoreid:  26214  #  Optional Input
+          varname:  474  # Question VarName
+          varoffset:  474  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x000A'
+          help:  '0x000B'
+          opcodeflags:  0x10  # optional input
+          maximum: 16 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0 # Optional Input
+      - numeric:
+          questionid:  4
+          varstoreid:  26214  #  Optional Input
+          varname:  476  # Question VarName
+          varoffset:  476  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x000C'
+          help:  '0x000D'
+          opcodeflags:  0x11  # optional input
+          maximum: 20000 # Optional Input
+          minimum: 100 # Optional Input
+          step: 0 # Optional Input
+          component:  
+          - default:
+              defaultId: 0
+              type: 1
+              value: 1000
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - string:
+          questionid:  286
+          varstoreid:  26214  #  Optional Input
+          varname:  2874  # Question VarName
+          varoffset:  2874  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x003D'
+          help:  '0x003E'
+          opcodeflags:  0x0  # optional input
+          minsize: 6
+          maxsize: 12
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - checkbox:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2'
+          questionid:  258
+          varstoreid:  26214  #  Optional Input
+          varname:  478  # Question VarName
+          varoffset:  478  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x002C'
+          help:  '0x002C'
+          opcodeflags:  0x0  # optional input
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 1 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 | grayoutif ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x01'
+          questionid:  259
+          varstoreid:  26214  #  Optional Input
+          varname:  480  # Question VarName
+          varoffset:  480  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0021'
+          help:  '0x0024'
+          opcodeflags:  0x0  # optional input
+          minsize: 7
+          maxsize: 15
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 1 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 | grayoutif ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x01'
+          questionid:  260
+          varstoreid:  26214  #  Optional Input
+          varname:  512  # Question VarName
+          varoffset:  512  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0022'
+          help:  '0x0024'
+          opcodeflags:  0x0  # optional input
+          minsize: 7
+          maxsize: 15
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 1 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 | grayoutif ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x01'
+          questionid:  261
+          varstoreid:  26214  #  Optional Input
+          varname:  544  # Question VarName
+          varoffset:  544  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0023'
+          help:  '0x0024'
+          opcodeflags:  0x0  # optional input
+          minsize: 7
+          maxsize: 15
+      - subtitle:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2'
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - checkbox:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.InitiatorInfoFromDhcp == 0x00'
+          questionid:  5
+          varstoreid:  26214  #  Optional Input
+          varname:  479  # Question VarName
+          varoffset:  479  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x002D'
+          help:  '0x002D'
+          opcodeflags:  0x0  # optional input
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp == 0x01'
+          questionid:  268
+          varstoreid:  26214  #  Optional Input
+          varname:  576  # Question VarName
+          varoffset:  576  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0025'
+          help:  '0x0026'
+          opcodeflags:  0x0  # optional input
+          minsize: 4
+          maxsize: 223
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp == 0x01'
+          questionid:  262
+          varstoreid:  26214  #  Optional Input
+          varname:  1024  # Question VarName
+          varoffset:  1024  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0027'
+          help:  '0x0028'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 255
+      - numeric:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp == 0x01'
+          questionid:  6
+          varstoreid:  26214  #  Optional Input
+          varname:  1534  # Question VarName
+          varoffset:  1534  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0029'
+          help:  '0x0029'
+          opcodeflags:  0x11  # optional input
+          maximum: 65535 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0 # Optional Input
+      - string:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2 OR        ideqval ISCSI_CONFIG_IFR_NVDATA.TargetInfoFromDhcp == 0x01'
+          questionid:  269
+          varstoreid:  26214  #  Optional Input
+          varname:  1536  # Question VarName
+          varoffset:  1536  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x002A'
+          help:  '0x002B'
+          opcodeflags:  0x0  # optional input
+          minsize: 1
+          maxsize: 20
+      - subtitle:
+          condition:  'suppressif ideqval ISCSI_CONFIG_IFR_NVDATA.IpMode == 2'
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - oneof:
+          questionid:  285
+          varstoreid:  26214  #  Optional Input
+          varname:  1578  # Question VarName
+          varoffset:  1578  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x001D'
+          help:  '0x001E'
+          opcodeflags:  0x10  # optional input
+          maximum: 1 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0x0 # Optional Input
+          component:  
+          - option:  
+              text: '0x001F'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 1
+          - option:  
+              text: '0x0020'
+              flags: 16 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0
+      - oneof:
+          condition:  'suppressif NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == 1'
+          questionid:  7
+          varstoreid:  26214  #  Optional Input
+          varname:  1579  # Question VarName
+          varoffset:  1579  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x002E'
+          help:  '0x002F'
+          opcodeflags:  0x10  # optional input
+          maximum: 1 # Optional Input
+          minimum: 0 # Optional Input
+          step: 0x0 # Optional Input
+          component:  
+          - option:  
+              text: '0x0030'
+              flags: 0 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 0
+          - option:  
+              text: '0x0031'
+              flags: 16 # Optional Input
+              type: 0x0000 # Optional Input
+              value: 1
+      - string:
+          condition:  'suppressif NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == 1'
+          questionid:  263
+          varstoreid:  26214  #  Optional Input
+          varname:  1580  # Question VarName
+          varoffset:  1580  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0032'
+          help:  '0x0032'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 126
+      - string:
+          condition:  'suppressif NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == 1'
+          questionid:  264
+          varstoreid:  26214  #  Optional Input
+          varname:  1834  # Question VarName
+          varoffset:  1834  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0033'
+          help:  '0x0034'
+          opcodeflags:  0x0  # optional input
+          minsize: 12
+          maxsize: 16
+      - string:
+          condition:  'suppressif NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == 1 OR        NOT ideqval ISCSI_CONFIG_IFR_NVDATA.CHAPType == 1'
+          questionid:  265
+          varstoreid:  26214  #  Optional Input
+          varname:  1868  # Question VarName
+          varoffset:  1868  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0035'
+          help:  '0x0035'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 126
+      - string:
+          condition:  'suppressif NOT ideqval ISCSI_CONFIG_IFR_NVDATA.AuthenticationType == 1 OR        NOT ideqval ISCSI_CONFIG_IFR_NVDATA.CHAPType == 1'
+          questionid:  266
+          varstoreid:  26214  #  Optional Input
+          varname:  2122  # Question VarName
+          varoffset:  2122  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0036'
+          help:  '0x0034'
+          opcodeflags:  0x0  # optional input
+          minsize: 12
+          maxsize: 16
+      - string:
+          condition:  'suppressif TRUE'
+          questionid:  8
+          varstoreid:  26214  #  Optional Input
+          varname:  2900  # Question VarName
+          varoffset:  2900  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x003F'
+          help:  '0x003F'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 96
+      - string:
+          condition:  'suppressif TRUE'
+          questionid:  9
+          varstoreid:  26214  #  Optional Input
+          varname:  3092  # Question VarName
+          varoffset:  3092  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0043'
+          help:  '0x0043'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 96
+      - string:
+          condition:  'suppressif TRUE'
+          questionid:  10
+          varstoreid:  26214  #  Optional Input
+          varname:  3284  # Question VarName
+          varoffset:  3284  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0040'
+          help:  '0x0040'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 96
+      - string:
+          condition:  'suppressif TRUE'
+          questionid:  11
+          varstoreid:  26214  #  Optional Input
+          varname:  3476  # Question VarName
+          varoffset:  3476  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0041'
+          help:  '0x0041'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 96
+      - string:
+          condition:  'suppressif TRUE'
+          questionid:  12
+          varstoreid:  26214  #  Optional Input
+          varname:  3668  # Question VarName
+          varoffset:  3668  # Question VarOffset
+          questionflags:  1 # Optional Input
+          prompt:  '0x0042'
+          help:  '0x0042'
+          opcodeflags:  0x0  # optional input
+          minsize: 0
+          maxsize: 96
+      - label:
+          condition:  'suppressif TRUE'
+          number: 0x6000  # Number
+      - label:
+          condition:  'suppressif TRUE'
+          number: 0xffff  # Number
+      - subtitle:
+          prompt: '0x003A'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x0039'
+          prompt:  '0x0038'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x010f  # Optional Input, Question QuestionId
+      - goto:
+          questionid:  13
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  0 # Optional Input
+          prompt:  '0x0037'
+          help:  '0x0037'
+          formid:  0x1
+          question: 0x000d # Optional Input

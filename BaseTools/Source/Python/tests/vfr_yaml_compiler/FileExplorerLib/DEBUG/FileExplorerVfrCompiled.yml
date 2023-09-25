@@ -1,0 +1,74 @@
+## DO NOT REMOVE -- YAML Mode
+include:
+- FormGuid.h
+
+formset:
+  guid:  '{0xfe561596, 0xe6bf, 0x41a6, { 0x83, 0x76, 0xc7, 0x2b, 0x71, 0x98, 0x74, 0xd0}}'
+  help:  '0x0002'
+  title:  '0x0003'
+  classguid1: '{0xfe561596, 0xe6bf, 0x41a6, { 0x83, 0x76, 0xc7, 0x2b, 0x71, 0x98, 0x74, 0xd0}}'
+  component:  
+  - form: 
+      formid:  4096
+      title:  '0x0003'
+      component:  
+      - label:
+          number: 0x1000  # Number
+      - label:
+          number: 0xffff  # Number
+  - form: 
+      formid:  8192
+      title:  '0x0006'
+      component:  
+      - string:
+          questionid:  8193
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x0008'
+          help:  '0x0009'
+          opcodeflags:  0x0  # optional input
+          minsize: 2
+          maxsize: 20
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x000A'
+          prompt:  '0x000A'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x2002  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x000B'
+          prompt:  '0x000B'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x2003  # Optional Input, Question QuestionId
+  - form: 
+      formid:  12288
+      title:  '0x0007'
+      component:  
+      - string:
+          questionid:  12289
+          varstoreid:  0  #  Optional Input
+          varname:  65535  # Question VarName
+          varoffset:  65535  # Question VarOffset
+          questionflags:  4 # Optional Input
+          prompt:  '0x000E'
+          help:  '0x000F'
+          opcodeflags:  0x0  # optional input
+          minsize: 2
+          maxsize: 20
+      - subtitle:
+          prompt: '0x0002'
+          flags:  0  # Optional Input
+      - text:
+          help:  '0x0010'
+          prompt:  '0x0010'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x3002  # Optional Input, Question QuestionId
+      - text:
+          help:  '0x0011'
+          prompt:  '0x0011'
+          flags:  4  # Optional Input, Question Flags
+          key:  0x3003  # Optional Input, Question QuestionId
