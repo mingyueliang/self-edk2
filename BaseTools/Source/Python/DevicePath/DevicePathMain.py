@@ -7,9 +7,10 @@
 
 import argparse
 import logging
+import os
 import sys
-
-from DevicePathFromText import *
+# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from DevicePath.DevicePathFromText import *
 
 #
 # Utility version information
