@@ -40,7 +40,7 @@ mCrc = 0
 mOutputPos = 0
 mOutputMask = 0
 
-mLevel = [0]*(WNDSIZ + UINT8_MAX + 1)
+
 mCLen = [0]*NC
 mCCode = [0]*NC
 mTFreq = [0]*(2 * NT - 1)
@@ -52,7 +52,7 @@ mLeft = [0]*(2 * NC - 1)
 mRight = [0]*(2 * NC - 1)
 mLenCnt = [0] * 17
 mText = bytearray(WNDSIZ * 2 + MAXMATCH)
-mChildCount = [0]*(WNDSIZ + UINT8_MAX + 1)
+
 mBufSiz = 0
 mBuf = bytearray((16 * 1024)<<2)
 mMatchLen = 0
@@ -63,13 +63,17 @@ mN = 0
 mCFreq = [0]*(2 * NC - 1)
 mCrcTable = [0]*(UINT8_MAX + 1)
 mPFreq = [0]*(2 * NP - 1)
+
+# LZ77
 mPos = 0
 mMatchPos = 0
 mAvail = 0
-mPosition = [0]*(WNDSIZ + UINT8_MAX + 1)
-mParent = [0]*(WNDSIZ * 2)
-mNext = [0]*((MAX_HASH_VAL + 1) << 3)
-mPrev = [0]*(WNDSIZ * 2)
+mLevel = [0]*(WNDSIZ + UINT8_MAX + 1)
+mChildCount = [0]* (WNDSIZ + UINT8_MAX + 1)
+mPosition = [0]*((WNDSIZ + UINT8_MAX + 1) * 2)
+mParent = [0]*(WNDSIZ * 2 * 2)
+mNext = [0]*((MAX_HASH_VAL + 1) * 2)
+mPrev = [0]*(WNDSIZ * 2 * 2)
 mHeapSize = 0
 
 INIT_CRC = 0
@@ -189,22 +193,30 @@ def UPDATE_CRC(a):
 
 #Find child node given the parent node and the edge character
 def Child(q:int,c:int) ->int:
-    r = mNext[HASH(q,c)]
+    CurrentCPos = mNext[HASH(q,c)]
     mParent[NIL] = q
-    while mParent[r] != q:
-        r = mNext[r]
-    return r
+    i = 0
+    while mParent[CurrentCPos] != q:
+        if i > 255:
+            break
+        # with open('file1.txt', "a") as f:
+        #     f.write("%s %s %s %s\n" % (CurrentCPos, mParent[CurrentCPos], CurrentCPos, q))
+        CurrentCPos = mNext[CurrentCPos]
+
+        print(mParent[CurrentCPos], CurrentCPos, q)
+    return CurrentCPos
 
 
 #Create a new child for a given parent node.
-def MakeChild(q:int,c:int,r:int):
-    h = HASH(q, c)
+def MakeChild(q:int,c:int,pos:int):
+    h1 = HASH(q, c)
+    h = HASH(q, c) & 0x7fff
     t = mNext[h]
-    mNext[h] = r
-    mNext[r] = t
-    mPrev[t] = r
-    mPrev[r] = h
-    mParent[r] = q
+    mNext[h] = pos
+    mNext[pos] = t
+    mPrev[t] = pos
+    mPrev[pos] = h
+    mParent[pos] = q
     mChildCount[q] += 1
 
 
@@ -547,37 +559,30 @@ def SendBlock():
 def Output(c:int,p:int):
     global mOutputMask,mOutputPos,mBufSiz,mBuf
     CPos = 0
-    if mOutputMask >> 1 == 0:
+    mOutputMask >>= 1
+    if mOutputMask == 0:
         mOutputMask = 1 << (UINT8_BIT - 1)
         if mOutputPos >= mBufSiz - 3 * UINT8_BIT:
             SendBlock()
             mOutputPos = 0
         CPos = mOutputPos
         mOutputPos += 1
-        #mBuf[CPos] = 0
-        temp = 0
-        mBuf[CPos] = temp
-    #mBuf[mOutputPos] = c
+        mBuf[CPos] = 0
+
     mBuf[mOutputPos] = c & 0xff
     mOutputPos += 1
     mCFreq[c] += 1
     if (c >= (1 << UINT8_BIT)):
-        #mBuf[CPos] = mOutputMask | mBuf[CPos]
-        tempa =  mOutputMask | mBuf[CPos]
-        mBuf[CPos] = tempa
+        mBuf[CPos] |= mOutputMask
         
-        #mBuf[mOutputPos] = p >> UINT8_BIT
-        temp1 = p >> UINT8_BIT
-        mBuf[mOutputPos] = temp1 & 0xff
+        mBuf[mOutputPos] = (p >> UINT8_BIT) & 0xff
         mOutputPos += 1
         
-        #mBuf[mOutputPos] = p
-        temp2 = p
-        mBuf[mOutputPos] = temp2 & 0xff
+        mBuf[mOutputPos] = p & 0xff
         mOutputPos += 1
         c = 0
         while p:
-            p = p >> 1
+            p >>= 1
             c += 1
         mPFreq[c] += 1
 
@@ -587,6 +592,13 @@ def InsertNode():
     global mMatchLen,mMatchPos,mPos
     
     if mMatchLen >= 4:
+        #
+        # We have just got a long match, the target tree
+        # can be located by MatchPos + 1. Traverse the tree
+        # from bottom up to get to a proper starting point.
+        # The usage of PERC_FLAG ensures proper node deletion
+        # in DeleteNode() later.
+        #
         mMatchLen -= 1
         r = (mMatchPos + 1) | WNDSIZ
         q = mParent[r]
@@ -720,24 +732,8 @@ def GetNextMatch():
     mRemainder -= 1
     mPos += 1
     if mPos == WNDSIZ * 2:
-        # memmove(mText[0], mText[WNDSIZ], WNDSIZ + MAXMATCH)
-        mText[0:WNDSIZ + MAXMATCH] = mText[WNDSIZ:WNDSIZ+ WNDSIZ + MAXMATCH]
-        i = 0
-        n = WNDSIZ
-        Index = WNDSIZ + MAXMATCH
-        # mSrcAdd = 0
-        while mSrcAdd < mSrcUpperLimit and i < n:
-            mText[Index:Index+1] = mSrc[mSrcAdd:mSrcAdd+1]
-            mSrcAdd += 1
-            Index += 1
-            i += 1
-        n = i
-        mOrigSize += n
-        Index = WNDSIZ + MAXMATCH
-        while i - 1 >= 0:
-            UPDATE_CRC(mText[Index])
-            Index += 1
-            i -= 1
+        mText[0:WNDSIZ + MAXMATCH] = mText[WNDSIZ:WNDSIZ * 2 + MAXMATCH]
+        n = FreadCrc(WNDSIZ+MAXMATCH, WNDSIZ)
         mRemainder += n
         mPos = WNDSIZ
     DeleteNode()
@@ -751,16 +747,13 @@ def HufEncodeEnd():
     return
 
 
-def FreadCrc(src:bytes):
+def FreadCrc(start:int, size:int):
     global mOrigSize, mSrcAdd
     i = 0
-    n = WNDSIZ + MAXMATCH
-    Index = WNDSIZ
-
-    while mSrcAdd < mSrcUpperLimit and i < n:
-        mText[Index: Index+1] = mSrc[mSrcAdd: mSrcAdd+1]
+    while mSrcAdd < mSrcUpperLimit and i < size:
+        mText[start: start+1] = mSrc[mSrcAdd: mSrcAdd+1]
         mSrcAdd += 1
-        Index += 1
+        start += 1
         i += 1
     n = i
     mOrigSize += n
@@ -783,44 +776,34 @@ def Encode() -> int:
     
     HufEncodeStart()
     
-    #mRemainder = FreadCrc(&mText[WNDSIZ], WNDSIZ + MAXMATCH);
-    mRemainder = FreadCrc(mSrc)
-    # Read data to mText[WNDSIZ]
-    # i = 0
-    # n = WNDSIZ + MAXMATCH
-    # Index = WNDSIZ
-    #
-    # while mSrcAdd < mSrcUpperLimit and i < n:
-    #     mText[Index: Index+1] = mSrc[mSrcAdd: mSrcAdd+1]
-    #     mSrcAdd += 1
-    #     Index += 1
-    #     i += 1
-    # n = i
-    # mOrigSize += n
-    #
-    # # Update CRC table
-    # Index = WNDSIZ
-    # while i-1 >= 0:
-    #     UPDATE_CRC(mText[Index])
-    #     Index += 1
-    #     i -= 1
+    # mRemainder = FreadCrc(&mText[WNDSIZ], WNDSIZ + MAXMATCH);
+    mRemainder = FreadCrc(WNDSIZ, WNDSIZ+MAXMATCH)
 
     # Start compress data
+    # 遍历匹配链: 负责找到当前strstart的最长匹配
+    # 懒匹配： 负责在连续几个strstart的最长匹配中找到匹配串长度最长的那个作为最终的最长匹配
     mMatchLen = 0
     mPos = WNDSIZ
+    Text = mText[mPos:]
+    value1 = Text[0]
+    value2 = Text[1]
     InsertNode()
     if mMatchLen > mRemainder:
         mMatchLen = mRemainder
     while mRemainder > 0:
         LastMatchLen = mMatchLen
         LastMatchPos = mMatchPos
+        # Find a match
         GetNextMatch()
         if mMatchLen > mRemainder:
             mMatchLen = mRemainder
 
         if mMatchLen > LastMatchLen or LastMatchLen < THRESHOLD:
+            # Not enough benefits are gained by outputting a pointer,
+            # so just output the original character
             Output(mText[mPos - 1], 0)
         else:
+            # Outputting a pointer is beneficial enough, do it.
             Output(LastMatchLen + UINT8_MAX + 1 - THRESHOLD,(mPos - LastMatchPos - 2) & (WNDSIZ - 1))
             LastMatchLen -= 1
             while LastMatchLen > 0:
