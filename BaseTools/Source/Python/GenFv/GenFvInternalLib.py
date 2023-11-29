@@ -23,7 +23,7 @@ from Common.LongFilePathSupport import LongFilePath
 
 from GenFv.ParseInf import *
 from GenFv.common import CalculateChecksum16, CalculateChecksum8, \
-    GetReverseCode, ModCheckSum
+    GetReverseCode
 from GenFv.FvLib import *
 from Common.BasePeCoff import *
 

@@ -104,7 +104,7 @@ class FvLibrary(object):
                             "Invalid Fv Header signature.")
 
         # Verify FV header checksum
-        Checksum = CalculateChecksum16(struct2stream(self.FvHeader))
+        Checksum = CheckSum16(struct2stream(self.FvHeader))
         if Checksum != 0:
             EdkLogger.error(None, FORMAT_NOT_SUPPORTED,
                             "Invalid FV header checksum.")
@@ -239,5 +239,5 @@ def SearchSectionByType(FirstSectionOff, FfsBuffer, SectionType, StartIndex,
         SectionSize = CurrentCommonSection.SECTION_SIZE
         CurrentSectionOff += (SectionSize + 0x03) & (~ 3)
 
-    EdkLogger.warn(None, 0, "%s not found in this FFS file." % SectionType)
+    # EdkLogger.warn(None, 0, "%s not found in this FFS file." % SectionType)
     return

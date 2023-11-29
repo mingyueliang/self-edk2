@@ -1,19 +1,13 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from FirmwareStorageFormat.Common import *
+from FirmwareStorageFormat.FvHeader import *
 from Common import EdkLogger
 from Common.BuildToolError import *
 
 
-def ModCheckSum(Header) -> int:
-    # Fv Header Sums to 0.
-    Buffer = struct2stream(Header)
-    Size = len(Buffer) // 2
-    Sum = 0
-    for i in range(Size):
-        Sum += int(Buffer[i * 2: i * 2 + 2].hex(), 16)
-    if Sum & 0xffff:
-        Checksum = 0x10000 - (Sum - Header.Checksum) % 0x10000
-
-    return Checksum
 def GetReverseCode(Sum: int):
     twoRes = bin(Sum)[2:]
     if len(twoRes) < 16:
@@ -33,12 +27,19 @@ def CalculateChecksum16(Buffer: bytes):
     Sum = 0
     for i in range(Size):
         Sum =(Sum + int.from_bytes(Buffer[i*2:i*2+2], byteorder='little')) & 0xffff
-    # Add the high 16bits and the low 16bits
-    Sum  = (Sum >> 16) + (Sum & 0xffff)
-    # Get reverse code
-    CheckSum = GetReverseCode(Sum)
-    return CheckSum
+    # # Add the high 16bits and the low 16bits
+    # Sum  = (Sum >> 16) + (Sum & 0xffff)
+    # # Get reverse code
+    # CheckSum = GetReverseCode(Sum)
+    return 0x10000 - Sum
 
+def CheckSum16(Buffer: bytes):
+    Buffer += bytes(len(Buffer) % 2)
+    Size = len(Buffer) // 2
+    Sum = 0
+    for i in range(Size):
+        Sum =(Sum + int.from_bytes(Buffer[i*2:i*2+2], byteorder='little')) & 0xffff
+    return Sum
 
 def CalculateChecksum8(Buffer:bytes):
     Sum = CalculateSum8(Buffer)
@@ -95,3 +96,15 @@ def AddBytesToBuffer(Buffer: bytes, Size):
         Buffer += bytes(1)
 
     return Buffer
+
+if __name__ == '__main__':
+
+
+    with open('FVRECOCERY.FV', 'rb') as file:
+        Buff = file.read()
+    FvHeader = Refine_FV_Header(2).from_buffer_copy(Buff)
+    SavedCheckSum = FvHeader.Checksum
+    FvHeader.Checksum = 0
+
+    CheckSum = CalculateChecksum16(struct2stream(FvHeader))
+    pass

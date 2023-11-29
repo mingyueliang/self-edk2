@@ -13,7 +13,7 @@ import os.path
 import logging
 import sys
 
-from GenFvInternalLib import *
+from FvInternalLib import *
 from UefiCapsule import *
 
 from Common.LongFilePathSupport import LongFilePath
@@ -96,7 +96,7 @@ def MyOptionsParser():
     return Options
 
 
-def GenFvRoute():
+def GenFvApi():
     GenFvObject = GenerateFvFile()
     GenFvObject.ParseMyOptions()
     if GenFvObject.DumpCapsule:
@@ -106,7 +106,7 @@ def GenFvRoute():
         # Dump Capsule Image Header Information
         #
         CapsuleHeader = EFI_CAPSULE_HEADER.from_buffer_copy(
-            GenFvObject.InFileImage)
+            GenFvObject.InfFileImage)
 
         if GenFvObject.OutFileName == None:
             FpFile = sys.stdout
@@ -205,8 +205,7 @@ class GenerateFvFile(object):
 
         self.CapsuleFlag = False
         self.DumpCapsule = False
-        self.FpFile = None
-        self.CapsuleHeader = None
+
         self.LogLevel = 0
         self.TempNumber = 0
         self.Index = 0
@@ -502,8 +501,8 @@ class GenerateFvFile(object):
                                                  byteorder='little')
         self.FvHeader.Attributes = self.FvDataInfo.FvAttributes
         self.FvHeader.Revision = EFI_FVH_REVISION
-        self.FvHeader.ExtHeaderOffset = 0
-        self.FvHeader.Reserved = 0
+        # self.FvHeader.ExtHeaderOffset = 0
+        # self.FvHeader.Reserved = 0
 
         # Copy firmware block map
         for Index in range(MAX_NUMBER_OF_FV_BLOCKS):
@@ -557,7 +556,6 @@ class GenerateFvFile(object):
         self.VtfFileImageAddress = FvImageSize
         self.FvImagePointer += self.FvHeader.HeaderLength
         # Add PI FV extendsize header
-        # TODO: Here.....................
         if FvExtHeader != None:
             # Add FV Extended Header contents to the FV as a PAD file
             self.AddPadFile(4, 0, FvExtHeader, FvExtFileBuffer)
@@ -565,7 +563,6 @@ class GenerateFvFile(object):
                 self.FvImage)
             FvHeader.Checksum = 0
             FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
         # Add files to FV
         for Index in range(MAX_NUMBER_OF_FILES_IN_FV):
@@ -596,11 +593,8 @@ class GenerateFvFile(object):
             # Update CheckSum for FvHeader
             FvHeader = Refine_FV_Header(self.NumOfBlocks + 1).from_buffer_copy(
                 self.FvImage)
-            # FvHeader = EFI_FIRMWARE_VOLUME_HEADER.from_buffer_copy(FvImage)
             FvHeader.Checksum = 0
-            FvHeader.Checksum = CalculateChecksum16(
-                self.FvImage[:FvHeader.HeaderLength])
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
+            FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
 
         if mRiscV:
@@ -608,22 +602,16 @@ class GenerateFvFile(object):
             # Update CheckSum for FvHeader
             FvHeader = Refine_FV_Header(self.NumOfBlocks + 1).from_buffer_copy(
                 self.FvImage)
-            # FvHeader = EFI_FIRMWARE_VOLUME_HEADER.from_buffer_copy(FvImage)
             FvHeader.Checksum = 0
-            FvHeader.Checksum = CalculateChecksum16(
-                self.FvImage[:FvHeader.HeaderLength])
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
+            FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
         if mLoongArch:
             self.UpdateLoongArchResetVectorIfNeeded()
             # Update CheckSum for FvHeader
             FvHeader = Refine_FV_Header(self.NumOfBlocks + 1).from_buffer_copy(
                 self.FvImage)
-            # FvHeader = EFI_FIRMWARE_VOLUME_HEADER.from_buffer_copy(FvImage)
             FvHeader.Checksum = 0
-            FvHeader.Checksum = CalculateChecksum16(
-                self.FvImage[:FvHeader.HeaderLength])
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
+            FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
 
         # Update FV Alignment attribute to the largest alignment of all the FFS files in the FV
@@ -632,27 +620,23 @@ class GenerateFvFile(object):
         if ((
                 FvHeader.Attributes & EFI_FVB2_WEAK_ALIGNMENT) != EFI_FVB2_WEAK_ALIGNMENT) and \
             (((
-                  FvHeader.Attributes & EFI_FVB2_ALIGNMENT) >> 16)) < MaxFfsAlignment:
+                  FvHeader.Attributes & EFI_FVB2_ALIGNMENT) >> 16)) < self.MaxFfsAlignment:
             FvHeader.Attributes = (
-                (MaxFfsAlignment << 16) | (FvHeader.Attributes & 0xFFFF))
+                (self.MaxFfsAlignment << 16) | (FvHeader.Attributes & 0xFFFF))
             FvHeader.Checksum = 0
-            FvHeader.Checksum = CalculateChecksum16(
-                self.FvImage[:FvHeader.HeaderLength])
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
+            FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
 
         # If there are large FFS in FV, the file system GUID should set to system 3 GUID.
         FvHeader = Refine_FV_Header(self.NumOfBlocks + 1).from_buffer_copy(
             self.FvImage)
-        if mIsLargeFfs and FvHeader.FileSystemGuid.__cmp__(
+        if self.IsLargeFfs and FvHeader.FileSystemGuid.__cmp__(
             mEfiFirmwareFileSystem2Guid):
             FvHeader.FileSystemGuid = mEfiFirmwareFileSystem3Guid
             FvHeader.Checksum = 0
-            FvHeader.Checksum = CalculateChecksum16(
-                self.FvImage[:FvHeader.HeaderLength])
-            # FvHeader.Checksum = ModCheckSum(FvHeader)
+            FvHeader.Checksum = CalculateChecksum16(struct2stream(FvHeader))
             self.FvImage[:FvHeader.HeaderLength] = struct2stream(FvHeader)
-        WriteFile(self.OutFileName, self.FvImage)
+        self.WriteFile()
 
     def GenerateCapImage(self):
         """
@@ -691,15 +675,15 @@ class GenerateFvFile(object):
         # Allocate buffer for capsule image.
         CapBuffer = bytearray(CapSize)
         # create capsule header and get capsule body
-        self.CapsuleHeader = EFI_CAPSULE_HEADER()
-        self.CapsuleHeader.CapsuleGuid = self.CapDataInfo.CapGuid
-        self.CapsuleHeader.HeaderSize = self.CapDataInfo.HeaderSize
-        self.CapsuleHeader.Flags = self.CapDataInfo.Flags
-        self.CapsuleHeader.CapsuleImageSize = CapSize
+        CapsuleHeader = EFI_CAPSULE_HEADER()
+        CapsuleHeader.CapsuleGuid = self.CapDataInfo.CapGuid
+        CapsuleHeader.HeaderSize = self.CapDataInfo.HeaderSize
+        CapsuleHeader.Flags = self.CapDataInfo.Flags
+        CapsuleHeader.CapsuleImageSize = CapSize
         CapBuffer[:self.CapDataInfo.HeaderSize] = struct2stream(
-            self.CapsuleHeader)
+            CapsuleHeader)
 
-        CurCapPointer = self.CapsuleHeader.HeaderSize
+        CurCapPointer = CapsuleHeader.HeaderSize
         for file in self.CapDataInfo.CapFiles:
             if file:
                 with open(file, 'rb') as file:
@@ -1285,7 +1269,7 @@ class GenerateFvFile(object):
         SecCoreFileOff = FvLib.GetFileByType(EFI_FV_FILETYPE_SECURITY_CORE, 1)
         if not SecCoreFileOff:
             if Vtf0Detected:
-                return FvImage
+                return
             EdkLogger.error(None, 0,
                             "Could not find the SEC core file in the FV.")
         SecCoreFileBuffer = FvLib.FvBuffer[SecCoreFileOff:]
@@ -1306,7 +1290,7 @@ class GenerateFvFile(object):
 
         if Vtf0Detected and (
             MachineType == IMAGE_FILE_MACHINE_I386 or MachineType == IMAGE_FILE_MACHINE_X64):
-            return FvImage
+            return
         # Physical address is FV base + offset of PE32 + offset of the entry point
         SecCorePhysicalAddress = FvInfo.BaseAddress + Pe32SectionOff + SecHeaderSize + EntryPoint
         EdkLogger.info(
@@ -1375,6 +1359,8 @@ class GenerateFvFile(object):
 
         # Now Updare file checksum
         VtfFile = self.GetFfsHeader(self.FvImage[self.VtfFileImageAddress:])
+        if not VtfFile:
+            return
         SavedState = VtfFile.State
         VtfFile.IntegrityCheck.Checksum.File = 0
         VtfFile.State = 0
@@ -1620,7 +1606,7 @@ class GenerateFvFile(object):
 
     def GetFfsHeader(self, FfsBuffer: bytes):
         if len(FfsBuffer) == 0:
-            return 0
+            return
         FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsBuffer)
         if FfsHeader.Attributes & FFS_ATTRIB_LARGE_FILE:
             FfsHeader = EFI_FFS_FILE_HEADER2.from_buffer_copy(FfsBuffer)
@@ -2420,7 +2406,7 @@ class GenerateFvFile(object):
 
 def main():
     EdkLogger.Initialize()
-    GenFvRoute()
+    GenFvApi()
 
 
 if __name__ == '__main__':
