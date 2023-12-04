@@ -1,0 +1,1 @@
+GenSec -s EFI_SECTION_DXE_DEPEX -o z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\17BE8C65-84E8-4EBD-B2EE-3532B9FE502CFVBIN\17BE8C65-84E8-4EBD-B2EE-3532B9FE502CSEC1.dpx Z:\BirchStreamRp\FDBin\BirchStreamRpPkg\BKCBinaries\VMDVROC\VrocOnDemandDxe.depex

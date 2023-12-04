@@ -1,0 +1,279 @@
+ FaultTolerantWriteDxe
+
+ Timestamp is 65376f4b (Tue Oct 24 15:16:27 2023)
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00006dccH .text$mn                CODE
+ 0002:00000000 00001784H .rdata                  DATA
+ 0002:00001784 00000160H .rdata$zzzdbg           DATA
+ 0003:00000000 000000c8H .data                   DATA
+ 0003:000000c8 00000044H .bss                    DATA
+ 0004:00000000 0000005dH .edata                  DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_table     00000000     <absolute>
+ 0000:00000000       ___guard_iat_table         00000000     <absolute>
+ 0000:00000000       ___guard_iat_count         00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_count     00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0000:00000000       ___dynamic_value_reloc_table 00000000     <absolute>
+ 0001:00000000       __DriverUnloadHandler      00011000 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:00000040       __ModuleEntryPoint         00011040 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:00000150       _ProcessLibraryConstructorList 00011150 f   FaultTolerantWriteDxe:AutoGen.obj
+ 0001:00000350       _ProcessLibraryDestructorList 00011350 f   FaultTolerantWriteDxe:AutoGen.obj
+ 0001:00000360       _ProcessModuleEntryPointList 00011360 f   FaultTolerantWriteDxe:AutoGen.obj
+ 0001:00000380       _ProcessModuleUnloadList   00011380 f   FaultTolerantWriteDxe:AutoGen.obj
+ 0001:00000380       _UefiLibConstructor        00011380 f   UefiLib:UefiLib.obj
+ 0001:00000390       _FtwGetFvbByHandle         00011390 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:000003b0       _FtwGetSarProtocol         000113b0 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:000003e0       _GetFvbCountAndBuffer      000113e0 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:00000410       _FvbNotificationEvent      00011410 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:00000580       _FaultTolerantWriteInitialize 00011580 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:000005d0       _FtwCalculateCrc32         000115d0 f   FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0001:00000670       _IsErasedFlashBuffer       00011670 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:000006d0       _FtwEraseBlock             000116d0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00000700       _FtwEraseSpareBlock        00011700 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00000730       _IsWorkingBlock            00011730 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00000790       _GetFvbByAddress           00011790 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:000008c0       _IsBootBlock               000118c0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:000009a0       _FlushSpareBlockToBootBlock 000119a0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00000d10       _FlushSpareBlockToTargetBlock 00011d10 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00000ee0       _FlushSpareBlockToWorkingBlock 00011ee0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001210       _FtwUpdateFvState          00012210 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:000012d0       _FtwGetLastWriteHeader     000122d0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001350       _FtwGetLastWriteRecord     00012350 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001440       _IsFirstRecordOfWrites     00012440 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001480       _IsLastRecordOfWrites      00012480 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:000014d0       _GetPreviousRecordOfWrites 000124d0 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001530       _InitFtwDevice             00012530 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00001830       _FindFvbForFtw             00012830 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00002100       _InitFtwProtocol           00013100 f   FaultTolerantWriteDxe:FtwMisc.obj
+ 0001:00002a80       _InitializeLocalWorkSpaceHeader 00013a80 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002b10       _IsValidWorkSpace          00013b10 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002b70       _InitWorkSpaceHeader       00013b70 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002ba0       _ReadWorkSpaceData         00013ba0 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002c60       _WriteWorkSpaceData        00013c60 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002d20       _WorkSpaceRefresh          00013d20 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00002f30       _FtwReclaimWorkSpace       00013f30 f   FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0001:00003540       _FtwGetMaxBlockSize        00014540 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:000035b0       _FtwAllocate               000145b0 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00003840       _FtwWriteRecord            00014840 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00003ac0       _FtwWrite                  00014ac0 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00004360       _FtwRestart                00015360 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00004540       _FtwAbort                  00015540 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00004690       _FtwGetLastWrite           00015690 f   FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0001:00004920       _CpuDeadLoop               00015920 f   BaseLib:CpuDeadLoop.obj
+ 0001:00004940       _CpuPause                  00015940 f   BaseLib:CpuPause.obj
+ 0001:00004950       _InternalGetReportStatusCode 00015950 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:000049b0       _InternalReportStatusCode  000159b0 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004a40       _ReportStatusCode          00015a40 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004a60       _ReportStatusCodeEx        00015a60 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004c20       _ReportProgressCodeEnabled 00015c20 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004c50       _ReportErrorCodeEnabled    00015c50 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004c80       _ReportDebugCodeEnabled    00015c80 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00004cb0       _DebugPrint                00015cb0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00004ce0       _DebugPrintMarker          00015ce0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:000051c0       _DebugVPrint               000161c0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:000051e0       _DebugAssert               000161e0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00005440       _DebugAssertEnabled        00016440 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00005470       _DebugPrintEnabled         00016470 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:000054a0       _DebugCodeEnabled          000164a0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:000054d0       _DebugPrintLevelEnabled    000164d0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:000054f0       _SetMem                    000164f0 f   BaseMemoryLib:SetMemWrapper.obj
+ 0001:00005550       _CopyMem                   00016550 f   BaseMemoryLib:CopyMemWrapper.obj
+ 0001:000055f0       _CompareMem                000165f0 f   BaseMemoryLib:CompareMemWrapper.obj
+ 0001:000056e0       _CopyGuid                  000166e0 f   BaseMemoryLib:MemLibGuid.obj
+ 0001:00005730       _CompareGuid               00016730 f   BaseMemoryLib:MemLibGuid.obj
+ 0001:000057c0       _InternalMemSetMem         000167c0 f   BaseMemoryLib:SetMem.obj
+ 0001:000058e0       _InternalMemCopyMem        000168e0 f   BaseMemoryLib:CopyMem.obj
+ 0001:00005c50       _InternalMemZeroMem        00016c50 f   BaseMemoryLib:MemLibGeneric.obj
+ 0001:00005c70       _InternalMemCompareMem     00016c70 f   BaseMemoryLib:MemLibGeneric.obj
+ 0001:00005cc0       _InternalAllocatePool      00016cc0 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00005d00       _AllocatePool              00016d00 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00005d20       _InternalAllocateZeroPool  00016d20 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00005d60       _AllocateZeroPool          00016d60 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00005d80       _FreePool                  00016d80 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00005e10       _UefiBootServicesTableLibConstructor 00016e10 f   UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0001:00005ec0       _UefiRuntimeServicesTableLibConstructor 00016ec0 f   UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0001:00005f00       _EfiGetSystemConfigurationTable 00016f00 f   UefiLib:UefiLib.obj
+ 0001:00005fd0       _EfiCreateProtocolNotifyEvent 00016fd0 f   UefiLib:UefiLib.obj
+ 0001:00006190       _GetHobList                00017190 f   DxeHobLib:HobLib.obj
+ 0001:00006260       _HobLibConstructor         00017260 f   DxeHobLib:HobLib.obj
+ 0001:00006270       _GetNextHob                00017270 f   DxeHobLib:HobLib.obj
+ 0001:000062e0       _GetNextGuidHob            000172e0 f   DxeHobLib:HobLib.obj
+ 0001:00006340       _GetFirstGuidHob           00017340 f   DxeHobLib:HobLib.obj
+ 0001:00006360       _SafeUint64ToUintn         00017360 f   BaseSafeIntLib:SafeIntLib32.obj
+ 0001:00006380       _SafeUint64ToUint32        00017380 f   BaseSafeIntLib:SafeIntLib.obj
+ 0001:000064c0       _GetVariableFlashFtwSpareInfo 000174c0 f   BaseVariableFlashInfoLib:BaseVariableFlashInfoLib.obj
+ 0001:00006570       _GetVariableFlashFtwWorkingInfo 00017570 f   BaseVariableFlashInfoLib:BaseVariableFlashInfoLib.obj
+ 0001:00006620       _GetDebugPrintErrorLevel   00017620 f   BaseDebugPrintErrorLevelLib:BaseDebugPrintErrorLevelLib.obj
+ 0001:00006630       _AsciiStrLen               00017630 f   BaseLib:String.obj
+ 0001:000066d0       _AsciiStrSize              000176d0 f   BaseLib:String.obj
+ 0001:000066f0       _InternalSafeStringIsOverlap 000176f0 f   BaseLib:SafeString.obj
+ 0001:00006730       _InternalSafeStringNoAsciiStrOverlap 00017730 f   BaseLib:SafeString.obj
+ 0001:00006770       _AsciiStrnLenS             00017770 f   BaseLib:SafeString.obj
+ 0001:000067c0       _AsciiStrnCpyS             000177c0 f   BaseLib:SafeString.obj
+ 0001:00006b50       _CpuBreakpoint             00017b50 f   BaseLib:CpuBreakpoint.obj
+ 0001:00006b60       _ReadUnaligned64           00017b60 f   BaseLib:Unaligned.obj
+ 0001:00006ba0       _WriteUnaligned64          00017ba0 f   BaseLib:Unaligned.obj
+ 0001:00006bf0       _LShiftU64                 00017bf0 f   BaseLib:LShiftU64.obj
+ 0001:00006c40       _InternalMathLShiftU64     00017c40 f   BaseLib:LShiftU64.obj
+ 0001:00006c60       _GetPcdProtocol            00017c60 f   DxePcdLib:DxePcdLib.obj
+ 0001:00006d30       _LibPcdGet64               00017d30 f   DxePcdLib:DxePcdLib.obj
+ 0001:00006d50       _ZeroMem                   00017d50 f   BaseMemoryLib:ZeroMemWrapper.obj
+ 0002:00000000       ??_C@_0CB@DMEJJJHA@?6ASSERT_EFI_ERROR?5?$CIStatus?5?$DN?5?$CFr?$CJ?6@ 00018000     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000024       ??_C@_0CH@BBNBJKHK@?$CB?$CI?$CI?$CIINTN?$CJ?$CIRETURN_STATUS?$CJ?$CIStatus?$CJ@ 00018024     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000050       ??_C@_0GP@GHNHPFLI@c?3?2users?2mliang2x?2workspace?2ming@ 00018050     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:000000bf       __gDriverUnloadImageCount  000180bf     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000000c0       ??_C@_0BG@NKBOLOPP@FaultTolerantWriteDxe?$AA@ 000180c0     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000000d8       ??_C@_0LD@PBJNDDHJ@c?3?2users?2mliang2x?2workspace?2ming@ 000180d8     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:0000018b       __gPcd_FixedAtBuild_PcdReportStatusCodePropertyMask 0001818b     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:0000018c       __gPcd_FixedAtBuild_PcdFlashNvStorageFtwSpareSize 0001818c     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:00000190       __gPcd_FixedAtBuild_PcdDebugPrintErrorLevel 00018190     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:00000194       __gPcd_FixedAtBuild_PcdFixedDebugPrintErrorLevel 00018194     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:00000198       __gPcd_FixedAtBuild_PcdFlashNvStorageFtwWorkingSize 00018198     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:0000019c       __gPcd_FixedAtBuild_PcdFlashNvStorageFtwWorkingBase 0001819c     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:0000019c       __gPcd_FixedAtBuild_PcdFlashNvStorageFtwSpareBase 0001819c     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:0000019c       __gUefiDriverRevision      0001819c     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000001a0       __gPcd_FixedAtBuild_PcdFullFtwServiceEnable 000181a0     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000001a4       __gPcd_FixedAtBuild_PcdMaximumAsciiStringLength 000181a4     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000001a8       __gPcd_FixedAtBuild_PcdDebugPropertyMask 000181a8     FaultTolerantWriteDxe:AutoGen.obj
+ 0002:000001b0       ??_C@_0HN@PGPLAMAI@c?3?2users?2mliang2x?2workspace?2ming@ 000181b0     FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0002:00000230       ??_C@_0CC@PPHPCOCA@Ftw?3?5Get?5Top?5Swapped?5status?5?9?5?$CFr@ 00018230     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000254       ??_C@_0CA@NHHELBNK@Ftw?3?5FVB?5Write?5boot?5block?5?9?5?$CFr?6?$AA@ 00018254     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000274       ??_C@_0BL@MCCHPMGL@Ftw?3?5FVB?5Write?5block?5?9?5?$CFr?6?$AA@ 00018274     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000290       ??_C@_0GP@GKCMONNN@c?3?2users?2mliang2x?2workspace?2ming@ 00018290     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000300       ??_C@_0CP@IHIPCMPI@Ftw?3?5Workspace?5or?5Spare?5block?5do@ 00018300     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000330       ??_C@_0HA@COHEAACO@Ftw?3?5Work?5space?5address?5or?5lengt@ 00018330     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000003a0       ??_C@_0BC@FEDIJHFF@?$CI?$CIBOOLEAN?$CJ?$CI0?$DN?$DN1?$CJ?$CJ?$AA@ 000183a0     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000003b8       ??_C@_0GD@MDMKKAMJ@Ftw?3?5The?5work?5space?5range?5should@ 000183b8     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:0000041c       ??_C@_0CE@DKBGIJGC@Ftw?3?5Spare?5area?5is?5out?5of?5FV?5ran@ 0001841c     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000440       ??_C@_0DN@CLKJCBCE@Ftw?3?5Spare?5area?5address?5or?5lengt@ 00018440     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000480       ??_C@_0EO@MIBJJCAI@Ftw?3?5FtwWorkSpaceLba?5?9?50x?$CFlx?0?5Wo@ 00018480     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000004d0       ??_C@_0DF@BKMJCLGI@Ftw?3?5FtwSpareLba?5?5?5?5?5?9?50x?$CFlx?0?5Sp@ 000184d0     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000508       ??_C@_0DI@EJPLLFAE@Ftw?3?5NumberOfWorkBlock?5?9?50x?$CFx?0?5F@ 00018508     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000540       ??_C@_0DP@KMIEGNOM@Ftw?3?5WorkSpaceLbaInSpare?5?9?50x?$CFlx@ 00018540     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000580       ??_C@_0BA@FLKCGOGE@InitFtwProtocol?$AA@ 00018580     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000590       ??_C@_0DA@NKOMJLJP@Ftw?3?5Restart?5working?5block?5updat@ 00018590     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000005c0       ??_C@_0EA@JLKCNOBE@Ftw?3?5Both?5working?5and?5spare?5bloc@ 000185c0     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000600       ??_C@_0DL@FPJGMKBA@Ftw?3?5Init?4?4?5find?5first?5record?5no@ 00018600     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000640       ??_C@_0EA@JALAFPLH@Ftw?3?5Init?4?4?5find?5last?5record?5com@ 00018640     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:00000680       ??_C@_0CF@BMPMBOAA@Ftw?3?5Restart?5boot?5block?5update?5?9@ 00018680     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000006a8       ??_C@_0BO@NPMENBFC@Ftw?3?5Restart?5last?5write?5?9?5?$CFr?6?$AA@ 000186a8     FaultTolerantWriteDxe:FtwMisc.obj
+ 0002:000006c8       ??_C@_0CH@HODOJID@Ftw?3?5Work?5block?5header?5check?5mis@ 000186c8     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0002:000006f0       ??_C@_0CF@GGECFOHG@Ftw?3?5Remaining?5work?5space?5size?5?9@ 000186f0     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0002:00000718       ??_C@_0BN@NDGGPIIC@Ftw?3?5Reclaim?5workspace?5?9?5?$CFr?6?$AA@ 00018718     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0002:00000738       ??_C@_0CC@OBFDAACJ@Ftw?3?5start?5to?5reclaim?5work?5space@ 00018738     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0002:0000075c       ??_C@_0CG@NIFCGFAB@Ftw?3?5reclaim?5work?5space?5successf@ 0001875c     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0002:00000784       ??_C@_0BF@NDBIKIKC@CR?5has?5Bad?5Signature?$AA@ 00018784     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:000007a0       ??_C@_0HK@MIDHOGNH@c?3?2users?2mliang2x?2workspace?2ming@ 000187a0     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:0000081c       ??_C@_0DG@HKHGGMHG@Ftw?3?5Allocate?$CI?$CJ?5request?5exceed?5W@ 0001881c     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000854       ??_C@_0CK@LMNPAEFA@Ftw?3?5Allocate?$CI?$CJ?5success?0?5Caller?3@ 00018854     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000880       ??_C@_0CL@KIHMAOA@Ftw?3?5no?5allocates?5space?5for?5writ@ 00018880     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:000008ac       ??_C@_0DO@GPFALGHI@Ftw?3?5Allocate?5service?5should?5be?5@ 000188ac     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:000008ec       ??_C@_0CN@MGEOMEP@Ftw?3?5Write?$CI?$CJ?0?5Get?5FVB?5physical?5a@ 000188ec     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:0000091c       ??_C@_0CD@JKGLPJIJ@Ftw?3?5Write?$CI?$CJ?0?5Get?5block?5size?5?9?5?$CF@ 0001891c     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000940       ??_C@_0DL@JMLLFNBN@Ftw?3?5Write?$CI?$CJ?0?5BlockSize?5?9?50x?$CFx?0?5@ 00018940     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000980       ??_C@_0GD@NPCEELLE@?$CIBlockSize?5?$DN?$DN?5FtwDevice?9?$DOSpareBl@ 00018980     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:000009e4       ??_C@_0DN@CBIECKEC@Ftw?3?5Write?$CI?$CJ?5success?0?5?$CILba?3Offse@ 000189e4     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a24       ??_C@_0CF@GNNLMMJK@Ftw?3?5Restart?$CI?$CJ?0?5Get?5block?5size?5?9@ 00018a24     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a4c       ??_C@_0L@BBDACIHC@FtwRestart?$AA@ 00018a4c     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a58       ??_C@_0P@PGGBPJEP@?$CFa?$CI?$CJ?3?5success?6?$AA@ 00018a58     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a68       ??_C@_08ONDOPKGO@FtwAbort?$AA@ 00018a68     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a74       ??_C@_0BH@KMLLJMAP@Record?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018a74     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000a8c       ??_C@_0BA@DJHOFMOB@FtwGetLastWrite?$AA@ 00018a8c     FaultTolerantWriteDxe:FaultTolerantWrite.obj
+ 0002:00000aa0       ??_C@_0HK@HMGLMJLF@c?3?2users?2mliang2x?2workspace?2ming@ 00018aa0     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:00000b1c       ??_C@_0BH@LKMBFCBF@Format?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018b1c     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:00000b34       ??_C@_0DN@HHIHPHHB@?$CB?$CI?$CIExtendedData?5?$DN?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 00018b34     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:00000b74       ??_C@_0DN@BBBIFINB@?$CB?$CI?$CIExtendedData?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 00018b74     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:00000bb8       ??_C@_0HH@BLJPNBBN@c?3?2users?2mliang2x?2workspace?2ming@ 00018bb8     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000c30       ??_C@_0CP@EFCGCEBK@?$CICHAR8?5?$CK?$CJBaseListMarkerPointer?5?$DM@ 00018c30     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000c60       ??_C@_01OHGJGJJP@?$FL?$AA@ 00018c60     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000c64       ??_C@_02PBFOLPKM@?$FN?5?$AA@ 00018c64     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000c68       ??_C@_0BH@IACGKAP@Buffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018c68     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000c80       ??_C@_0CN@BPIPMCPJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00018c80     BaseMemoryLib:SetMemWrapper.obj
+ 0002:00000cb0       ??_C@_0GF@DIGHFKK@c?3?2users?2mliang2x?2workspace?2ming@ 00018cb0     BaseMemoryLib:SetMemWrapper.obj
+ 0002:00000d18       ??_C@_0DI@PHOMHDKH@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00018d18     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000d50       ??_C@_0GG@HCOKHFCC@c?3?2users?2mliang2x?2workspace?2ming@ 00018d50     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000db8       ??_C@_0DD@DCDOHCDJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 00018db8     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000dec       ??_C@_0CC@JOEHDGKB@DestinationBuffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50@ 00018dec     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:00000e10       ??_C@_0GJ@KBFGPLNL@c?3?2users?2mliang2x?2workspace?2ming@ 00018e10     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:00000e7c       ??_C@_0BN@MDMCNBCC@SourceBuffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018e7c     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:00000e9c       ??_C@_0CL@OBMFBPED@Length?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIUINTN?$CJB@ 00018e9c     BaseMemoryLib:MemLibGuid.obj
+ 0002:00000ec8       ??_C@_0HF@CMOOABOD@c?3?2users?2mliang2x?2workspace?2ming@ 00018ec8     UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0002:00000f40       ??_C@_0BN@COECPDCC@gImageHandle?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018f40     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000f60       ??_C@_0HL@PJCLKHFF@c?3?2users?2mliang2x?2workspace?2ming@ 00018f60     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000fdc       ??_C@_0BE@DGNHAHIL@gST?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018fdc     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000ff0       ??_C@_0BE@BDFJLGLN@gBS?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00018ff0     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00001004       ??_C@_0BE@OBDFIHND@gRT?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00019004     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:00001018       ??_C@_0IB@BKMJEAIL@c?3?2users?2mliang2x?2workspace?2ming@ 00019018     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:0000109c       ??_C@_0BK@PPOBBAMB@TableGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001909c     UefiLib:UefiLib.obj
+ 0002:000010b8       ??_C@_0FJ@INLOALCK@c?3?2users?2mliang2x?2workspace?2ming@ 000190b8     UefiLib:UefiLib.obj
+ 0002:00001114       ??_C@_0BG@JDKEGFNB@Table?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00019114     UefiLib:UefiLib.obj
+ 0002:0000112c       ??_C@_0BN@HHGHCLME@ProtocolGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001912c     UefiLib:UefiLib.obj
+ 0002:0000114c       ??_C@_0BP@DEIEJICI@NotifyFunction?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001914c     UefiLib:UefiLib.obj
+ 0002:0000116c       ??_C@_0BN@OMCJCPAI@Registration?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001916c     UefiLib:UefiLib.obj
+ 0002:00001190       ??_C@_0FK@HKEJAGLD@c?3?2users?2mliang2x?2workspace?2ming@ 00019190     DxeHobLib:HobLib.obj
+ 0002:000011ec       ??_C@_0BJ@OBFMLLDO@mHobList?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000191ec     DxeHobLib:HobLib.obj
+ 0002:00001208       ??_C@_0BJ@NOLLDKJB@HobStart?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00019208     DxeHobLib:HobLib.obj
+ 0002:00001224       ??_C@_0DC@HLELONJE@ERROR?3?5Found?5two?5variable?5flash?5@ 00019224     BaseVariableFlashInfoLib:BaseVariableFlashInfoLib.obj
+ 0002:00001258       ??_C@_0IB@GEGFCPPP@c?3?2users?2mliang2x?2workspace?2ming@ 00019258     BaseVariableFlashInfoLib:BaseVariableFlashInfoLib.obj
+ 0002:000012dc       ??_C@_0BH@MAAHKCPC@String?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000192dc     BaseLib:String.obj
+ 0002:000012f8       ??_C@_0FI@OLEMEIPM@c?3?2users?2mliang2x?2workspace?2ming@ 000192f8     BaseLib:String.obj
+ 0002:00001350       ??_C@_0DI@MDIKFADO@Length?5?$DM?5_gPcd_FixedAtBuild_PcdM@ 00019350     BaseLib:String.obj
+ 0002:00001388       ??_C@_0FM@NNNBGHEF@c?3?2users?2mliang2x?2workspace?2ming@ 00019388     BaseLib:SafeString.obj
+ 0002:000013e4       ??_C@_0BO@ECNIOIHG@?$CIDestination?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 000193e4     BaseLib:SafeString.obj
+ 0002:00001408       ??_C@_0EA@PDPDJJNN@?$CFa?$CI?$CFd?$CJ?5?$CFa?3?5SAFE_STRING_CONSTRAIN@ 00019408     BaseLib:SafeString.obj
+ 0002:00001448       ??_C@_0BJ@EAEEJIP@?$CISource?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 00019448     BaseLib:SafeString.obj
+ 0002:00001464       ??_C@_0P@PMIMLIHM@?$CIDestMax?5?$CB?$DN?50?$CJ?$AA@ 00019464     BaseLib:SafeString.obj
+ 0002:00001474       ??_C@_0BG@EEGIIOKH@?$CIDestMax?5?$DO?5SourceLen?$CJ?$AA@ 00019474     BaseLib:SafeString.obj
+ 0002:0000148c       ??_C@_0DO@LJFOOPII@?$CIDestMax?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_@ 0001948c     BaseLib:SafeString.obj
+ 0002:000014d0       ??_C@_0FL@CDANCHFO@InternalSafeStringNoAsciiStrOver@ 000194d0     BaseLib:SafeString.obj
+ 0002:0000152c       ??_C@_0O@DIHNCLLG@AsciiStrnCpyS?$AA@ 0001952c     BaseLib:SafeString.obj
+ 0002:0000153c       ??_C@_0DN@DLAADCJE@?$CILength?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_P@ 0001953c     BaseLib:SafeString.obj
+ 0002:00001580       ??_C@_0FL@JMOEMBON@c?3?2users?2mliang2x?2workspace?2ming@ 00019580     BaseLib:Unaligned.obj
+ 0002:000015dc       ??_C@_0L@MEMPDLHB@Count?5?$DM?564?$AA@ 000195dc     BaseLib:LShiftU64.obj
+ 0002:000015e8       ??_C@_0FL@NDMKHDG@c?3?2users?2mliang2x?2workspace?2ming@ 000195e8     BaseLib:LShiftU64.obj
+ 0002:00001648       ??_C@_0FN@FDDDDNN@c?3?2users?2mliang2x?2workspace?2ming@ 00019648     DxePcdLib:DxePcdLib.obj
+ 0002:000016a8       ??_C@_0BF@OOKDELHM@mPcd?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000196a8     DxePcdLib:DxePcdLib.obj
+ 0002:000016c0       ??_C@_0GG@MGEIBEOF@c?3?2users?2mliang2x?2workspace?2ming@ 000196c0     BaseMemoryLib:ZeroMemWrapper.obj
+ 0003:00000000       _gEfiLoadedImageProtocolGuid 0001a000     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000010       _gEfiStatusCodeSpecificDataGuid 0001a010     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000020       _gEfiStatusCodeRuntimeProtocolGuid 0001a020     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000030       _gEfiFirmwareVolumeBlockProtocolGuid 0001a030     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000040       _gPcdProtocolGuid          0001a040     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000050       _gVariableFlashInfoHobGuid 0001a050     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000060       _gEdkiiWorkingBlockSignatureGuid 0001a060     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000070       _gEfiCallerBaseName        0001a070     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000074       _gEfiFaultTolerantWriteProtocolGuid 0001a074     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000084       _gEfiStatusCodeDataTypeDebugGuid 0001a084     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:00000094       _gEfiHobListGuid           0001a094     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:000000a4       _gEfiSwapAddressRangeProtocolGuid 0001a0a4     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:000000b4       _gEfiCallerIdGuid          0001a0b4     FaultTolerantWriteDxe:AutoGen.obj
+ 0003:000000c8       _mFvbRegistration          0001a0c8     FaultTolerantWriteDxe:FaultTolerantWriteDxe.obj
+ 0003:000000d0       _mWorkingBlockHeader       0001a0d0     FaultTolerantWriteDxe:UpdateWorkingBlock.obj
+ 0003:000000f0       _mReportStatusCodeLibStatusCodeProtocol 0001a0f0     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0003:000000f4       _gST                       0001a0f4     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:000000f8       _gBS                       0001a0f8     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:000000fc       _gImageHandle              0001a0fc     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:00000100       _gRT                       0001a100     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0003:00000104       _mHobList                  0001a104     DxeHobLib:HobLib.obj
+ 0003:00000108       _mPcd                      0001a108     DxePcdLib:DxePcdLib.obj
+
+ entry point at        0001:00000040
+
+ Static symbols
+
+ 0000:ffff3000       .debug$S                   00010000     FaultTolerantWriteDxe.exp
+ 0001:000063d0       _GetVariableFlashInfoFromHob 000173d0 f   BaseVariableFlashInfoLib:BaseVariableFlashInfoLib.obj
+ 0004:00000000       .edata                     0001b000     FaultTolerantWriteDxe.exp
+ 0004:00000028       rgpv                       0001b028     FaultTolerantWriteDxe.exp
+ 0004:0000002c       rgszName                   0001b02c     FaultTolerantWriteDxe.exp
+ 0004:00000030       rgwOrd                     0001b030     FaultTolerantWriteDxe.exp
+ 0004:00000032       szName                     0001b032     FaultTolerantWriteDxe.exp
+ 0004:0000004c       $N00001                    0001b04c     FaultTolerantWriteDxe.exp

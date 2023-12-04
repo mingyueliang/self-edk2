@@ -1,0 +1,1 @@
+GenSec -s EFI_SECTION_RAW -o z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\5DFC34D8-F7EE-4A11-A17D-05B51451DC8BFVBIN\5DFC34D8-F7EE-4A11-A17D-05B51451DC8BSEC1.raw Z:\BirchStreamRp\FDBin\BirchStreamRpPkg\BKCBinaries\Tdx2\TDX_1.5.05.24_TDX.so.sigstruct

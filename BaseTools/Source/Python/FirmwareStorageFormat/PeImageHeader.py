@@ -13,8 +13,9 @@
 #
 
 from ctypes import *
+
 from FirmwareStorageFormat.Common import *
-from GenFv.common import GetReverseCode
+from GenFvs.common import GetReverseCode
 
 #
 # PE32+ Subsystem type for EFI images

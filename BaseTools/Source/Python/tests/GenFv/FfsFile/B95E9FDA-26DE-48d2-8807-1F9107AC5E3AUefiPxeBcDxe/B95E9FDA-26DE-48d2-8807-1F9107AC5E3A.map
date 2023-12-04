@@ -1,0 +1,593 @@
+ UefiPxeBcDxe
+
+ Timestamp is 65376f90 (Tue Oct 24 15:17:36 2023)
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 000159fdH .text$mn                CODE
+ 0002:00000000 00002844H .rdata                  DATA
+ 0002:00002844 00000138H .rdata$zzzdbg           DATA
+ 0003:00000000 00000424H .data                   DATA
+ 0003:00000424 0000001cH .bss                    DATA
+ 0004:00000000 00000054H .edata                  DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___guard_longjmp_count     00000000     <absolute>
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_table     00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000000       ___guard_iat_table         00000000     <absolute>
+ 0000:00000000       ___guard_iat_count         00000000     <absolute>
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0000:00000000       ___dynamic_value_reloc_table 00000000     <absolute>
+ 0001:00000000       __DriverUnloadHandler      00011000 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:00000040       __ModuleEntryPoint         00011040 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:00000150       _ProcessLibraryConstructorList 00011150 f   UefiPxeBcDxe:AutoGen.obj
+ 0001:00000350       _ProcessLibraryDestructorList 00011350 f   UefiPxeBcDxe:AutoGen.obj
+ 0001:00000350       _PxeBcUnregisterIp6Address 00011350 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:00000360       _ProcessModuleEntryPointList 00011360 f   UefiPxeBcDxe:AutoGen.obj
+ 0001:00000380       _ProcessModuleUnloadList   00011380 f   UefiPxeBcDxe:AutoGen.obj
+ 0001:000003a0       _PxeBcGetNicByIp4Children  000113a0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00000440       _PxeBcGetNicByIp6Children  00011440 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:000004c0       _PxeBcDestroyIp4Children   000114c0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00000840       _PxeBcDestroyIp6Children   00011840 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00000b70       _PxeBcCheckIpv6Support     00011b70 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00000d40       _PxeBcCreateIp4Children    00011d40 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:000012d0       _PxeBcCreateIp6Children    000122d0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:000018f0       _PxeBcDriverEntryPoint     000128f0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001990       _PxeBcSupported            00012990 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001a60       _PxeBcStart                00012a60 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001d00       _PxeBcStop                 00012d00 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001f70       _PxeBcIp4DriverBindingSupported 00012f70 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001f90       _PxeBcIp4DriverBindingStart 00012f90 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001fb0       _PxeBcIp4DriverBindingStop 00012fb0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001fd0       _PxeBcIp6DriverBindingSupported 00012fd0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00001ff0       _PxeBcIp6DriverBindingStart 00012ff0 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00002010       _PxeBcIp6DriverBindingStop 00013010 f   UefiPxeBcDxe:PxeBcDriver.obj
+ 0001:00002030       _EfiPxeBcStart             00013030 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00002510       _EfiPxeBcStop              00013510 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00002970       _EfiPxeBcDhcp              00013970 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00002b30       _EfiPxeBcDiscover          00013b30 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00003120       _EfiPxeBcMtftp             00014120 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00003560       _EfiPxeBcUdpWrite          00014560 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00003960       _EfiPxeBcUdpRead           00014960 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00004000       _EfiPxeBcSetIpFilter       00015000 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:000044d0       _EfiPxeBcArp               000154d0 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:000046f0       _EfiPxeBcSetParameters     000156f0 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:000048b0       _EfiPxeBcSetStationIP      000158b0 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00004b20       _EfiPxeBcSetPackets        00015b20 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00004cd0       _EfiPxeLoadFileCallback    00015cd0 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00004db0       _EfiPxeLoadFile            00015db0 f   UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00004fa0       _PxeBcComponentNameGetDriverName 00015fa0 f   UefiPxeBcDxe:ComponentName.obj
+ 0001:00004fe0       _PxeBcComponentNameGetControllerName 00015fe0 f   UefiPxeBcDxe:ComponentName.obj
+ 0001:000050a0       _PxeBcFlushStationIp       000160a0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005390       _PxeBcCommonNotify         00016390 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:000053a0       _PxeBcCheckArpCache        000163a0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005440       _PxeBcArpCacheUpdate       00016440 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005570       _PxeBcIcmpErrorDpcHandle   00016570 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005860       _PxeBcIcmpErrorUpdate      00016860 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005880       _PxeBcIcmp6ErrorDpcHandle  00016880 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005ac0       _PxeBcIcmp6ErrorUpdate     00016ac0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005ae0       _PxeBcConfigUdp4Write      00016ae0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005c00       _PxeBcConfigUdp6Write      00016c00 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005cc0       _PxeBcUdp4Write            00016cc0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00005e70       _PxeBcUdp6Write            00016e70 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006010       _PxeBcCheckByIpFilter      00017010 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006220       _PxeBcCheckByDestIp        00017220 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006300       _PxeBcCheckByDestPort      00017300 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006370       _PxeBcFilterBySrcIp        00017370 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006410       _PxeBcFilterBySrcPort      00017410 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006480       _PxeBcUdp4Read             00017480 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006660       _PxeBcUdp6Read             00017660 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006840       _PxeBcShowIp4Addr          00017840 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006890       _PxeBcShowIp6Addr          00017890 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006950       _PxeBcUintnToAscDecWithFormat 00017950 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:000069a0       _PxeBcUintnToAscDec        000179a0 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006a20       _PxeBcUniHexToUint8        00017a20 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006a90       _CalcElapsedTime           00017a90 f   UefiPxeBcDxe:PxeBcSupport.obj
+ 0001:00006bb0       _PxeBcDisplayBootItem      00017bb0 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00006c10       _PxeBcSelectBootPrompt     00017c10 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:000070b0       _PxeBcSelectBootMenu       000180b0 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007840       _PxeBcDhcp4BootInfo        00018840 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007ad0       _PxeBcDhcp6BootInfo        00018ad0 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007ce0       _PxeBcExtractDiscoverInfo  00018ce0 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008030       _PxeBcDiscoverBootServer   00019030 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008090       _PxeBcDiscoverBootFile     00019090 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008250       _PxeBcInstallCallback      00019250 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008380       _PxeBcUninstallCallback    00019380 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008410       _PxeBcReadBootFileList     00019410 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008480       _PxeBcLoadBootFile         00019480 f   UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:000087c0       _PxeBcParseDhcp4Options    000197c0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00008840       _PxeBcParseVendorOptions   00019840 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00008ba0       _PxeBcBuildDhcp4Options    00019ba0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:000091a0       _PxeBcSeedDhcp4Packet      0001a1a0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00009250       _PxeBcCacheDhcp4Packet     0001a250 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00009250       _PxeBcCacheDhcp6Packet     0001a250 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:000092a0       _PxeBcParseDhcp4Packet     0001a2a0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00009640       _PxeBcCopyDhcp4Ack         0001a640 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:000096c0       _PxeBcCopyProxyOffer       0001a6c0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:000097b0       _PxeBcRetryBinlOffer       0001a7b0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00009990       _PxeBcCacheDhcp4Offer      0001a990 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00009c30       _PxeBcSelectDhcp4Offer     0001ac30 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000a000       _PxeBcHandleDhcp4Offer     0001b000 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000a3e0       _PxeBcDhcp4CallBack        0001b3e0 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000a710       _PxeBcDhcp4Discover        0001b710 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000ac80       _PxeBcSetIp4Policy         0001bc80 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000ad00       _PxeBcDhcp4Dora            0001bd00 f   UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000b020       _PxeBcMtftp4CheckPacket    0001c020 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b020       _PxeBcMtftp6CheckPacket    0001c020 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b0e0       _PxeBcMtftp6GetFileSize    0001c0e0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b3e0       _PxeBcMtftp6ReadFile       0001c3e0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b570       _PxeBcMtftp6WriteFile      0001c570 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b6b0       _PxeBcMtftp6ReadDirectory  0001c6b0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000b840       _PxeBcMtftp4GetFileSize    0001c840 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000bb40       _PxeBcMtftp4ReadFile       0001cb40 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000bcd0       _PxeBcMtftp4WriteFile      0001ccd0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000be10       _PxeBcMtftp4ReadDirectory  0001ce10 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000bfa0       _PxeBcTftpGetFileSize      0001cfa0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000c000       _PxeBcTftpReadFile         0001d000 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000c070       _PxeBcTftpWriteFile        0001d070 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000c0e0       _PxeBcTftpReadDirectory    0001d0e0 f   UefiPxeBcDxe:PxeBcMtftp.obj
+ 0001:0000c150       _PxeBcParseDhcp6Options    0001d150 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000c1c0       _PxeBcBuildDhcp6Options    0001d1c0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000c520       _PxeBcDns6                 0001d520 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000c7b0       _PxeBcExtractBootFileUrl   0001d7b0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000cb50       _PxeBcExtractBootFileParam 0001db50 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000cc30       _PxeBcParseDhcp6Packet     0001dc30 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000ceb0       _PxeBcCopyDhcp6Ack         0001deb0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000cf30       _PxeBcCopyDhcp6Proxy       0001df30 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000d020       _PxeBcDhcp6SeekOption      0001e020 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000d0b0       _PxeBcRequestBootService   0001e0b0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000d420       _PxeBcRetryDhcp6Binl       0001e420 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000d650       _PxeBcCacheDhcp6Offer      0001e650 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000d850       _PxeBcSelectDhcp6Offer     0001e850 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000db90       _PxeBcHandleDhcp6Offer     0001eb90 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000df30       _PxeBcCheckRouteTable      0001ef30 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000e1b0       _PxeBcRegisterIp6Address   0001f1b0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000e4a0       _PxeBcSetIp6Policy         0001f4a0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000e530       _PxeBcSetIp6Address        0001f530 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000e620       _PxeBcDhcp6CallBack        0001f620 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000e9c0       _PxeBcDhcp6Discover        0001f9c0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000eca0       _PxeBcDhcp6Sarr            0001fca0 f   UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:0000f0b0       _IsDevicePathValid         000200b0 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f1e0       _DevicePathType            000201e0 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f220       _DevicePathSubType         00020220 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f260       _DevicePathNodeLength      00020260 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f2b0       _NextDevicePathNode        000202b0 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f300       _IsDevicePathEndType       00020300 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f360       _IsDevicePathEnd           00020360 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f3d0       _SetDevicePathNodeLength   000203d0 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f460       _SetDevicePathEndNode      00020460 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f4b0       _UefiDevicePathLibGetDevicePathSize 000204b0 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f520       _UefiDevicePathLibDuplicateDevicePath 00020520 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f560       _UefiDevicePathLibAppendDevicePath 00020560 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f660       _UefiDevicePathLibAppendDevicePathNode 00020660 f   UefiDevicePathLib:DevicePathUtilities.obj
+ 0001:0000f720       _GetDevicePathSize         00020720 f   UefiDevicePathLib:UefiDevicePathLib.obj
+ 0001:0000f740       _DuplicateDevicePath       00020740 f   UefiDevicePathLib:UefiDevicePathLib.obj
+ 0001:0000f760       _AppendDevicePath          00020760 f   UefiDevicePathLib:UefiDevicePathLib.obj
+ 0001:0000f780       _AppendDevicePathNode      00020780 f   UefiDevicePathLib:UefiDevicePathLib.obj
+ 0001:0000f7a0       _DevicePathFromHandle      000207a0 f   UefiDevicePathLib:DevicePathUtilitiesDxeSmm.obj
+ 0001:0000f7e0       _DebugPrint                000207e0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000f810       _DebugPrintMarker          00020810 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000fcf0       _DebugVPrint               00020cf0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000fd10       _DebugAssert               00020d10 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000ff70       _DebugAssertEnabled        00020f70 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000ffa0       _DebugPrintEnabled         00020fa0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000ffd0       _DebugPrintLevelEnabled    00020fd0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:0000fff0       _InternalAllocatePool      00020ff0 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010030       _AllocatePool              00021030 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010050       _InternalAllocateZeroPool  00021050 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010090       _AllocateZeroPool          00021090 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:000100b0       _InternalAllocateCopyPool  000210b0 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010150       _AllocateCopyPool          00021150 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010170       _FreePool                  00021170 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00010200       _CopyMem                   00021200 f   BaseMemoryLib:CopyMemWrapper.obj
+ 0001:000102a0       _ZeroMem                   000212a0 f   BaseMemoryLib:ZeroMemWrapper.obj
+ 0001:00010320       _CopyGuid                  00021320 f   BaseMemoryLib:MemLibGuid.obj
+ 0001:00010370       _CompareGuid               00021370 f   BaseMemoryLib:MemLibGuid.obj
+ 0001:00010400       _CompareMem                00021400 f   BaseMemoryLib:CompareMemWrapper.obj
+ 0001:000104f0       _SetMem                    000214f0 f   BaseMemoryLib:SetMemWrapper.obj
+ 0001:00010550       _InternalMemCopyMem        00021550 f   BaseMemoryLib:CopyMem.obj
+ 0001:000108c0       _InternalMemZeroMem        000218c0 f   BaseMemoryLib:MemLibGeneric.obj
+ 0001:000108e0       _InternalMemCompareMem     000218e0 f   BaseMemoryLib:MemLibGeneric.obj
+ 0001:00010930       _InternalMemSetMem         00021930 f   BaseMemoryLib:SetMem.obj
+ 0001:00010a50       _SwapBytes32               00021a50 f   BaseLib:SwapBytes32.obj
+ 0001:00010a90       _MultU64x32                00021a90 f   BaseLib:MultU64x32.obj
+ 0001:00010ac0       _InternalIsDecimalDigitCharacter 00021ac0 f   BaseLib:String.obj
+ 0001:00010af0       _InternalAsciiIsDecimalDigitCharacter 00021af0 f   BaseLib:String.obj
+ 0001:00010b20       _InternalAsciiIsHexaDecimalDigitCharacter 00021b20 f   BaseLib:String.obj
+ 0001:00010b70       _AsciiStrLen               00021b70 f   BaseLib:String.obj
+ 0001:00010c10       _AsciiStrSize              00021c10 f   BaseLib:String.obj
+ 0001:00010c30       _AsciiCharToUpper          00021c30 f   BaseLib:String.obj
+ 0001:00010c60       _InternalAsciiHexCharToUintn 00021c60 f   BaseLib:String.obj
+ 0001:00010ca0       _AsciiStrnCmp              00021ca0 f   BaseLib:String.obj
+ 0001:00010db0       _AsciiStrStr               00021db0 f   BaseLib:String.obj
+ 0001:00010eb0       _AsciiStrDecimalToUint64   00021eb0 f   BaseLib:String.obj
+ 0001:00010ee0       _AsciiStrHexToUintn        00021ee0 f   BaseLib:String.obj
+ 0001:00010f10       _DivU64x32                 00021f10 f   BaseLib:DivU64x32.obj
+ 0001:00010f60       _InternalSafeStringIsOverlap 00021f60 f   BaseLib:SafeString.obj
+ 0001:00010fa0       _InternalSafeStringNoAsciiStrOverlap 00021fa0 f   BaseLib:SafeString.obj
+ 0001:00010fe0       _StrnLenS                  00021fe0 f   BaseLib:SafeString.obj
+ 0001:00011060       _AsciiStrnLenS             00022060 f   BaseLib:SafeString.obj
+ 0001:000110b0       _AsciiStrCpyS              000220b0 f   BaseLib:SafeString.obj
+ 0001:00011390       _AsciiStrnCpyS             00022390 f   BaseLib:SafeString.obj
+ 0001:00011720       _AsciiStrDecimalToUintnS   00022720 f   BaseLib:SafeString.obj
+ 0001:00011950       _AsciiStrDecimalToUint64S  00022950 f   BaseLib:SafeString.obj
+ 0001:00011be0       _AsciiStrHexToUintnS       00022be0 f   BaseLib:SafeString.obj
+ 0001:00011e80       _AsciiStrToUnicodeStrS     00022e80 f   BaseLib:SafeString.obj
+ 0001:00012210       _AsciiStrToIpv6Address     00023210 f   BaseLib:SafeString.obj
+ 0001:000125a0       _SwapBytes16               000235a0 f   BaseLib:SwapBytes16.obj
+ 0001:000125c0       _ReadUnaligned16           000235c0 f   BaseLib:Unaligned.obj
+ 0001:00012600       _WriteUnaligned16          00023600 f   BaseLib:Unaligned.obj
+ 0001:00012640       _ReadUnaligned24           00023640 f   BaseLib:Unaligned.obj
+ 0001:00012680       _ReadUnaligned32           00023680 f   BaseLib:Unaligned.obj
+ 0001:000126c0       _ReadUnaligned64           000236c0 f   BaseLib:Unaligned.obj
+ 0001:00012700       _WriteUnaligned64          00023700 f   BaseLib:Unaligned.obj
+ 0001:00012750       _SwapBytes64               00023750 f   BaseLib:SwapBytes64.obj
+ 0001:00012770       _LShiftU64                 00023770 f   BaseLib:LShiftU64.obj
+ 0001:000127c0       _CpuBreakpoint             000237c0 f   BaseLib:CpuBreakpoint.obj
+ 0001:000127d0       _CpuDeadLoop               000237d0 f   BaseLib:CpuDeadLoop.obj
+ 0001:000127f0       _InternalMathMultU64x32    000237f0 f   BaseLib:MultU64x32.obj
+ 0001:00012810       _InternalMathDivU64x32     00023810 f   BaseLib:DivU64x32.obj
+ 0001:00012830       _InternalMathSwapBytes64   00023830 f   BaseLib:SwapBytes64.obj
+ 0001:00012840       _InternalMathLShiftU64     00023840 f   BaseLib:LShiftU64.obj
+ 0001:00012860       _CpuPause                  00023860 f   BaseLib:CpuPause.obj
+ 0001:00012870       _UefiBootServicesTableLibConstructor 00023870 f   UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0001:00012920       _UefiRuntimeServicesTableLibConstructor 00023920 f   UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0001:00012960       _UefiLibConstructor        00023960 f   UefiLib:UefiLib.obj
+ 0001:00012970       _CompareIso639LanguageCode 00023970 f   UefiLib:UefiLib.obj
+ 0001:000129b0       _EfiGetSystemConfigurationTable 000239b0 f   UefiLib:UefiLib.obj
+ 0001:00012a80       _IsLanguageSupported       00023a80 f   UefiLib:UefiLib.obj
+ 0001:00012b30       _LookupUnicodeString2      00023b30 f   UefiLib:UefiLib.obj
+ 0001:00012cb0       _EfiLibInstallDriverBindingComponentName2 00023cb0 f   UefiLib:UefiDriverModel.obj
+ 0001:00012e60       _EfiLibUninstallDriverBindingComponentName2 00023e60 f   UefiLib:UefiDriverModel.obj
+ 0001:00013000       _AsciiInternalPrint        00024000 f   UefiLib:UefiLibPrint.obj
+ 0001:00013100       _AsciiPrint                00024100 f   UefiLib:UefiLibPrint.obj
+ 0001:00013170       _NetGetMaskLength          00024170 f   DxeNetLib:DxeNetLib.obj
+ 0001:000131b0       _NetIp4IsUnicast           000241b0 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013260       _NetIp6IsValidUnicast      00024260 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013300       _NetIp6IsUnspecifiedAddr   00024300 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013370       _NetIp6IsNetEqual          00024370 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013490       _Ip6Swap128                00024490 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013550       _NetRandomInitSeed         00024550 f   DxeNetLib:DxeNetLib.obj
+ 0001:000135d0       _NetLibDefaultUnload       000245d0 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013770       _NetLibCreateServiceChild  00024770 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013800       _NetLibDestroyServiceChild 00024800 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013890       _NetLibGetSnpHandle        00024890 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013960       _NetLibDetectMedia         00024960 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013c30       _NetLibDetectMediaWaitTimeout 00024c30 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013f30       _NetLibGetNicHandle        00024f30 f   DxeNetLib:DxeNetLib.obj
+ 0001:00013ff0       _NetLibAsciiStrToIp6       00024ff0 f   DxeNetLib:DxeNetLib.obj
+ 0001:00014030       _NetLibGetSystemGuid       00025030 f   DxeNetLib:DxeNetLib.obj
+ 0001:00014190       _DpcLibConstructor         00025190 f   DxeDpcLib:DpcLib.obj
+ 0001:00014230       _QueueDpc                  00025230 f   DxeDpcLib:DpcLib.obj
+ 0001:00014260       _GetDebugPrintErrorLevel   00025260 f   BaseDebugPrintErrorLevelLib:BaseDebugPrintErrorLevelLib.obj
+ 0001:00014270       _InternalGetReportStatusCode 00025270 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:000142d0       _InternalReportStatusCode  000252d0 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00014360       _ReportStatusCodeEx        00025360 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00014520       _ReportProgressCodeEnabled 00025520 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00014550       _ReportErrorCodeEnabled    00025550 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00014580       _ReportDebugCodeEnabled    00025580 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:000145b0       _UnicodeVSPrintAsciiFormat 000255b0 f   BasePrintLib:PrintLib.obj
+ 0001:00014610       _BasePrintLibFillBuffer    00025610 f   BasePrintLib:PrintLibInternal.obj
+ 0001:00014670       _BasePrintLibValueToString 00025670 f   BasePrintLib:PrintLibInternal.obj
+ 0001:000146c0       _BasePrintLibSPrintMarker  000256c0 f   BasePrintLib:PrintLibInternal.obj
+ 0001:00015950       _BasePrintLibSPrint        00026950 f   BasePrintLib:PrintLibInternal.obj
+ 0001:00015990       _DivU64x32Remainder        00026990 f   BaseLib:DivU64x32Remainder.obj
+ 0001:000159e0       _InternalMathDivRemU64x32  000269e0 f   BaseLib:DivU64x32Remainder.obj
+ 0002:00000000       ??_C@_0CB@DMEJJJHA@?6ASSERT_EFI_ERROR?5?$CIStatus?5?$DN?5?$CFr?$CJ?6@ 00027000     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000024       ??_C@_0CH@BBNBJKHK@?$CB?$CI?$CI?$CIINTN?$CJ?$CIRETURN_STATUS?$CJ?$CIStatus?$CJ@ 00027024     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000050       ??_C@_0GP@GHNHPFLI@c?3?2users?2mliang2x?2workspace?2ming@ 00027050     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:000000bf       __gDriverUnloadImageCount  000270bf     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000bf       __gPcd_FixedAtBuild_PcdIPv4PXESupport 000270bf     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000bf       __gPcd_FixedAtBuild_PcdIPv6PXESupport 000270bf     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000c0       __gUefiDriverRevision      000270c0     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000c0       __gPcd_FixedAtBuild_PcdMaximumDevicePathNodeCount 000270c0     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000c4       ??_C@_0N@NPDJDCEN@UefiPxeBcDxe?$AA@ 000270c4     UefiPxeBcDxe:AutoGen.obj
+ 0002:000000d8       ??_C@_0JF@MOIOIKAO@c?3?2users?2mliang2x?2workspace?2ming@ 000270d8     UefiPxeBcDxe:AutoGen.obj
+ 0002:0000016d       __gPcd_FixedAtBuild_PcdReportStatusCodePropertyMask 0002716d     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000170       __gPcd_FixedAtBuild_PcdTftpBlockSize 00027170     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000178       __gPcd_FixedAtBuild_PcdDebugPrintErrorLevel 00027178     UefiPxeBcDxe:AutoGen.obj
+ 0002:0000017c       __gPcd_FixedAtBuild_PcdUefiLibMaxPrintBufferSize 0002717c     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000180       __gPcd_FixedAtBuild_PcdFixedDebugPrintErrorLevel 00027180     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000184       __gPcd_FixedAtBuild_PcdMaximumUnicodeStringLength 00027184     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000184       __gPcd_FixedAtBuild_PcdMaximumAsciiStringLength 00027184     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000188       __gPcd_FixedAtBuild_PcdDebugPropertyMask 00027188     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000190       __gPcd_FixedAtBuild_PcdPxeTftpWindowSize 00027190     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000198       __gPcd_FixedAtBuild_PcdComponentName2Disable 00027198     UefiPxeBcDxe:AutoGen.obj
+ 0002:00000198       __gPcd_FixedAtBuild_PcdComponentNameDisable 00027198     UefiPxeBcDxe:AutoGen.obj
+ 0002:0000019c       ??_C@_0BI@GONLCNCH@Private?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0002719c     UefiPxeBcDxe:PxeBcDriver.obj
+ 0002:000001b8       ??_C@_0FO@JDJECNAA@c?3?2users?2mliang2x?2workspace?2ming@ 000271b8     UefiPxeBcDxe:PxeBcDriver.obj
+ 0002:00000218       ??_C@_0DH@PHCKOAB@Private?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?5?$CG?$CG?5Ipv6S@ 00027218     UefiPxeBcDxe:PxeBcDriver.obj
+ 0002:00000250       ??_C@_0BF@NDBIKIKC@CR?5has?5Bad?5Signature?$AA@ 00027250     UefiPxeBcDxe:PxeBcDriver.obj
+ 0002:00000268       ??_C@_0FM@DCCJPNJO@c?3?2users?2mliang2x?2workspace?2ming@ 00027268     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:000002c4       ??_C@_0BH@PKOIACI@?6?$DO?$DOStart?5PXE?5over?5IPv6?$AA@ 000272c4     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:000002dc       ??_C@_0BH@DNJIOCKK@?6?$DO?$DOStart?5PXE?5over?5IPv4?$AA@ 000272dc     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:000002f4       ??_C@_0BP@ELOMBNON@NewCreatedInfo?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000272f4     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:00000314       ??_C@_0BB@KEMLAILA@?$CBMode?9?$DOUsingIpv6?$AA@ 00027314     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:00000328       ??_C@_0BH@MEIMEFKP@Udp6Rx?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027328     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:00000340       ??_C@_0BH@OECDDCD@Udp4Rx?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027340     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:00000358       ??_C@_09NEMLDBHM@Index?5?$DM?58?$AA@ 00027358     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:00000364       ??_C@_0DI@DIKGJEHI@PXE?3?5Failed?5to?5read?5system?5GUID?5@ 00027364     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:0000039c       ??_C@_01LFCBOECM@?4?$AA@   0002739c     UefiPxeBcDxe:PxeBcImpl.obj
+ 0002:000003a0       ??_C@_03LKLGDMJI@eng?$AA@  000273a0     UefiPxeBcDxe:ComponentName.obj
+ 0002:000003a4       ??_C@_02LFNMGJAP@en?$AA@   000273a4     UefiPxeBcDxe:ComponentName.obj
+ 0002:000003a8       ??_C@_06DALJLGPG@eng?$DLen?$AA@ 000273a8     UefiPxeBcDxe:ComponentName.obj
+ 0002:000003b0       ??_C@_1DE@DLEHGBLE@?$AAU?$AAE?$AAF?$AAI?$AA?5?$AAP?$AAX?$AAE?$AA?5?$AAB?$AAa?$AAs?$AAe?$AA?5?$AAC?$AAo?$AAd?$AAe?$AA?5?$AAD?$AAr?$AAi?$AAv?$AAe?$AAr?$AA?$AA@ 000273b0     UefiPxeBcDxe:ComponentName.obj
+ 0002:000003e4       ??_C@_1BO@MKJHNEPA@?$AAP?$AAX?$AAE?$AA?5?$AAC?$AAo?$AAn?$AAt?$AAr?$AAo?$AAl?$AAl?$AAe?$AAr?$AA?$AA@ 000273e4     UefiPxeBcDxe:ComponentName.obj
+ 0002:00000408       ??_C@_0FP@JCBNJGBI@c?3?2users?2mliang2x?2workspace?2ming@ 00027408     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:00000468       ??_C@_0CB@DGLANILO@RxData?9?$DOHeader?9?$DOProtocol?5?$DN?$DN?50x01@ 00027468     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:0000048c       ??_C@_0BA@CIJKELOB@Mode?9?$DOUsingIpv6?$AA@ 0002748c     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:0000049c       ??_C@_0CB@DIDAIMEI@RxData?9?$DOHeader?9?$DONextHeader?5?$DN?$DN?558@ 0002749c     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:000004c0       ??_C@_02DPKJAMEF@?$CFd?$AA@ 000274c0     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:000004c4       ??_C@_02NJNOFBBI@?$CFx?$AA@ 000274c4     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:000004c8       ??_C@_01GBGANLPD@0?$AA@    000274c8     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:000004cc       ??_C@_01JLIPDDHJ@?3?$AA@   000274cc     UefiPxeBcDxe:PxeBcSupport.obj
+ 0002:000004d0       ??_C@_04HBMEJGJK@?$CFa?5?6?$AA@ 000274d0     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000004d8       ??_C@_0FM@KPLHHEM@c?3?2users?2mliang2x?2workspace?2ming@ 000274d8     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000534       ??_C@_05LKLPEAOK@?$CI?$CFd?$CJ?5?$AA@ 00027534     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000540       ??_C@_0EK@JNJGHDHI@OfferType?5?$DN?$DN?5PxeOfferTypeProxyPx@ 00027540     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:0000058c       ??_C@_0BJ@EBFNAMMK@MenuItem?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0002758c     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000005a8       ??_C@_0BN@JLELCFCL@MenuArray?$FL0?$FN?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000275a8     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000005c8       ??_C@_0CB@HHEMAIIO@MenuArray?$FLIndex?$FN?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ@ 000275c8     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000005ec       ??_C@_0M@CKKKMFOF@Select?5?$DM?524?$AA@ 000275ec     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000005f8       ??_C@_0CC@JFDIFDKO@MenuArray?$FLSelect?$FN?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50@ 000275f8     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:0000061c       ??_C@_03LFOMKALF@?$CFa?$AN?$AA@ 0002761c     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000620       ??_C@_0BA@CDBOHDGK@LastSelect?5?$DM?524?$AA@ 00027620     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000630       ??_C@_0CG@OEMKFGJO@MenuArray?$FLLastSelect?$FN?5?$CB?$DN?5?$CI?$CIvoid?5@ 00027630     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000658       ??_C@_0BJ@FHIDIOID@?6?5?5Server?5IP?5address?5is?5?$AA@ 00027658     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000674       ??_C@_0BG@KFMELNLO@?6?5?5NBP?5filename?5is?5?$CFa?$AA@ 00027674     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:0000068c       ??_C@_0BM@NIMIGHBL@?6?5?5NBP?5filesize?5is?5?$CFd?5Bytes?$AA@ 0002768c     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000006a8       ??_C@_0BL@BBLPMEEF@?6?5Downloading?5NBP?5file?4?4?4?6?$AA@ 000276a8     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000006c4       ??_C@_0CG@DNODKIIF@?6?5?5NBP?5file?5downloaded?5successfu@ 000276c4     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000006ec       ??_C@_0DN@EFPOLNGH@?6?5?5PXE?9E05?3?5Buffer?5size?5is?5small@ 000276ec     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:0000072c       ??_C@_0CD@IHNNKJHF@?6?5?5PXE?9E07?3?5Network?5device?5error@ 0002772c     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000750       ??_C@_0CN@MLKENCCC@?6?5?5PXE?9E09?3?5Could?5not?5allocate?5I@ 00027750     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000780       ??_C@_0DC@POOEDFOK@?6?5?5PXE?9E12?3?5Could?5not?5detect?5net@ 00027780     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000007b4       ??_C@_0CG@CKKIKGIH@?6?5?5PXE?9E16?3?5No?5valid?5offer?5recei@ 000277b4     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000007dc       ??_C@_0CG@MEDHJNOP@?6?5?5PXE?9E18?3?5Server?5response?5time@ 000277dc     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000804       ??_C@_0CE@PGADCLCN@?6?5?5PXE?9E21?3?5Remote?5boot?5cancelle@ 00027804     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000828       ??_C@_0DF@IGIOEDID@?6?5?5PXE?9E22?3?5Client?5received?5ICMP@ 00027828     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000860       ??_C@_0DF@PEBHMBAL@?6?5?5PXE?9E23?3?5Client?5received?5TFTP@ 00027860     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:00000898       ??_C@_0CI@ENMOAOOC@?6?5?5PXE?9E53?3?5No?5boot?5filename?5rec@ 00027898     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000008c0       ??_C@_0CH@EEGHIBHP@?6?5?5PXE?9E99?3?5Unexpected?5network?5e@ 000278c0     UefiPxeBcDxe:PxeBcBoot.obj
+ 0002:000008e8       ??_C@_0BK@LIBPPABO@PxeOption?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 000278e8     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000908       ??_C@_0FN@PHNMDGHC@c?3?2users?2mliang2x?2workspace?2ming@ 00027908     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000968       ??_C@_0CB@IIAGGHCA@PXEClient?3Arch?3xxxxx?3UNDI?3003000@ 00027968     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:0000098c       ??_C@_0BP@ECLLALEN@OfferIndex?5?$DM?5Private?9?$DOOfferNum?$AA@ 0002798c     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:000009ac       ??_C@_0BA@DHHEBEAN@OfferIndex?5?$DM?516?$AA@ 000279ac     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:000009bc       ??_C@_0L@NPKKFMNM@Index?5?$DM?516?$AA@ 000279bc     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:000009c8       ??_C@_0IM@KKEDKMBM@Private?9?$DOOfferBuffer?$FLIndex?$FN?4Dhcp@ 000279c8     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000a54       ??_C@_0BH@MCCFFLKM@Private?9?$DOOfferNum?5?$DM?516?$AA@ 00027a54     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000a6c       ??_C@_0BM@NMFBEHKK@OfferType?5?$DM?5PxeOfferTypeMax?$AA@ 00027a6c     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000a88       ??_C@_0CE@LGPAILPE@Private?9?$DOOfferCount?$FLOfferType?$FN?5?$DM@ 00027a88     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000aac       ??_C@_0BJ@OOAGAEFH@Private?9?$DOSelectIndex?5?$DO?50?$AA@ 00027aac     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000ac8       ??_C@_0BB@LMJHOKEJ@SelectIndex?5?$DM?516?$AA@ 00027ac8     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000adc       ??_C@_0CL@ONLHCLLH@Private?9?$DOSelectProxyType?5?$DM?5PxeOf@ 00027adc     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000b08       ??_C@_0DC@LCFHNCIB@Private?9?$DOOfferCount?$FLPrivate?9?$DOSel@ 00027b08     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000b3c       ??_C@_0BH@CELONLOG@Packet?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027b3c     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000b54       ??_C@_0BK@JEJDJFOL@NewPacket?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027b54     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000b70       ??_C@_0BK@HGECNIMB@Private?9?$DOSelectIndex?5?$CB?$DN?50?$AA@ 00027b70     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000b8c       ??_C@_0BG@GNOLCPMK@Dhcp4?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027b8c     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000ba4       ??_C@_0N@GPCEJIKO@OptCount?5?$DO?50?$AA@ 00027ba4     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000bb4       ??_C@_0BJ@KCGKFGLG@Mode?4State?5?$DN?$DN?5Dhcp4Bound?$AA@ 00027bb4     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000bd0       ??_C@_0BK@JGLFKFII@?6?5?5Station?5IP?5address?5is?5?$AA@ 00027bd0     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000bec       ??_C@_01EEMJAFIK@?6?$AA@   00027bec     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0002:00000bf0       ??_C@_07JPIGAOKK@blksize?$AA@ 00027bf0     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0002:00000bf8       ??_C@_07DDHNKDGP@timeout?$AA@ 00027bf8     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0002:00000c00       ??_C@_05GHDOEBHJ@tsize?$AA@ 00027c00     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0002:00000c08       ??_C@_09HCCMHGIN@multicast?$AA@ 00027c08     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0002:00000c14       ??_C@_0L@HMPKIDCJ@windowsize?$AA@ 00027c14     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0002:00000c20       ??_C@_07INFLEIEO@tftp?3?1?1?$AA@ 00027c20     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000c28       ??_C@_0M@MMCPKHFN@?$DLmode?$DNoctet?$AA@ 00027c28     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000c34       ??_C@_06PHEPAMBA@?$DLmode?$DN?$AA@ 00027c34     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000c40       ??_C@_0FN@FNNFPOPJ@c?3?2users?2mliang2x?2workspace?2ming@ 00027c40     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000ca0       ??_C@_0IM@CHDGADFC@Private?9?$DOOfferBuffer?$FLIndex?$FN?4Dhcp@ 00027ca0     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000d2c       ??_C@_0CC@JOMINCKP@Offer?9?$DOOptList?$FL1?$FN?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50@ 00027d2c     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000d50       ??_C@_0CD@HICJBAPI@Cache6?9?$DOOptList?$FL1?$FN?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?5@ 00027d50     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000d74       ??_C@_0BM@JJAGOHNP@GatewayAddr?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027d74     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000d90       ??_C@_0BL@ICHGMPMI@?$CKNewPacket?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027d90     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000dac       ??_C@_0DM@CIKMDCDN@?$CIMode?4Ia?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?5?$CG?$CG?5?$CIMo@ 00027dac     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0002:00000de8       ??_C@_0BF@CBLMFKOC@Node?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027de8     UefiDevicePathLib:DevicePathUtilities.obj
+ 0002:00000e00       ??_C@_0GP@HHJAOHCF@c?3?2users?2mliang2x?2workspace?2ming@ 00027e00     UefiDevicePathLib:DevicePathUtilities.obj
+ 0002:00000e70       ??_C@_0EH@ENCEEKKL@?$CILength?5?$DO?$DN?5sizeof?5?$CIEFI_DEVICE_PA@ 00027e70     UefiDevicePathLib:DevicePathUtilities.obj
+ 0002:00000eb8       _mUefiDevicePathLibEndDevicePath 00027eb8     UefiDevicePathLib:DevicePathUtilities.obj
+ 0002:00000ebc       ??_C@_0BH@LKMBFCBF@Format?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027ebc     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000ed8       ??_C@_0HH@BLJPNBBN@c?3?2users?2mliang2x?2workspace?2ming@ 00027ed8     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000f50       ??_C@_0CP@EFCGCEBK@?$CICHAR8?5?$CK?$CJBaseListMarkerPointer?5?$DM@ 00027f50     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000f80       ??_C@_01OHGJGJJP@?$FL?$AA@ 00027f80     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000f84       ??_C@_02PBFOLPKM@?$FN?5?$AA@ 00027f84     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000f88       ??_C@_0BH@IACGKAP@Buffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00027f88     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000fa0       ??_C@_0HF@CMOOABOD@c?3?2users?2mliang2x?2workspace?2ming@ 00027fa0     UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0002:00001018       ??_C@_0DD@HIGIPKGN@AllocationSize?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5@ 00028018     UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0002:0000104c       ??_C@_0DI@PHOMHDKH@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 0002804c     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00001088       ??_C@_0GG@HCOKHFCC@c?3?2users?2mliang2x?2workspace?2ming@ 00028088     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:000010f0       ??_C@_0DD@DCDOHCDJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 000280f0     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00001128       ??_C@_0GG@MGEIBEOF@c?3?2users?2mliang2x?2workspace?2ming@ 00028128     BaseMemoryLib:ZeroMemWrapper.obj
+ 0002:00001190       ??_C@_0CL@OBMFBPED@Length?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIUINTN?$CJB@ 00028190     BaseMemoryLib:ZeroMemWrapper.obj
+ 0002:000011bc       ??_C@_0CC@JOEHDGKB@DestinationBuffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50@ 000281bc     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:000011e0       ??_C@_0GJ@KBFGPLNL@c?3?2users?2mliang2x?2workspace?2ming@ 000281e0     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:0000124c       ??_C@_0BN@MDMCNBCC@SourceBuffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0002824c     BaseMemoryLib:CompareMemWrapper.obj
+ 0002:0000126c       ??_C@_0CN@BPIPMCPJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 0002826c     BaseMemoryLib:SetMemWrapper.obj
+ 0002:000012a0       ??_C@_0GF@DIGHFKK@c?3?2users?2mliang2x?2workspace?2ming@ 000282a0     BaseMemoryLib:SetMemWrapper.obj
+ 0002:00001308       ??_C@_0BH@MAAHKCPC@String?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028308     BaseLib:String.obj
+ 0002:00001320       ??_C@_0FI@OLEMEIPM@c?3?2users?2mliang2x?2workspace?2ming@ 00028320     BaseLib:String.obj
+ 0002:00001378       ??_C@_0CC@GFNLNIOC@?$CI?$CIUINTN?$CJString?5?$CG?50x00000001?$CJ?5?$DN?$DN?5@ 00028378     BaseLib:String.obj
+ 0002:0000139c       ??_C@_0DI@MDIKFADO@Length?5?$DM?5_gPcd_FixedAtBuild_PcdM@ 0002839c     BaseLib:String.obj
+ 0002:000013d4       ??_C@_0BL@IKFBNFIL@AsciiStrSize?5?$CIFirstString?$CJ?$AA@ 000283d4     BaseLib:String.obj
+ 0002:000013f0       ??_C@_0BM@EDNOKLLE@AsciiStrSize?5?$CISecondString?$CJ?$AA@ 000283f0     BaseLib:String.obj
+ 0002:0000140c       ??_C@_0DJ@JJHGIFMP@Length?5?$DM?$DN?5_gPcd_FixedAtBuild_Pcd@ 0002840c     BaseLib:String.obj
+ 0002:00001448       ??_C@_0BL@OFIBAIAL@AsciiStrSize?5?$CIString?$CJ?5?$CB?$DN?50?$AA@ 00028448     BaseLib:String.obj
+ 0002:00001464       ??_C@_0CB@NAIDGIOA@AsciiStrSize?5?$CISearchString?$CJ?5?$CB?$DN?50@ 00028464     BaseLib:String.obj
+ 0002:00001488       ??_C@_0N@KGHEHMDL@Divisor?5?$CB?$DN?50?$AA@ 00028488     BaseLib:DivU64x32.obj
+ 0002:00001498       ??_C@_0FL@HHADAADG@c?3?2users?2mliang2x?2workspace?2ming@ 00028498     BaseLib:DivU64x32.obj
+ 0002:000014f8       ??_C@_0FM@NNNBGHEF@c?3?2users?2mliang2x?2workspace?2ming@ 000284f8     BaseLib:SafeString.obj
+ 0002:00001554       ??_C@_0CH@LALFPBMC@?$CI?$CIUINTN?$CJDestination?5?$CG?50x00000001@ 00028554     BaseLib:SafeString.obj
+ 0002:0000157c       ??_C@_0BO@ECNIOIHG@?$CIDestination?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 0002857c     BaseLib:SafeString.obj
+ 0002:000015a0       ??_C@_0EA@PDPDJJNN@?$CFa?$CI?$CFd?$CJ?5?$CFa?3?5SAFE_STRING_CONSTRAIN@ 000285a0     BaseLib:SafeString.obj
+ 0002:000015e0       ??_C@_0BJ@EAEEJIP@?$CISource?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 000285e0     BaseLib:SafeString.obj
+ 0002:00001600       ??_C@_0EA@BBALOHPI@?$CIDestMax?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_@ 00028600     BaseLib:SafeString.obj
+ 0002:00001640       ??_C@_0P@PMIMLIHM@?$CIDestMax?5?$CB?$DN?50?$CJ?$AA@ 00028640     BaseLib:SafeString.obj
+ 0002:00001650       ??_C@_0BG@EEGIIOKH@?$CIDestMax?5?$DO?5SourceLen?$CJ?$AA@ 00028650     BaseLib:SafeString.obj
+ 0002:00001668       ??_C@_0BJ@MBBOBCLN@?$CIString?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 00028668     BaseLib:SafeString.obj
+ 0002:00001684       ??_C@_0BH@JPMEDPAI@?$CIData?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 00028684     BaseLib:SafeString.obj
+ 0002:0000169c       ??_C@_0BK@PFCDEPEA@?$CIAddress?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 0002869c     BaseLib:SafeString.obj
+ 0002:000016b8       ??_C@_0EK@OFPBBCEA@AddressIndex?5?$CL?51?5?$DM?5?$CIsizeof?5?$CIAddr@ 000286b8     BaseLib:SafeString.obj
+ 0002:00001704       ??_C@_0BJ@CNKJJNE@?$CIBuffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 00028704     BaseLib:SafeString.obj
+ 0002:00001720       ??_C@_0N@OMPODJLB@AsciiStrCpyS?$AA@ 00028720     BaseLib:SafeString.obj
+ 0002:00001730       ??_C@_0DO@LJFOOPII@?$CIDestMax?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_@ 00028730     BaseLib:SafeString.obj
+ 0002:00001770       ??_C@_0FL@CDANCHFO@InternalSafeStringNoAsciiStrOver@ 00028770     BaseLib:SafeString.obj
+ 0002:000017cc       ??_C@_0O@DIHNCLLG@AsciiStrnCpyS?$AA@ 000287cc     BaseLib:SafeString.obj
+ 0002:000017dc       ??_C@_0DN@DLAADCJE@?$CILength?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_P@ 000287dc     BaseLib:SafeString.obj
+ 0002:0000181c       ??_C@_0BI@GIIHIIN@AsciiStrDecimalToUintnS?$AA@ 0002881c     BaseLib:SafeString.obj
+ 0002:00001838       ??_C@_0ID@JMCCGBLD@?$CIAsciiStrnLenS?5?$CIString?0?5?$CI_gPcd_F@ 00028838     BaseLib:SafeString.obj
+ 0002:000018bc       ??_C@_0BJ@EBLIIDJK@AsciiStrDecimalToUint64S?$AA@ 000288bc     BaseLib:SafeString.obj
+ 0002:000018d8       ??_C@_0BE@KNBHPEHC@AsciiStrHexToUintnS?$AA@ 000288d8     BaseLib:SafeString.obj
+ 0002:000018ec       ??_C@_0BG@MFINJFHO@AsciiStrToUnicodeStrS?$AA@ 000288ec     BaseLib:SafeString.obj
+ 0002:00001908       ??_C@_0GF@GCLJAOAI@?$CBInternalSafeStringIsOverlap?5?$CIDe@ 00028908     BaseLib:SafeString.obj
+ 0002:00001970       ??_C@_0BG@HJJNNPII@AsciiStrToIpv6Address?$AA@ 00028970     BaseLib:SafeString.obj
+ 0002:00001988       ??_C@_0FL@JMOEMBON@c?3?2users?2mliang2x?2workspace?2ming@ 00028988     BaseLib:Unaligned.obj
+ 0002:000019e4       ??_C@_0L@MEMPDLHB@Count?5?$DM?564?$AA@ 000289e4     BaseLib:LShiftU64.obj
+ 0002:000019f0       ??_C@_0FL@NDMKHDG@c?3?2users?2mliang2x?2workspace?2ming@ 000289f0     BaseLib:LShiftU64.obj
+ 0002:00001a4c       ??_C@_0BN@COECPDCC@gImageHandle?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028a4c     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00001a70       ??_C@_0HL@PJCLKHFF@c?3?2users?2mliang2x?2workspace?2ming@ 00028a70     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00001aec       ??_C@_0BE@DGNHAHIL@gST?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028aec     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00001b00       ??_C@_0BE@BDFJLGLN@gBS?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028b00     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00001b14       ??_C@_0BE@OBDFIHND@gRT?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028b14     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:00001b28       ??_C@_0IB@BKMJEAIL@c?3?2users?2mliang2x?2workspace?2ming@ 00028b28     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:00001bac       ??_C@_0BK@PPOBBAMB@TableGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028bac     UefiLib:UefiLib.obj
+ 0002:00001bc8       ??_C@_0FJ@INLOALCK@c?3?2users?2mliang2x?2workspace?2ming@ 00028bc8     UefiLib:UefiLib.obj
+ 0002:00001c24       ??_C@_0BG@JDKEGFNB@Table?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028c24     UefiLib:UefiLib.obj
+ 0002:00001c3c       ??_C@_0BN@HHGHCLME@ProtocolGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028c3c     UefiLib:UefiLib.obj
+ 0002:00001c5c       ??_C@_0BO@MHFMIIAE@DriverBinding?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028c5c     UefiLib:UefiDriverModel.obj
+ 0002:00001c80       ??_C@_0GB@DBGGNAC@c?3?2users?2mliang2x?2workspace?2ming@ 00028c80     UefiLib:UefiDriverModel.obj
+ 0002:00001ce8       ??_C@_0FO@PEEJGCJL@c?3?2users?2mliang2x?2workspace?2ming@ 00028ce8     UefiLib:UefiLibPrint.obj
+ 0002:00001d48       ??_C@_0BI@DIKLKBJC@Console?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028d48     UefiLib:UefiLibPrint.obj
+ 0002:00001d60       ??_C@_0GB@EOFALHDN@c?3?2users?2mliang2x?2workspace?2ming@ 00028d60     DxeNetLib:DxeNetLib.obj
+ 0002:00001dc4       ??_C@_0N@NMJPNKHJ@NetMask?5?$CB?$DN?50?$AA@ 00028dc4     DxeNetLib:DxeNetLib.obj
+ 0002:00001dd4       ??_C@_0CI@KOOBFNBF@?$CIMaskLength?5?$DO?$DN?50?$CJ?5?$CG?$CG?5?$CIMaskLength@ 00028dd4     DxeNetLib:DxeNetLib.obj
+ 0002:00001dfc       ??_C@_0BE@FCBOEPIJ@Ip6?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028dfc     DxeNetLib:DxeNetLib.obj
+ 0002:00001e10       ??_C@_0EH@NHBGDONK@?$CIIp1?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?5?$CG?$CG?5?$CIIp2?5?$CB?$DN@ 00028e10     DxeNetLib:DxeNetLib.obj
+ 0002:00001e58       ??_C@_09EEFECIOP@Byte?5?$DM?516?$AA@ 00028e58     DxeNetLib:DxeNetLib.obj
+ 0002:00001e68       ??_C@_0EG@FMMHPKDI@?$CIServiceBindingGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ@ 00028e68     DxeNetLib:DxeNetLib.obj
+ 0002:00001eb0       ??_C@_0CD@PCCGAHJM@ServiceBindingGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?5@ 00028eb0     DxeNetLib:DxeNetLib.obj
+ 0002:00001ed4       ??_C@_0BN@NHNKBDLL@MediaPresent?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028ed4     DxeNetLib:DxeNetLib.obj
+ 0002:00001ef4       ??_C@_0BM@CPKMECHF@MCastFilter?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028ef4     DxeNetLib:DxeNetLib.obj
+ 0002:00001f10       ??_C@_0BL@DHOPNPCL@SystemGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 00028f10     DxeNetLib:DxeNetLib.obj
+ 0002:00001f30       ??_C@_0FO@DENKDMJI@c?3?2users?2mliang2x?2workspace?2ming@ 00028f30     DxeDpcLib:DpcLib.obj
+ 0002:00001f90       ??_C@_0HK@HMGLMJLF@c?3?2users?2mliang2x?2workspace?2ming@ 00028f90     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:0000200c       ??_C@_0DN@HHIHPHHB@?$CB?$CI?$CIExtendedData?5?$DN?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 0002900c     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:0000204c       ??_C@_0DN@BBBIFINB@?$CB?$CI?$CIExtendedData?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 0002904c     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:0000208c       ??_C@_0CI@BGLNHBLM@?$CI?$CI?$CIUINTN?$CJ?5?$CIStartOfBuffer?$CJ?$CJ?5?$CG?50x0@ 0002908c     BasePrintLib:PrintLib.obj
+ 0002:000020b8       ??_C@_0FP@HCMIGMKH@c?3?2users?2mliang2x?2workspace?2ming@ 000290b8     BasePrintLib:PrintLib.obj
+ 0002:00002118       ??_C@_0GH@MLMKDJJP@c?3?2users?2mliang2x?2workspace?2ming@ 00029118     BasePrintLib:PrintLibInternal.obj
+ 0002:00002180       ??_C@_0EB@HDGIDCIO@?$CIBufferSize?5?$DM?$DN?5?$CI_gPcd_FixedAtBui@ 00029180     BasePrintLib:PrintLibInternal.obj
+ 0002:000021c4       ??_C@_0BJ@PPAKKDJG@?$CIFormat?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 000291c4     BasePrintLib:PrintLibInternal.obj
+ 0002:000021e0       ??_C@_0ED@LPDDCECB@?$CIBufferSize?5?$DM?$DN?5?$CI_gPcd_FixedAtBui@ 000291e0     BasePrintLib:PrintLibInternal.obj
+ 0002:00002228       ??_C@_0IM@BFJJFLGB@?$CIStrnLenS?5?$CI?$CICHAR16?5?$CK?$CJFormat?0?5?$CI_g@ 00029228     BasePrintLib:PrintLibInternal.obj
+ 0002:000022b8       ??_C@_0ID@PLGJGION@?$CIAsciiStrnLenS?5?$CIFormat?0?5?$CI_gPcd_F@ 000292b8     BasePrintLib:PrintLibInternal.obj
+ 0002:0000233c       ??_C@_0O@MLOLIMFM@?$DMnull?5string?$DO?$AA@ 0002933c     BasePrintLib:PrintLibInternal.obj
+ 0002:0000234c       ??_C@_0M@BJJDNPHK@?$DMnull?5guid?$DO?$AA@ 0002934c     BasePrintLib:PrintLibInternal.obj
+ 0002:00002358       ??_C@_0DB@PMLHLBMO@?$CF08x?9?$CF04x?9?$CF04x?9?$CF02x?$CF02x?9?$CF02x?$CF02x@ 00029358     BasePrintLib:PrintLibInternal.obj
+ 0002:0000238c       ??_C@_0M@LHGBCIKM@?$DMnull?5time?$DO?$AA@ 0002938c     BasePrintLib:PrintLibInternal.obj
+ 0002:00002398       ??_C@_0BK@FCPKCIDD@?$CF02d?1?$CF02d?1?$CF04d?5?5?$CF02d?3?$CF02d?$AA@ 00029398     BasePrintLib:PrintLibInternal.obj
+ 0002:000023b4       ??_C@_04JIMNDDED@?$CF08X?$AA@ 000293b4     BasePrintLib:PrintLibInternal.obj
+ 0002:000023bc       ??_C@_02PCIJFNDE@?$AN?6?$AA@ 000293bc     BasePrintLib:PrintLibInternal.obj
+ 0002:000023c0       ??_C@_01LIIJDEN@?$AN?$AA@  000293c0     BasePrintLib:PrintLibInternal.obj
+ 0002:000023c8       _mWarningString            000293c8     BasePrintLib:PrintLibInternal.obj
+ 0002:00002490       _mErrorString              00029490     BasePrintLib:PrintLibInternal.obj
+ 0002:00002770       _mHexStr                   00029770     BasePrintLib:PrintLibInternal.obj
+ 0002:00002780       ??_C@_0GE@LHLPIAGN@c?3?2users?2mliang2x?2workspace?2ming@ 00029780     BaseLib:DivU64x32Remainder.obj
+ 0003:00000000       _gEfiLoadedImageProtocolGuid 0002a000     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000010       _gEfiStatusCodeSpecificDataGuid 0002a010     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000020       _gEfiAdapterInfoUndiIpv6SupportGuid 0002a020     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000030       _gEfiDhcp6ServiceBindingProtocolGuid 0002a030     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000040       _gEfiStatusCodeRuntimeProtocolGuid 0002a040     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000050       _gEfiPxeBaseCodeProtocolGuid 0002a050     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000060       _gEfiMtftp4ProtocolGuid    0002a060     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000070       _gEfiComponentName2ProtocolGuid 0002a070     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000080       _gEfiAdapterInformationProtocolGuid 0002a080     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000090       _gEfiLoadFileProtocolGuid  0002a090     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000a0       _gEfiMtftp6ServiceBindingProtocolGuid 0002a0a0     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000b0       _gEfiDhcp6ProtocolGuid     0002a0b0     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000c0       _gEfiNetworkInterfaceIdentifierProtocolGuid_31 0002a0c0     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000d0       _gEfiDhcp4ServiceBindingProtocolGuid 0002a0d0     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000e0       _gEfiDevicePathProtocolGuid 0002a0e0     UefiPxeBcDxe:AutoGen.obj
+ 0003:000000f0       _gEfiIp6ConfigProtocolGuid 0002a0f0     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000100       _gEfiSimpleNetworkProtocolGuid 0002a100     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000110       _gEfiCallerBaseName        0002a110     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000114       _gEfiDns6ServiceBindingProtocolGuid 0002a114     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000124       _gEfiPxeBaseCodeCallbackProtocolGuid 0002a124     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000134       _gEfiUdp4ServiceBindingProtocolGuid 0002a134     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000144       _gEfiStatusCodeDataTypeDebugGuid 0002a144     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000154       _gEfiIp4Config2ProtocolGuid 0002a154     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000164       _gEfiMtftp6ProtocolGuid    0002a164     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000174       _gEfiIp4ServiceBindingProtocolGuid 0002a174     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000184       _gEfiUdp6ProtocolGuid      0002a184     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000194       _gEfiSmbios3TableGuid      0002a194     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001a4       _gEfiUdp6ServiceBindingProtocolGuid 0002a1a4     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001b4       _gEfiIp6ServiceBindingProtocolGuid 0002a1b4     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001c4       _gEfiSmbiosTableGuid       0002a1c4     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001d4       _gEfiDns6ProtocolGuid      0002a1d4     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001e4       _gEfiIp4ProtocolGuid       0002a1e4     UefiPxeBcDxe:AutoGen.obj
+ 0003:000001f4       _gEfiAdapterInfoMediaStateGuid 0002a1f4     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000204       _gEfiMtftp4ServiceBindingProtocolGuid 0002a204     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000214       _gEfiDriverBindingProtocolGuid 0002a214     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000224       _gEfiArpServiceBindingProtocolGuid 0002a224     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000234       _gEfiUdp4ProtocolGuid      0002a234     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000244       _gEfiIp6ProtocolGuid       0002a244     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000254       _gEfiComponentNameProtocolGuid 0002a254     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000264       _gEfiDpcProtocolGuid       0002a264     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000274       _gEfiCallerIdGuid          0002a274     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000284       _gEfiDhcp4ProtocolGuid     0002a284     UefiPxeBcDxe:AutoGen.obj
+ 0003:00000294       _gEfiArpProtocolGuid       0002a294     UefiPxeBcDxe:AutoGen.obj
+ 0003:000002a4       _gPxeBcIp6DriverBinding    0002a2a4     UefiPxeBcDxe:PxeBcDriver.obj
+ 0003:000002bc       _gPxeBcIp4DriverBinding    0002a2bc     UefiPxeBcDxe:PxeBcDriver.obj
+ 0003:000002d4       _gLoadFileProtocolTemplate 0002a2d4     UefiPxeBcDxe:PxeBcImpl.obj
+ 0003:000002d8       _gPxeBcProtocolTemplate    0002a2d8     UefiPxeBcDxe:PxeBcImpl.obj
+ 0003:00000318       _gPxeBcCallBackTemplate    0002a318     UefiPxeBcDxe:PxeBcImpl.obj
+ 0003:00000328       _gPxeBcComponentName2      0002a328     UefiPxeBcDxe:ComponentName.obj
+ 0003:00000334       _gPxeBcComponentName       0002a334     UefiPxeBcDxe:ComponentName.obj
+ 0003:00000340       _mPxeBcDriverNameTable     0002a340     UefiPxeBcDxe:ComponentName.obj
+ 0003:00000350       _mPxeBcControllerNameTable 0002a350     UefiPxeBcDxe:ComponentName.obj
+ 0003:00000360       _mInterestedDhcp4Tags      0002a360     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0003:00000368       _mPxeDhcpTimeout           0002a368     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0003:00000378       _mMtftpOptions             0002a378     UefiPxeBcDxe:PxeBcMtftp.obj
+ 0003:0000038c       _mAllDhcpRelayAndServersAddress 0002a38c     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0003:000003a0       _gIp4AllMasks              0002a3a0     DxeNetLib:DxeNetLib.obj
+ 0003:00000424       _gST                       0002a424     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:00000428       _gBS                       0002a428     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:0000042c       _gImageHandle              0002a42c     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:00000430       _gRT                       0002a430     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0003:00000434       _mZeroIp4Addr              0002a434     DxeNetLib:DxeNetLib.obj
+ 0003:00000438       _mReportStatusCodeLibStatusCodeProtocol 0002a438     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0003:0000043c       _mDpc                      0002a43c     <common>
+
+ entry point at        0001:00000040
+
+ Static symbols
+
+ 0000:fffe3000       .debug$S                   00010000     UefiPxeBcDxe.exp
+ 0001:00003538       $LN34                      00014538     UefiPxeBcDxe:PxeBcImpl.obj
+ 0001:00007034       $LN42                      00018034     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007040       $LN41                      00018040     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007784       $LN94                      00018784     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007798       $LN92                      00018798     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:0000780c       $LN95                      0001880c     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00007824       $LN93                      00018824     UefiPxeBcDxe:PxeBcBoot.obj
+ 0001:00008b18       $LN30                      00019b18     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:00008b50       $LN28                      00019b50     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000a6f4       $LN49                      0001b6f4     UefiPxeBcDxe:PxeBcDhcp4.obj
+ 0001:0000e9a8       $LN52                      0001f9a8     UefiPxeBcDxe:PxeBcDhcp6.obj
+ 0001:00015808       $LN237                     00026808     BasePrintLib:PrintLibInternal.obj
+ 0001:00015834       $LN233                     00026834     BasePrintLib:PrintLibInternal.obj
+ 0001:000158a4       $LN238                     000268a4     BasePrintLib:PrintLibInternal.obj
+ 0001:000158dc       $LN234                     000268dc     BasePrintLib:PrintLibInternal.obj
+ 0004:00000000       .edata                     0002b000     UefiPxeBcDxe.exp
+ 0004:00000028       rgpv                       0002b028     UefiPxeBcDxe.exp
+ 0004:0000002c       rgszName                   0002b02c     UefiPxeBcDxe.exp
+ 0004:00000030       rgwOrd                     0002b030     UefiPxeBcDxe.exp
+ 0004:00000032       szName                     0002b032     UefiPxeBcDxe.exp
+ 0004:00000043       $N00001                    0002b043     UefiPxeBcDxe.exp

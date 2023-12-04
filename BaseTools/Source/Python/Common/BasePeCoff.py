@@ -10,7 +10,7 @@ from FirmwareStorageFormat.PeImageHeader import *
 from FirmwareStorageFormat.Common import *
 from Common import EdkLogger
 from Common.PeCoffLoader import *
-from GenFv.common import *
+from GenFvs.common import *
 
 
 def PeCoffLoaderGetPeHeader(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
@@ -20,7 +20,7 @@ def PeCoffLoaderGetPeHeader(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
     @param ImageContext: The context of the image being loaded
     @return: ImageContext, PE and TE Header
     """
-    PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION()
+    # PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION()
     TeHdr = EFI_TE_IMAGE_HEADER()
     ImageContext.IsTeImage = False
 
@@ -124,7 +124,7 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
         else:
             ImageContext.ImageAddress = OptionHeader.Optional64.ImageBase
     else:
-        ImageContext.ImageAddress = TeHdr.ImageBase + TeHdr.StrippenSize - sizeof(
+        ImageContext.ImageAddress = TeHdr.ImageBase + TeHdr.StrippedSize - sizeof(
             EFI_TE_IMAGE_HEADER)
 
     # Initialize the codeview pointer.
@@ -470,18 +470,10 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
         Base = PeCoffLoaderImageAddress(ImageContext, Section.VirtualAddress)
         End = PeCoffLoaderImageAddress(ImageContext,
                                        Section.VirtualAddress + Section.Misc.VirtualSize)
-        # Base = ImageContext.ImageAddress + Section.VirtualAddress
-        # End = ImageContext.ImageAddress + Section.VirtualAddress + Section.Misc.VirtualSize - 1
-        # if Base == None or End == None:
-        #     ImageContext.ImageError = IMAGE_ERROR_SECTION_NOT_LOADED
-        #     return
-        #
+
         if ImageContext.IsTeImage:
             Base = Base + sizeof(EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
             End = End + sizeof(EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
-        #
-        # if End > MaxEnd:
-        #     MaxEnd = End
 
         # Read the section
         Size = Section.Misc.VirtualSize
@@ -489,8 +481,6 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             Size = Section.SizeOfRawData
         if Section.SizeOfRawData:
             if not ImageContext.IsTeImage:
-                buff = ImageBuffer[
-                                        Section.PointerToRawData:Section.PointerToRawData + Size]
                 PeOrTeImage[Base:End] = ImageBuffer[
                                         Section.PointerToRawData:Section.PointerToRawData + Size]
             else:
@@ -703,7 +693,6 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
         RelocBase = RelocDir.VirtualAddress + sizeof(
             EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
         RelocBaseEnd = RelocBase + RelocDir.Size - 1
-    # Update ImageBase of the SectionImage
 
     # Run the relocation information and apply the fixups
     FixupData = ImageContext.FixupData

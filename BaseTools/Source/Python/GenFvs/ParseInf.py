@@ -1,0 +1,158 @@
+import re
+
+from GenFvs.FvInternalLib import *
+
+
+# INF file strings
+OPTIONS_SECTION_STRING = "[options]"
+ATTRIBUTES_SECTION_STRING = "[attributes]"
+FILES_SECTION_STRING = "[files]"
+FV_BASE_ADDRESS_STRING = "[FV_BASE_ADDRESS]"
+
+EFI_FV_BASE_ADDRESS_STRING = "EFI_BASE_ADDRESS"
+EFI_FV_FILE_NAME_STRING = "EFI_FILE_NAME"
+EFI_NUM_BLOCKS_STRING = "EFI_NUM_BLOCKS"
+EFI_BLOCK_SIZE_STRING = "EFI_BLOCK_SIZE"
+EFI_GUID_STRING = "EFI_GUID"
+EFI_FV_FILESYSTEMGUID_STRING = "EFI_FV_GUID"
+EFI_FV_NAMEGUID_STRING = "EFI_FVNAME_GUID"
+EFI_CAPSULE_GUID_STRING = "EFI_CAPSULE_GUID"
+EFI_CAPSULE_HEADER_SIZE_STRING = "EFI_CAPSULE_HEADER_SIZE"
+EFI_CAPSULE_FLAGS_STRING = "EFI_CAPSULE_FLAGS"
+EFI_OEM_CAPSULE_FLAGS_STRING = "EFI_OEM_CAPSULE_FLAGS"
+EFI_CAPSULE_VERSION_STRING = "EFI_CAPSULE_VERSION"
+
+EFI_FV_TOTAL_SIZE_STRING = "EFI_FV_TOTAL_SIZE"
+EFI_FV_TAKEN_SIZE_STRING = "EFI_FV_TAKEN_SIZE"
+EFI_FV_SPACE_SIZE_STRING = "EFI_FV_SPACE_SIZE"
+
+#
+# Attributes section
+#
+EFI_FVB2_READ_DISABLED_CAP_STRING = "EFI_READ_DISABLED_CAP"
+EFI_FVB2_READ_ENABLED_CAP_STRING = "EFI_READ_ENABLED_CAP"
+EFI_FVB2_READ_STATUS_STRING = "EFI_READ_STATUS"
+
+EFI_FVB2_WRITE_DISABLED_CAP_STRING = "EFI_WRITE_DISABLED_CAP"
+EFI_FVB2_WRITE_ENABLED_CAP_STRING = "EFI_WRITE_ENABLED_CAP"
+EFI_FVB2_WRITE_STATUS_STRING = "EFI_WRITE_STATUS"
+
+EFI_FVB2_LOCK_CAP_STRING = "EFI_LOCK_CAP"
+EFI_FVB2_LOCK_STATUS_STRING = "EFI_LOCK_STATUS"
+
+EFI_FVB2_STICKY_WRITE_STRING = "EFI_STICKY_WRITE"
+EFI_FVB2_MEMORY_MAPPED_STRING = "EFI_MEMORY_MAPPED"
+EFI_FVB2_ERASE_POLARITY_STRING = "EFI_ERASE_POLARITY"
+
+EFI_FVB2_READ_LOCK_CAP_STRING = "EFI_READ_LOCK_CAP"
+EFI_FVB2_READ_LOCK_STATUS_STRING = "EFI_READ_LOCK_STATUS"
+EFI_FVB2_WRITE_LOCK_CAP_STRING = "EFI_WRITE_LOCK_CAP"
+EFI_FVB2_WRITE_LOCK_STATUS_STRING = "EFI_WRITE_LOCK_STATUS"
+
+EFI_FVB2_ALIGNMENT_1_STRING = "EFI_FVB2_ALIGNMENT_1"
+EFI_FVB2_ALIGNMENT_2_STRING = "EFI_FVB2_ALIGNMENT_2"
+EFI_FVB2_ALIGNMENT_4_STRING = "EFI_FVB2_ALIGNMENT_4"
+EFI_FVB2_ALIGNMENT_8_STRING = "EFI_FVB2_ALIGNMENT_8"
+EFI_FVB2_ALIGNMENT_16_STRING = "EFI_FVB2_ALIGNMENT_16"
+EFI_FVB2_ALIGNMENT_32_STRING = "EFI_FVB2_ALIGNMENT_32"
+EFI_FVB2_ALIGNMENT_64_STRING = "EFI_FVB2_ALIGNMENT_64"
+EFI_FVB2_ALIGNMENT_128_STRING = "EFI_FVB2_ALIGNMENT_128"
+EFI_FVB2_ALIGNMENT_256_STRING = "EFI_FVB2_ALIGNMENT_256"
+EFI_FVB2_ALIGNMENT_512_STRING = "EFI_FVB2_ALIGNMENT_512"
+EFI_FVB2_ALIGNMENT_1K_STRING = "EFI_FVB2_ALIGNMENT_1K"
+EFI_FVB2_ALIGNMENT_2K_STRING = "EFI_FVB2_ALIGNMENT_2K"
+EFI_FVB2_ALIGNMENT_4K_STRING = "EFI_FVB2_ALIGNMENT_4K"
+EFI_FVB2_ALIGNMENT_8K_STRING = "EFI_FVB2_ALIGNMENT_8K"
+EFI_FVB2_ALIGNMENT_16K_STRING = "EFI_FVB2_ALIGNMENT_16K"
+EFI_FVB2_ALIGNMENT_32K_STRING = "EFI_FVB2_ALIGNMENT_32K"
+EFI_FVB2_ALIGNMENT_64K_STRING = "EFI_FVB2_ALIGNMENT_64K"
+EFI_FVB2_ALIGNMENT_128K_STRING = "EFI_FVB2_ALIGNMENT_128K"
+EFI_FVB2_ALIGNMENT_256K_STRING = "EFI_FVB2_ALIGNMENT_256K"
+EFI_FVB2_ALIGNMENT_512K_STRING = "EFI_FVB2_ALIGNMENT_512K"
+EFI_FVB2_ALIGNMENT_1M_STRING = "EFI_FVB2_ALIGNMENT_1M"
+EFI_FVB2_ALIGNMENT_2M_STRING = "EFI_FVB2_ALIGNMENT_2M"
+EFI_FVB2_ALIGNMENT_4M_STRING = "EFI_FVB2_ALIGNMENT_4M"
+EFI_FVB2_ALIGNMENT_8M_STRING = "EFI_FVB2_ALIGNMENT_8M"
+EFI_FVB2_ALIGNMENT_16M_STRING = "EFI_FVB2_ALIGNMENT_16M"
+EFI_FVB2_ALIGNMENT_32M_STRING = "EFI_FVB2_ALIGNMENT_32M"
+EFI_FVB2_ALIGNMENT_64M_STRING = "EFI_FVB2_ALIGNMENT_64M"
+EFI_FVB2_ALIGNMENT_128M_STRING = "EFI_FVB2_ALIGNMENT_128M"
+EFI_FVB2_ALIGNMENT_256M_STRING = "EFI_FVB2_ALIGNMENT_256M"
+EFI_FVB2_ALIGNMENT_512M_STRING = "EFI_FVB2_ALIGNMENT_512M"
+EFI_FVB2_ALIGNMENT_1G_STRING = "EFI_FVB2_ALIGNMENT_1G"
+EFI_FVB2_ALIGNMENT_2G_STRING = "EFI_FVB2_ALIGNMENT_2G"
+
+EFI_FV_WEAK_ALIGNMENT_STRING = "EFI_WEAK_ALIGNMENT"
+
+#
+# File sections
+#
+EFI_FILE_NAME_STRING = "EFI_FILE_NAME"
+
+ONE_STRING = "1"
+ZERO_STRING = "0"
+TRUE_STRING = "TRUE"
+FALSE_STRING = "FALSE"
+NULL_STRING = "NULL"
+
+#
+# Fv extend File name
+#
+EFI_FV_EXT_HEADER_FILE_NAME = "EFI_FV_EXT_HEADER_FILE_NAME"
+
+class ParseInf(object):
+    def __init__(self, Stream):
+        self.Stream = Stream
+        self.InfDict = {}
+
+        self.DealStreamToDcit()
+
+    def FindToken(self, Line):
+        if b'//' in Line:
+            return None, None
+        lst = Line.split(b"=")
+        return re.sub(b' ', b'', lst[0]).decode('utf-8'), re.sub(b' ', b'',
+                                                                 lst[1]).decode(
+            'utf-8')
+
+    def FindSection(self, Line: bytes):
+        if bytes(OPTIONS_SECTION_STRING, encoding='utf-8') in Line:
+            return OPTIONS_SECTION_STRING[1:-1]
+        elif bytes(ATTRIBUTES_SECTION_STRING, encoding='utf-8') in Line:
+            return ATTRIBUTES_SECTION_STRING[1:-1]
+        elif bytes(FILES_SECTION_STRING, encoding='utf-8') in Line:
+            return FILES_SECTION_STRING[1:-1]
+        elif bytes(FV_BASE_ADDRESS_STRING, encoding='utf-8') in Line:
+            return FV_BASE_ADDRESS_STRING[1:-1]
+
+    def DealStreamToDcit(self):
+        EndOfPattern = re.compile(b"\r\n")
+        section = ""
+        while self.Stream:
+            # Read a line
+            FirstIndex = EndOfPattern.search(self.Stream)
+            Line = self.Stream[:FirstIndex.regs[0][0]]
+            self.Stream = self.Stream[FirstIndex.regs[0][1]:]
+
+            if b'[' in Line and b']' in Line:
+                section = self.FindSection(Line)
+                if self.InfDict.get(section) == None:
+                    self.InfDict[section] = {}
+            else:
+                Token, Value = self.FindToken(Line)
+                if Token and Value:
+                    if section == "files":
+                        if not self.InfDict[section].get(Token):
+                            self.InfDict[section][Token] = []
+                        self.InfDict[section][Token].append(Value)
+                        continue
+                    if not self.InfDict[section].get(Token):
+                        self.InfDict[section][Token] = []
+                    self.InfDict[section][Token].append(Value)
+
+
+if __name__ == '__main__':
+    with open("FVRECOVERY_i.inf", 'rb') as file:
+        Stream = file.read()
+    FvInf = ParseFvInf(Stream)
+    pass

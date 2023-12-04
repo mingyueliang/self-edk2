@@ -1,0 +1,353 @@
+ ConSplitterDxe
+
+ Timestamp is 65376f8a (Tue Oct 24 15:17:30 2023)
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000080H .text                   CODE
+ 0001:00000080 000089e6H .text$mn                CODE
+ 0002:00000000 00001334H .rdata                  DATA
+ 0002:00001334 00000164H .rdata$zzzdbg           DATA
+ 0003:00000000 000004f8H .data                   DATA
+ 0003:000004f8 0000001cH .bss                    DATA
+ 0004:00000000 00000056H .edata                  DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___guard_iat_table         00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_table     00000000     <absolute>
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_count     00000000     <absolute>
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0000:00000000       ___guard_iat_count         00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000000       ___dynamic_value_reloc_table 00000000     <absolute>
+ 0001:00000000       _InternalMathDivRemU64x64  00011000     BaseLib:DivU64x64Remainder.obj
+ 0001:00000080       __DriverUnloadHandler      00011080 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:000000c0       __ModuleEntryPoint         000110c0 f   UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0001:000001d0       _ProcessLibraryConstructorList 000111d0 f   ConSplitterDxe:AutoGen.obj
+ 0001:00000360       _ProcessLibraryDestructorList 00011360 f   ConSplitterDxe:AutoGen.obj
+ 0001:00000360       _EfiEventEmptyFunction     00011360 f   UefiLib:UefiLib.obj
+ 0001:00000370       _ProcessModuleEntryPointList 00011370 f   ConSplitterDxe:AutoGen.obj
+ 0001:00000390       _ProcessModuleUnloadList   00011390 f   ConSplitterDxe:AutoGen.obj
+ 0001:00000390       _UefiLibConstructor        00011390 f   UefiLib:UefiLib.obj
+ 0001:000003a0       _ToggleStateSyncKeyNotify  000113a0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00000470       _ToggleStateSyncInitialization 00011470 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000004c0       _ToggleStateSyncReInitialization 000114c0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00000520       _ConSplitterDriverEntry    00011520 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000009a0       _ConSplitterTextInConstructor 000119a0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00000d50       _ConSplitterTextOutConstructor 00011d50 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00000fc0       _ConSplitterSupported      00011fc0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001050       _ConSplitterConInDriverBindingSupported 00012050 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001070       _ConSplitterSimplePointerDriverBindingSupported 00012070 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001090       _ConSplitterAbsolutePointerDriverBindingSupported 00012090 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000010b0       _ConSplitterConOutDriverBindingSupported 000120b0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000010d0       _ConSplitterStdErrDriverBindingSupported 000120d0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000010f0       _ConSplitterStart          000120f0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000011f0       _ConSplitterConInDriverBindingStart 000121f0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000012a0       _ConSplitterSimplePointerDriverBindingStart 000122a0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000012f0       _ConSplitterAbsolutePointerDriverBindingStart 000122f0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001340       _ConSplitterConOutDriverBindingStart 00012340 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001510       _ConSplitterStdErrDriverBindingStart 00012510 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001590       _ConSplitterStop           00012590 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001620       _ConSplitterConInDriverBindingStop 00012620 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000016d0       _ConSplitterSimplePointerDriverBindingStop 000126d0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001730       _ConSplitterAbsolutePointerDriverBindingStop 00012730 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001790       _ConSplitterConOutDriverBindingStop 00012790 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000017f0       _ConSplitterStdErrDriverBindingStop 000127f0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001850       _ConSplitterGrowBuffer     00012850 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000018b0       _ConSplitterTextInAddDevice 000128b0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001930       _ConSplitterTextInDeleteDevice 00012930 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000019c0       _ConSplitterTextInExAddDevice 000129c0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001c60       _ConSplitterTextInExDeleteDevice 00012c60 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001cf0       _ConSplitterSimplePointerAddDevice 00012cf0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001d70       _ConSplitterSimplePointerDeleteDevice 00012d70 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001e10       _ConSplitterAbsolutePointerAddDevice 00012e10 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001e90       _ConSplitterAbsolutePointerDeleteDevice 00012e90 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00001f30       _ConSplitterGrowMapTable   00012f30 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002030       _ConSplitterAddOutputMode  00013030 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002170       _ConSplitterGetIntersection 00013170 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002260       _ConSplitterSyncOutputMode 00013260 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000023b0       _ConSplitterGetIntersectionBetweenConOutAndStrErr 000133b0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002660       _ConSplitterAddGraphicsOutputMode 00013660 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002d60       _ConsplitterSetConsoleOutMode 00013d60 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00002f30       _ConSplitterTextOutAddDevice 00013f30 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003270       _ConSplitterTextOutDeleteDevice 00014270 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003510       _ConSplitterTextInReset    00014510 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003600       _ConSplitterTextInExDequeueKey 00014600 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003680       _ConSplitterTextInPrivateReadKeyStroke 00014680 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003770       _ConSplitterTextInReadKeyStroke 00014770 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003860       _ConSplitterTextInWaitForKey 00014860 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003900       _IsKeyRegistered           00014900 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000039a0       _ConSplitterTextInResetEx  000149a0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003a90       _ConSplitterTextInReadKeyStrokeEx 00014a90 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003d40       _ConSplitterTextInSetState 00014d40 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00003e40       _ConSplitterTextInRegisterKeyNotify 00014e40 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000040d0       _ConSplitterTextInUnregisterKeyNotify 000150d0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004250       _ConSplitterSimplePointerReset 00015250 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004330       _ConSplitterSimplePointerPrivateGetState 00015330 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004520       _ConSplitterSimplePointerGetState 00015520 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000045a0       _ConSplitterSimplePointerWaitForInput 000155a0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004640       _ConSplitterAbsolutePointerReset 00015640 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004730       _ConSplitterAbsolutePointerGetState 00015730 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004ad0       _ConSplitterAbsolutePointerWaitForInput 00015ad0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004b70       _ConSplitterTextOutReset   00015b70 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004c70       _ConSplitterTextOutOutputString 00015c70 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004ec0       _ConSplitterTextOutTestString 00015ec0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00004f90       _ConSplitterTextOutQueryMode 00015f90 f   ConSplitterDxe:ConSplitter.obj
+ 0001:000050c0       _ConSplitterTextOutSetMode 000160c0 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00005240       _ConSplitterTextOutSetAttribute 00016240 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00005330       _ConSplitterTextOutClearScreen 00016330 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00005410       _ConSplitterTextOutSetCursorPosition 00016410 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00005580       _ConSplitterTextOutEnableCursor 00016580 f   ConSplitterDxe:ConSplitter.obj
+ 0001:00005660       _ConSplitterComponentNameGetDriverName 00016660 f   ConSplitterDxe:ComponentName.obj
+ 0001:000056c0       _ConSplitterTestControllerHandles 000166c0 f   ConSplitterDxe:ComponentName.obj
+ 0001:00005720       _ConSplitterConInComponentNameGetControllerName 00016720 f   ConSplitterDxe:ComponentName.obj
+ 0001:00005790       _ConSplitterSimplePointerComponentNameGetControllerName 00016790 f   ConSplitterDxe:ComponentName.obj
+ 0001:00005800       _ConSplitterAbsolutePointerComponentNameGetControllerName 00016800 f   ConSplitterDxe:ComponentName.obj
+ 0001:00005870       _ConSplitterConOutComponentNameGetControllerName 00016870 f   ConSplitterDxe:ComponentName.obj
+ 0001:000058e0       _ConSplitterStdErrComponentNameGetControllerName 000168e0 f   ConSplitterDxe:ComponentName.obj
+ 0001:00005950       _ConSplitterGraphicsOutputQueryMode 00016950 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00005aa0       _ConSplitterGraphicsOutputSetMode 00016aa0 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00005d30       _ConSplitterGraphicsOutputBlt 00016d30 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00005ec0       _ConSplitterUgaDrawGetMode 00016ec0 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00005f70       _ConSplitterUgaDrawSetMode 00016f70 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00006140       _ConSplitterUgaDrawBlt     00017140 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:000062d0       _TextOutSetMode            000172d0 f   ConSplitterDxe:ConSplitterGraphics.obj
+ 0001:00006300       _GetPcdProtocol            00017300 f   DxePcdLib:DxePcdLib.obj
+ 0001:000063d0       _LibPcdGet32               000173d0 f   DxePcdLib:DxePcdLib.obj
+ 0001:000063f0       _LibPcdSet32S              000173f0 f   DxePcdLib:DxePcdLib.obj
+ 0001:00006410       _DebugPrint                00017410 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006440       _DebugPrintMarker          00017440 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006920       _DebugVPrint               00017920 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006940       _DebugAssert               00017940 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006ba0       _DebugAssertEnabled        00017ba0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006bd0       _DebugPrintEnabled         00017bd0 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006c00       _DebugPrintLevelEnabled    00017c00 f   PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0001:00006c20       _InternalBaseLibIsListValid 00017c20 f   BaseLib:LinkedList.obj
+ 0001:00006d10       _IsNodeInList              00017d10 f   BaseLib:LinkedList.obj
+ 0001:00006de0       _InitializeListHead        00017de0 f   BaseLib:LinkedList.obj
+ 0001:00006e30       _InsertTailList            00017e30 f   BaseLib:LinkedList.obj
+ 0001:00006ef0       _IsListEmpty               00017ef0 f   BaseLib:LinkedList.obj
+ 0001:00006f50       _RemoveEntryList           00017f50 f   BaseLib:LinkedList.obj
+ 0001:00006fb0       _MultU64x64                00017fb0 f   BaseLib:MultU64x64.obj
+ 0001:00006ff0       _DivU64x64Remainder        00017ff0 f   BaseLib:DivU64x64Remainder.obj
+ 0001:00007040       _AsciiStrLen               00018040 f   BaseLib:String.obj
+ 0001:000070e0       _AsciiStrSize              000180e0 f   BaseLib:String.obj
+ 0001:00007100       _AsciiStrnCmp              00018100 f   BaseLib:String.obj
+ 0001:00007210       _InternalSafeStringIsOverlap 00018210 f   BaseLib:SafeString.obj
+ 0001:00007250       _InternalSafeStringNoAsciiStrOverlap 00018250 f   BaseLib:SafeString.obj
+ 0001:00007290       _AsciiStrnLenS             00018290 f   BaseLib:SafeString.obj
+ 0001:000072e0       _AsciiStrnCpyS             000182e0 f   BaseLib:SafeString.obj
+ 0001:00007670       _CpuBreakpoint             00018670 f   BaseLib:CpuBreakpoint.obj
+ 0001:00007680       _CpuDeadLoop               00018680 f   BaseLib:CpuDeadLoop.obj
+ 0001:000076a0       _InternalMathMultU64x64    000186a0 f   BaseLib:MultU64x64.obj
+ 0001:000076c0       _LShiftU64                 000186c0 f   BaseLib:LShiftU64.obj
+ 0001:00007710       _CpuPause                  00018710 f   BaseLib:CpuPause.obj
+ 0001:00007720       _InternalMathDivRemU64x32  00018720 f   BaseLib:DivU64x32Remainder.obj
+ 0001:00007740       _InternalMathLShiftU64     00018740 f   BaseLib:LShiftU64.obj
+ 0001:00007760       _CopyMem                   00018760 f   BaseMemoryLib:CopyMemWrapper.obj
+ 0001:00007800       _ZeroMem                   00018800 f   BaseMemoryLib:ZeroMemWrapper.obj
+ 0001:00007880       _SetMem                    00018880 f   BaseMemoryLib:SetMemWrapper.obj
+ 0001:000078e0       _CopyGuid                  000188e0 f   BaseMemoryLib:MemLibGuid.obj
+ 0001:00007930       _InternalMemCopyMem        00018930 f   BaseMemoryLib:CopyMem.obj
+ 0001:00007ca0       _InternalMemZeroMem        00018ca0 f   BaseMemoryLib:MemLibGeneric.obj
+ 0001:00007cc0       _InternalMemSetMem         00018cc0 f   BaseMemoryLib:SetMem.obj
+ 0001:00007de0       _InternalAllocatePool      00018de0 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007e20       _AllocatePool              00018e20 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007e40       _InternalAllocateZeroPool  00018e40 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007e80       _AllocateZeroPool          00018e80 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007ea0       _InternalReallocatePool    00018ea0 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007f10       _ReallocatePool            00018f10 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007f30       _FreePool                  00018f30 f   UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0001:00007fc0       _UefiBootServicesTableLibConstructor 00018fc0 f   UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0001:00008070       _UefiRuntimeServicesTableLibConstructor 00019070 f   UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0001:000080b0       _CompareIso639LanguageCode 000190b0 f   UefiLib:UefiLib.obj
+ 0001:000080f0       _EfiTestManagedDevice      000190f0 f   UefiLib:UefiLib.obj
+ 0001:000081a0       _EfiTestChildHandle        000191a0 f   UefiLib:UefiLib.obj
+ 0001:00008270       _IsLanguageSupported       00019270 f   UefiLib:UefiLib.obj
+ 0001:00008320       _LookupUnicodeString2      00019320 f   UefiLib:UefiLib.obj
+ 0001:000084a0       _EfiLibInstallDriverBindingComponentName2 000194a0 f   UefiLib:UefiDriverModel.obj
+ 0001:00008650       _GetDebugPrintErrorLevel   00019650 f   BaseDebugPrintErrorLevelLib:BaseDebugPrintErrorLevelLib.obj
+ 0001:00008660       _InternalGetReportStatusCode 00019660 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:000086c0       _InternalReportStatusCode  000196c0 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00008750       _ReportStatusCodeEx        00019750 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00008910       _ReportProgressCodeEnabled 00019910 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00008940       _ReportErrorCodeEnabled    00019940 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:00008970       _ReportDebugCodeEnabled    00019970 f   DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0001:000089a0       _ReadUnaligned24           000199a0 f   BaseLib:Unaligned.obj
+ 0001:000089e0       _ReadUnaligned64           000199e0 f   BaseLib:Unaligned.obj
+ 0001:00008a20       _WriteUnaligned64          00019a20 f   BaseLib:Unaligned.obj
+ 0002:00000000       ??_C@_0CB@DMEJJJHA@?6ASSERT_EFI_ERROR?5?$CIStatus?5?$DN?5?$CFr?$CJ?6@ 0001a000     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000024       ??_C@_0CH@BBNBJKHK@?$CB?$CI?$CI?$CIINTN?$CJ?$CIRETURN_STATUS?$CJ?$CIStatus?$CJ@ 0001a024     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:00000050       ??_C@_0GP@GHNHPFLI@c?3?2users?2mliang2x?2workspace?2ming@ 0001a050     UefiDriverEntryPoint:DriverEntryPoint.obj
+ 0002:000000c0       __gUefiDriverRevision      0001a0c0     ConSplitterDxe:AutoGen.obj
+ 0002:000000c4       ??_C@_0P@OOCCCGFH@ConSplitterDxe?$AA@ 0001a0c4     ConSplitterDxe:AutoGen.obj
+ 0002:000000d8       ??_C@_0KN@JPHOMDOJ@c?3?2users?2mliang2x?2workspace?2ming@ 0001a0d8     ConSplitterDxe:AutoGen.obj
+ 0002:00000185       __gPcd_FixedAtBuild_PcdReportStatusCodePropertyMask 0001a185     ConSplitterDxe:AutoGen.obj
+ 0002:00000188       __gPcd_FixedAtBuild_PcdDebugPrintErrorLevel 0001a188     ConSplitterDxe:AutoGen.obj
+ 0002:0000018c       __gPcd_FixedAtBuild_PcdConOutGopSupport 0001a18c     ConSplitterDxe:AutoGen.obj
+ 0002:0000018c       __gPcd_FixedAtBuild_PcdUgaConsumeSupport 0001a18c     ConSplitterDxe:AutoGen.obj
+ 0002:0000018c       __gPcd_FixedAtBuild_PcdConOutUgaSupport 0001a18c     ConSplitterDxe:AutoGen.obj
+ 0002:00000190       __gPcd_FixedAtBuild_PcdFixedDebugPrintErrorLevel 0001a190     ConSplitterDxe:AutoGen.obj
+ 0002:00000194       __gPcd_FixedAtBuild_PcdMaximumLinkedListLength 0001a194     ConSplitterDxe:AutoGen.obj
+ 0002:00000194       __gPcd_FixedAtBuild_PcdMaximumAsciiStringLength 0001a194     ConSplitterDxe:AutoGen.obj
+ 0002:00000198       __gPcd_FixedAtBuild_PcdDebugPropertyMask 0001a198     ConSplitterDxe:AutoGen.obj
+ 0002:00000199       __gPcd_FixedAtBuild_PcdComponentNameDisable 0001a199     ConSplitterDxe:AutoGen.obj
+ 0002:00000199       __gPcd_FixedAtBuild_PcdVerifyNodeInList 0001a199     ConSplitterDxe:AutoGen.obj
+ 0002:00000199       __gDriverUnloadImageCount  0001a199     ConSplitterDxe:AutoGen.obj
+ 0002:00000199       __gPcd_FixedAtBuild_PcdComponentName2Disable 0001a199     ConSplitterDxe:AutoGen.obj
+ 0002:00000199       __gPcd_FixedAtBuild_PcdConInConnectOnDemand 0001a199     ConSplitterDxe:AutoGen.obj
+ 0002:0000019c       ??_C@_0CA@GEDGBLPM@Current?5toggle?5state?5is?50x?$CF02x?6?$AA@ 0001a19c     ConSplitterDxe:ConSplitter.obj
+ 0002:000001c0       ??_C@_0HE@PAMIHPEB@c?3?2users?2mliang2x?2workspace?2ming@ 0001a1c0     ConSplitterDxe:ConSplitter.obj
+ 0002:00000238       ??_C@_0FB@GEBGMDI@_gPcd_FixedAtBuild_PcdConOutGopS@ 0001a238     ConSplitterDxe:ConSplitter.obj
+ 0002:0000028c       ??_C@_0DM@GNBKNMFK@SizeOfInfo?5?$DM?$DN?5sizeof?5?$CIEFI_GRAPHI@ 0001a28c     ConSplitterDxe:ConSplitter.obj
+ 0002:000002c8       ??_C@_0BF@NDBIKIKC@CR?5has?5Bad?5Signature?$AA@ 0001a2c8     ConSplitterDxe:ConSplitter.obj
+ 0002:000002e0       ??_C@_0DK@KLABHIAG@GraphicsOutput?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?5?$HM@ 0001a2e0     ConSplitterDxe:ConSplitter.obj
+ 0002:0000031c       ??_C@_0N@HNGBLGOA@MaxMode?5?$DO?$DN?51?$AA@ 0001a31c     ConSplitterDxe:ConSplitter.obj
+ 0002:0000032c       ??_C@_0DJ@KCBDACBP@Connect?5ConIn?5in?5first?5ReadKeySt@ 0001a32c     ConSplitterDxe:ConSplitter.obj
+ 0002:00000368       ??_C@_0DM@CHNNECGH@RegsiteredData?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?5?$CG@ 0001a368     ConSplitterDxe:ConSplitter.obj
+ 0002:000003a4       ??_C@_0CC@IJPOLGCG@Private?9?$DOCurrentNumberOfKeys?5?$DN?$DN?5@ 0001a3a4     ConSplitterDxe:ConSplitter.obj
+ 0002:000003c8       ??_C@_03LKLGDMJI@eng?$AA@  0001a3c8     ConSplitterDxe:ComponentName.obj
+ 0002:000003cc       ??_C@_02LFNMGJAP@en?$AA@   0001a3cc     ConSplitterDxe:ComponentName.obj
+ 0002:000003d0       ??_C@_06DALJLGPG@eng?$DLen?$AA@ 0001a3d0     ConSplitterDxe:ComponentName.obj
+ 0002:000003d8       ??_C@_1DA@HHHHCPNF@?$AAC?$AAo?$AAn?$AAs?$AAo?$AAl?$AAe?$AA?5?$AAS?$AAp?$AAl?$AAi?$AAt?$AAt?$AAe?$AAr?$AA?5?$AAD?$AAr?$AAi?$AAv?$AAe?$AAr?$AA?$AA@ 0001a3d8     ConSplitterDxe:ComponentName.obj
+ 0002:00000408       ??_C@_1DK@KOBFONJK@?$AAP?$AAr?$AAi?$AAm?$AAa?$AAr?$AAy?$AA?5?$AAC?$AAo?$AAn?$AAs?$AAo?$AAl?$AAe?$AA?5?$AAI?$AAn?$AAp?$AAu?$AAt?$AA?5?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA?$AA@ 0001a408     ConSplitterDxe:ComponentName.obj
+ 0002:00000444       ??_C@_1DM@OAFGPKJI@?$AAP?$AAr?$AAi?$AAm?$AAa?$AAr?$AAy?$AA?5?$AAS?$AAi?$AAm?$AAp?$AAl?$AAe?$AA?5?$AAP?$AAo?$AAi?$AAn?$AAt?$AAe?$AAr?$AA?5?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA?$AA@ 0001a444     ConSplitterDxe:ComponentName.obj
+ 0002:00000480       ??_C@_1EA@LLKMJMNI@?$AAP?$AAr?$AAi?$AAm?$AAa?$AAr?$AAy?$AA?5?$AAA?$AAb?$AAs?$AAo?$AAl?$AAu?$AAt?$AAe?$AA?5?$AAP?$AAo?$AAi?$AAn?$AAt?$AAe?$AAr?$AA?5?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA?$AA@ 0001a480     ConSplitterDxe:ComponentName.obj
+ 0002:000004c0       ??_C@_1DM@NOLCCLLG@?$AAP?$AAr?$AAi?$AAm?$AAa?$AAr?$AAy?$AA?5?$AAC?$AAo?$AAn?$AAs?$AAo?$AAl?$AAe?$AA?5?$AAO?$AAu?$AAt?$AAp?$AAu?$AAt?$AA?5?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA?$AA@ 0001a4c0     ConSplitterDxe:ComponentName.obj
+ 0002:000004fc       ??_C@_1DM@CGJEGEAD@?$AAP?$AAr?$AAi?$AAm?$AAa?$AAr?$AAy?$AA?5?$AAS?$AAt?$AAa?$AAn?$AAd?$AAa?$AAr?$AAd?$AA?5?$AAE?$AAr?$AAr?$AAo?$AAr?$AA?5?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA?$AA@ 0001a4fc     ConSplitterDxe:ComponentName.obj
+ 0002:00000538       ??_C@_0HM@CJMOFFI@c?3?2users?2mliang2x?2workspace?2ming@ 0001a538     ConSplitterDxe:ConSplitterGraphics.obj
+ 0002:000005b8       ??_C@_0FN@FDDDDNN@c?3?2users?2mliang2x?2workspace?2ming@ 0001a5b8     DxePcdLib:DxePcdLib.obj
+ 0002:00000618       ??_C@_0BF@OOKDELHM@mPcd?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a618     DxePcdLib:DxePcdLib.obj
+ 0002:00000630       ??_C@_0BH@IACGKAP@Buffer?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a630     DxePcdLib:DxePcdLib.obj
+ 0002:00000648       ??_C@_0BH@LKMBFCBF@Format?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a648     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000660       ??_C@_0HH@BLJPNBBN@c?3?2users?2mliang2x?2workspace?2ming@ 0001a660     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:000006d8       ??_C@_0CP@EFCGCEBK@?$CICHAR8?5?$CK?$CJBaseListMarkerPointer?5?$DM@ 0001a6d8     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000708       ??_C@_01OHGJGJJP@?$FL?$AA@ 0001a708     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:0000070c       ??_C@_02PBFOLPKM@?$FN?5?$AA@ 0001a70c     PeiDxeDebugLibReportStatusCode:DebugLib.obj
+ 0002:00000710       ??_C@_0BF@NJNGJMPC@List?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a710     BaseLib:LinkedList.obj
+ 0002:00000728       ??_C@_0FM@OPLAEOJM@c?3?2users?2mliang2x?2workspace?2ming@ 0001a728     BaseLib:LinkedList.obj
+ 0002:00000784       ??_C@_0CC@KDLPLAED@List?9?$DOForwardLink?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50@ 0001a784     BaseLib:LinkedList.obj
+ 0002:000007a8       ??_C@_0BP@IJJCCMAK@List?9?$DOBackLink?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a7a8     BaseLib:LinkedList.obj
+ 0002:000007c8       ??_C@_0CI@BMHOPIIO@InternalBaseLibIsListValid?5?$CIFirs@ 0001a7c8     BaseLib:LinkedList.obj
+ 0002:000007f0       ??_C@_0BM@BAIHHOEP@SecondEntry?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a7f0     BaseLib:LinkedList.obj
+ 0002:0000080c       ??_C@_0BJ@NJABNCDK@ListHead?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a80c     BaseLib:LinkedList.obj
+ 0002:00000828       ??_C@_0DI@HOMAKAJD@?$CI?$CIBOOLEAN?$CJ?$CI0?$DN?$DN1?$CJ?$CJ?5?$DN?$DN?5IsNodeInLis@ 0001a828     BaseLib:LinkedList.obj
+ 0002:00000860       ??_C@_0CG@LGIALJFK@InternalBaseLibIsListValid?5?$CIList@ 0001a860     BaseLib:LinkedList.obj
+ 0002:00000888       ??_C@_0BF@NMBJJECB@?$CBIsListEmpty?5?$CIEntry?$CJ?$AA@ 0001a888     BaseLib:LinkedList.obj
+ 0002:000008a0       ??_C@_0N@KGHEHMDL@Divisor?5?$CB?$DN?50?$AA@ 0001a8a0     BaseLib:DivU64x64Remainder.obj
+ 0002:000008b0       ??_C@_0GE@JDPJDBNN@c?3?2users?2mliang2x?2workspace?2ming@ 0001a8b0     BaseLib:DivU64x64Remainder.obj
+ 0002:00000914       ??_C@_0BH@MAAHKCPC@String?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001a914     BaseLib:String.obj
+ 0002:00000930       ??_C@_0FI@OLEMEIPM@c?3?2users?2mliang2x?2workspace?2ming@ 0001a930     BaseLib:String.obj
+ 0002:00000988       ??_C@_0DI@MDIKFADO@Length?5?$DM?5_gPcd_FixedAtBuild_PcdM@ 0001a988     BaseLib:String.obj
+ 0002:000009c0       ??_C@_0BL@IKFBNFIL@AsciiStrSize?5?$CIFirstString?$CJ?$AA@ 0001a9c0     BaseLib:String.obj
+ 0002:000009dc       ??_C@_0BM@EDNOKLLE@AsciiStrSize?5?$CISecondString?$CJ?$AA@ 0001a9dc     BaseLib:String.obj
+ 0002:000009f8       ??_C@_0DJ@JJHGIFMP@Length?5?$DM?$DN?5_gPcd_FixedAtBuild_Pcd@ 0001a9f8     BaseLib:String.obj
+ 0002:00000a38       ??_C@_0FM@NNNBGHEF@c?3?2users?2mliang2x?2workspace?2ming@ 0001aa38     BaseLib:SafeString.obj
+ 0002:00000a94       ??_C@_0BO@ECNIOIHG@?$CIDestination?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 0001aa94     BaseLib:SafeString.obj
+ 0002:00000ab8       ??_C@_0EA@PDPDJJNN@?$CFa?$CI?$CFd?$CJ?5?$CFa?3?5SAFE_STRING_CONSTRAIN@ 0001aab8     BaseLib:SafeString.obj
+ 0002:00000af8       ??_C@_0BJ@EAEEJIP@?$CISource?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ?$AA@ 0001aaf8     BaseLib:SafeString.obj
+ 0002:00000b14       ??_C@_0P@PMIMLIHM@?$CIDestMax?5?$CB?$DN?50?$CJ?$AA@ 0001ab14     BaseLib:SafeString.obj
+ 0002:00000b24       ??_C@_0BG@EEGIIOKH@?$CIDestMax?5?$DO?5SourceLen?$CJ?$AA@ 0001ab24     BaseLib:SafeString.obj
+ 0002:00000b3c       ??_C@_0DO@LJFOOPII@?$CIDestMax?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_@ 0001ab3c     BaseLib:SafeString.obj
+ 0002:00000b80       ??_C@_0FL@CDANCHFO@InternalSafeStringNoAsciiStrOver@ 0001ab80     BaseLib:SafeString.obj
+ 0002:00000bdc       ??_C@_0O@DIHNCLLG@AsciiStrnCpyS?$AA@ 0001abdc     BaseLib:SafeString.obj
+ 0002:00000bec       ??_C@_0DN@DLAADCJE@?$CILength?5?$DM?$DN?5?$CI_gPcd_FixedAtBuild_P@ 0001abec     BaseLib:SafeString.obj
+ 0002:00000c2c       ??_C@_0L@MEMPDLHB@Count?5?$DM?564?$AA@ 0001ac2c     BaseLib:LShiftU64.obj
+ 0002:00000c38       ??_C@_0FL@NDMKHDG@c?3?2users?2mliang2x?2workspace?2ming@ 0001ac38     BaseLib:LShiftU64.obj
+ 0002:00000c94       ??_C@_0DI@PHOMHDKH@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 0001ac94     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000cd0       ??_C@_0GG@HCOKHFCC@c?3?2users?2mliang2x?2workspace?2ming@ 0001acd0     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000d38       ??_C@_0DD@DCDOHCDJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 0001ad38     BaseMemoryLib:CopyMemWrapper.obj
+ 0002:00000d70       ??_C@_0GG@MGEIBEOF@c?3?2users?2mliang2x?2workspace?2ming@ 0001ad70     BaseMemoryLib:ZeroMemWrapper.obj
+ 0002:00000dd8       ??_C@_0CL@OBMFBPED@Length?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIUINTN?$CJB@ 0001add8     BaseMemoryLib:ZeroMemWrapper.obj
+ 0002:00000e04       ??_C@_0CN@BPIPMCPJ@?$CILength?5?9?51?$CJ?5?$DM?$DN?5?$CI0xFFFFFFFF?5?9?5?$CIU@ 0001ae04     BaseMemoryLib:SetMemWrapper.obj
+ 0002:00000e38       ??_C@_0GF@DIGHFKK@c?3?2users?2mliang2x?2workspace?2ming@ 0001ae38     BaseMemoryLib:SetMemWrapper.obj
+ 0002:00000ea0       ??_C@_0HF@CMOOABOD@c?3?2users?2mliang2x?2workspace?2ming@ 0001aea0     UefiMemoryAllocationLib:MemoryAllocationLib.obj
+ 0002:00000f18       ??_C@_0BN@COECPDCC@gImageHandle?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001af18     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000f38       ??_C@_0HL@PJCLKHFF@c?3?2users?2mliang2x?2workspace?2ming@ 0001af38     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000fb4       ??_C@_0BE@DGNHAHIL@gST?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001afb4     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000fc8       ??_C@_0BE@BDFJLGLN@gBS?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001afc8     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0002:00000fdc       ??_C@_0BE@OBDFIHND@gRT?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001afdc     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:00000ff0       ??_C@_0IB@BKMJEAIL@c?3?2users?2mliang2x?2workspace?2ming@ 0001aff0     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0002:00001078       ??_C@_0FJ@INLOALCK@c?3?2users?2mliang2x?2workspace?2ming@ 0001b078     UefiLib:UefiLib.obj
+ 0002:000010d4       ??_C@_0BN@HHGHCLME@ProtocolGuid?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001b0d4     UefiLib:UefiLib.obj
+ 0002:000010f4       ??_C@_0BO@MHFMIIAE@DriverBinding?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$AA@ 0001b0f4     UefiLib:UefiDriverModel.obj
+ 0002:00001118       ??_C@_0GB@DBGGNAC@c?3?2users?2mliang2x?2workspace?2ming@ 0001b118     UefiLib:UefiDriverModel.obj
+ 0002:00001180       ??_C@_0HK@HMGLMJLF@c?3?2users?2mliang2x?2workspace?2ming@ 0001b180     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:000011fc       ??_C@_0DN@HHIHPHHB@?$CB?$CI?$CIExtendedData?5?$DN?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 0001b1fc     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:0000123c       ??_C@_0DN@BBBIFINB@?$CB?$CI?$CIExtendedData?5?$CB?$DN?5?$CI?$CIvoid?5?$CK?$CJ?50?$CJ?$CJ@ 0001b23c     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+ 0002:00001280       ??_C@_0FL@JMOEMBON@c?3?2users?2mliang2x?2workspace?2ming@ 0001b280     BaseLib:Unaligned.obj
+ 0003:00000000       _gEfiLoadedImageProtocolGuid 0001c000     ConSplitterDxe:AutoGen.obj
+ 0003:00000010       _gEfiStatusCodeSpecificDataGuid 0001c010     ConSplitterDxe:AutoGen.obj
+ 0003:00000020       _gEfiStatusCodeRuntimeProtocolGuid 0001c020     ConSplitterDxe:AutoGen.obj
+ 0003:00000030       _gEfiConsoleOutDeviceGuid  0001c030     ConSplitterDxe:AutoGen.obj
+ 0003:00000040       _gEfiComponentName2ProtocolGuid 0001c040     ConSplitterDxe:AutoGen.obj
+ 0003:00000050       _gPcdProtocolGuid          0001c050     ConSplitterDxe:AutoGen.obj
+ 0003:00000060       _gEfiSimpleTextOutProtocolGuid 0001c060     ConSplitterDxe:AutoGen.obj
+ 0003:00000070       _gEfiSimplePointerProtocolGuid 0001c070     ConSplitterDxe:AutoGen.obj
+ 0003:00000080       _gEfiStandardErrorDeviceGuid 0001c080     ConSplitterDxe:AutoGen.obj
+ 0003:00000090       _gEfiCallerBaseName        0001c090     ConSplitterDxe:AutoGen.obj
+ 0003:00000094       _gEfiSimpleTextInputExProtocolGuid 0001c094     ConSplitterDxe:AutoGen.obj
+ 0003:000000a4       _gEfiSimpleTextInProtocolGuid 0001c0a4     ConSplitterDxe:AutoGen.obj
+ 0003:000000b4       _gEfiStatusCodeDataTypeDebugGuid 0001c0b4     ConSplitterDxe:AutoGen.obj
+ 0003:000000c4       _gEfiGraphicsOutputProtocolGuid 0001c0c4     ConSplitterDxe:AutoGen.obj
+ 0003:000000d4       _gEfiUgaDrawProtocolGuid   0001c0d4     ConSplitterDxe:AutoGen.obj
+ 0003:000000e4       _gEfiConsoleInDeviceGuid   0001c0e4     ConSplitterDxe:AutoGen.obj
+ 0003:000000f4       _gConnectConInEventGuid    0001c0f4     ConSplitterDxe:AutoGen.obj
+ 0003:00000104       _gEfiDriverBindingProtocolGuid 0001c104     ConSplitterDxe:AutoGen.obj
+ 0003:00000114       _gEfiComponentNameProtocolGuid 0001c114     ConSplitterDxe:AutoGen.obj
+ 0003:00000124       _gEfiCallerIdGuid          0001c124     ConSplitterDxe:AutoGen.obj
+ 0003:00000134       _gEfiAbsolutePointerProtocolGuid 0001c134     ConSplitterDxe:AutoGen.obj
+ 0003:00000144       _mGraphicsOutputProtocolTemplate 0001c144     ConSplitterDxe:ConSplitter.obj
+ 0003:00000154       _gConSplitterConOutDriverBinding 0001c154     ConSplitterDxe:ConSplitter.obj
+ 0003:00000170       _mConIn                    0001c170     ConSplitterDxe:ConSplitter.obj
+ 0003:00000270       _mUgaDrawProtocolTemplate  0001c270     ConSplitterDxe:ConSplitter.obj
+ 0003:0000027c       _gConSplitterConInDriverBinding 0001c27c     ConSplitterDxe:ConSplitter.obj
+ 0003:00000294       _gConSplitterStdErrDriverBinding 0001c294     ConSplitterDxe:ConSplitter.obj
+ 0003:000002b0       _mConOut                   0001c2b0     ConSplitterDxe:ConSplitter.obj
+ 0003:00000350       _gConSplitterAbsolutePointerDriverBinding 0001c350     ConSplitterDxe:ConSplitter.obj
+ 0003:00000368       _gConSplitterSimplePointerDriverBinding 0001c368     ConSplitterDxe:ConSplitter.obj
+ 0003:00000380       _mStdErr                   0001c380     ConSplitterDxe:ConSplitter.obj
+ 0003:00000420       _gConSplitterStdErrComponentName2 0001c420     ConSplitterDxe:ComponentName.obj
+ 0003:0000042c       _gConSplitterAbsolutePointerComponentName 0001c42c     ConSplitterDxe:ComponentName.obj
+ 0003:00000438       _gConSplitterConOutComponentName2 0001c438     ConSplitterDxe:ComponentName.obj
+ 0003:00000444       _gConSplitterConInComponentName2 0001c444     ConSplitterDxe:ComponentName.obj
+ 0003:00000450       _gConSplitterSimplePointerComponentName2 0001c450     ConSplitterDxe:ComponentName.obj
+ 0003:0000045c       _gConSplitterAbsolutePointerComponentName2 0001c45c     ConSplitterDxe:ComponentName.obj
+ 0003:00000468       _gConSplitterConOutComponentName 0001c468     ConSplitterDxe:ComponentName.obj
+ 0003:00000474       _gConSplitterSimplePointerComponentName 0001c474     ConSplitterDxe:ComponentName.obj
+ 0003:00000480       _gConSplitterStdErrComponentName 0001c480     ConSplitterDxe:ComponentName.obj
+ 0003:0000048c       _gConSplitterConInComponentName 0001c48c     ConSplitterDxe:ComponentName.obj
+ 0003:00000498       _mConSplitterConOutControllerNameTable 0001c498     ConSplitterDxe:ComponentName.obj
+ 0003:000004a8       _mConSplitterDriverNameTable 0001c4a8     ConSplitterDxe:ComponentName.obj
+ 0003:000004b8       _mConSplitterConInControllerNameTable 0001c4b8     ConSplitterDxe:ComponentName.obj
+ 0003:000004c8       _mConSplitterSimplePointerControllerNameTable 0001c4c8     ConSplitterDxe:ComponentName.obj
+ 0003:000004d8       _mConSplitterStdErrControllerNameTable 0001c4d8     ConSplitterDxe:ComponentName.obj
+ 0003:000004e8       _mConSplitterAbsolutePointerControllerNameTable 0001c4e8     ConSplitterDxe:ComponentName.obj
+ 0003:000004f8       _mConInIsConnect           0001c4f8     ConSplitterDxe:ConSplitter.obj
+ 0003:000004fc       _mPcd                      0001c4fc     DxePcdLib:DxePcdLib.obj
+ 0003:00000500       _gST                       0001c500     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:00000504       _gBS                       0001c504     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:00000508       _gImageHandle              0001c508     UefiBootServicesTableLib:UefiBootServicesTableLib.obj
+ 0003:0000050c       _gRT                       0001c50c     UefiRuntimeServicesTableLib:UefiRuntimeServicesTableLib.obj
+ 0003:00000510       _mReportStatusCodeLibStatusCodeProtocol 0001c510     DxeReportStatusCodeLib:ReportStatusCodeLib.obj
+
+ entry point at        0001:000000c0
+
+ Static symbols
+
+ 0000:ffff1000       .debug$S                   00010000     ConSplitterDxe.exp
+ 0001:00000016       _InternalMathDivRemU64x64.0 00011016     BaseLib:DivU64x64Remainder.obj
+ 0001:0000001b       _@DivRemU64x64             0001101b     BaseLib:DivU64x64Remainder.obj
+ 0001:0000002e       _@DivRemU64x64.1           0001102e     BaseLib:DivU64x64Remainder.obj
+ 0001:0000005b       @TooLarge                  0001105b     BaseLib:DivU64x64Remainder.obj
+ 0001:00000066       @Correct                   00011066     BaseLib:DivU64x64Remainder.obj
+ 0001:00000071       @Return                    00011071     BaseLib:DivU64x64Remainder.obj
+ 0004:00000000       .edata                     0001d000     ConSplitterDxe.exp
+ 0004:00000028       rgpv                       0001d028     ConSplitterDxe.exp
+ 0004:0000002c       rgszName                   0001d02c     ConSplitterDxe.exp
+ 0004:00000030       rgwOrd                     0001d030     ConSplitterDxe.exp
+ 0004:00000032       szName                     0001d032     ConSplitterDxe.exp
+ 0004:00000045       $N00001                    0001d045     ConSplitterDxe.exp

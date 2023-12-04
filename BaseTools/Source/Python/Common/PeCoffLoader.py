@@ -1,5 +1,5 @@
 from Common import EdkLogger
-from GenFv.common import GetReverseCode
+from GenFvs.common import GetReverseCode
 from FirmwareStorageFormat.PeImageHeader import *
 
 from ctypes import *

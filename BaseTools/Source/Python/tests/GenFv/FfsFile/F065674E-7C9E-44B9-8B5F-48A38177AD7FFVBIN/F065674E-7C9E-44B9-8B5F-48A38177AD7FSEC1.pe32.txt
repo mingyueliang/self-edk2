@@ -1,0 +1,1 @@
+GenSec -s EFI_SECTION_PE32 -o z:\birchstreamrp\intel\Build\BirchStreamRpPkg\DEBUG_VS2015x86\FV\Ffs\F065674E-7C9E-44B9-8B5F-48A38177AD7FFVBIN\F065674E-7C9E-44B9-8B5F-48A38177AD7FSEC1.pe32 Z:\BirchStreamRp\FDBin\BirchStreamRpPkg\BKCBinaries\AspeedVideo_2600\uefi_2600.efi
