@@ -1,4 +1,5 @@
 import ctypes
+import heapq
 from ctypes import *
 
 EFI_SUCCESS = 0
@@ -20,10 +21,13 @@ TBIT = 5
 CBIT = 9
 PBIT = 4
 NIL = 0
+UINT8_BIT = 8
+INIT_CRC = 0
+CRCPOLY = 0xA001
+PERC_FLAG = 0x8000
+
 mBitCount = 0
 mRemainder = 0
-
-UINT8_BIT = 8
 mSubBitBuf = None
 
 mSrc = b''
@@ -36,6 +40,7 @@ mCrc = 0
 mOutputPos = 0
 mOutputMask = 0
 
+# Huffman
 mCLen = [0] * NC
 mCCode = [0] * NC
 mTFreq = [0] * (2 * NT - 1)
@@ -46,13 +51,11 @@ mHeap = [0] * (NC + 1)
 mLeft = [0] * (2 * NC - 1)
 mRight = [0] * (2 * NC - 1)
 mLenCnt = [0] * 17
+mFreq = []
+mHeapSize = 0
+
 mText = bytearray(WNDSIZ * 2 + MAXMATCH)
 
-mBufSiz = 0
-mBuf = bytearray((16 * 1024) << 2)
-# mBuf = bytearray(1)
-mMatchLen = 0
-mFreq = []
 mSortPtr = []
 mN = 0
 
@@ -61,20 +64,18 @@ mCrcTable = [0] * (UINT8_MAX + 1)
 mPFreq = [0] * (2 * NP - 1)
 
 # LZ77
+mBufSiz = 16 * 1024
+mBuf = bytearray(mBufSiz)
+mMatchLen = 0
 mPos = 0
 mMatchPos = 0
-mAvail = 0
+mAvail = None
 mLevel = [0] * (WNDSIZ + UINT8_MAX + 1)
 mChildCount = [0] * (WNDSIZ + UINT8_MAX + 1)
-mPosition = [0] * ((WNDSIZ + UINT8_MAX + 1) * 2)
-mParent = [0] * (WNDSIZ * 2 * 2)
-mNext = [0] * ((MAX_HASH_VAL + 1) * 2)
-mPrev = [0] * (WNDSIZ * 2 * 2)
-mHeapSize = 0
-
-INIT_CRC = 0
-CRCPOLY = 0xA001
-PERC_FLAG = 0x8000
+mPosition = [0] * (WNDSIZ + UINT8_MAX + 1)
+mParent = [0] * (WNDSIZ * 2)
+mNext = [0] * (MAX_HASH_VAL + 1)
+mPrev = [0] * (WNDSIZ * 2)
 
 
 def HASH(a, b):
@@ -127,16 +128,16 @@ def MakeCrcTable():
 # Initialize String Info Log data structures
 def InitSlide():
     global mAvail
-    for i in range(WNDSIZ, WNDSIZ + UINT8_MAX, 1):
+    mAvail = 1
+    for i in range(WNDSIZ, WNDSIZ + UINT8_MAX + 1, 1):
         mLevel[i] = 1
         mPosition[i] = NIL
 
     for i in range(WNDSIZ, WNDSIZ * 2, 1):
         mParent[i] = NIL
-    mAvail = 1
 
     for i in range(1, WNDSIZ - 1, 1):
-        mNext[i] = i + 1
+        mNext[i] = (i + 1) & 0x7fff
 
     mNext[WNDSIZ - 1] = NIL
     for i in range(WNDSIZ * 2, MAX_HASH_VAL + 1, 1):
@@ -196,7 +197,12 @@ def Split(Old: int):
     global mAvail, mMatchPos, mMatchLen, mPos
 
     New = mAvail
+    print("new1: ", New)
     mAvail = mNext[New]
+    # if mAvail == 3217:
+    #     print("Here......")
+    print("new2: ", mAvail)
+    print("*" * 10)
     mChildCount[New] = 0
     t = mPrev[Old]
     mPrev[New] = t
@@ -565,9 +571,9 @@ def Output(c: int, p: int):
     mCFreq[c] += 1
 
     if (c >= (1 << UINT8_BIT)):
-        # ?
-        index0 = mBuf[CPos]
+        t = mBuf[CPos]
         mBuf[CPos] |= mOutputMask
+        t1 = mBuf[CPos]
         # Pointer need 2 byte
         mBuf[mOutputPos] = (p >> UINT8_BIT) & 0xff
         mOutputPos += 1
@@ -600,6 +606,7 @@ def InsertNode():
         while q == NIL:
             r = mNext[r]
             q = mParent[r]
+
         while mLevel[q] >= mMatchLen:
             r = q
             q = mParent[q]
@@ -611,8 +618,6 @@ def InsertNode():
             mPosition[t] = (mPos | PERC_FLAG) & 0x7fff
     else:
         # Locate the target tree
-        t1 = mText[mPos]
-        t2 = mText[mPos + 1]
         q = (mText[mPos] + WNDSIZ) & 0x7fff
         c = mText[mPos + 1]
         r = Child(q, c)
@@ -671,6 +676,7 @@ def DeleteNode():
     global mPos, mAvail
     if mParent[mPos] == NIL:
         return
+
     r = mPrev[mPos]
     s = mNext[mPos]
     mNext[r] = s
@@ -679,7 +685,6 @@ def DeleteNode():
     mParent[mPos] = NIL
     mChildCount[r] -= 1
     if r >= WNDSIZ or mChildCount[r] > 1:
-        mChildCount[r] -= 1
         return
 
     t = (mPosition[r] & ~PERC_FLAG) & 0x7fff
@@ -724,7 +729,7 @@ def DeleteNode():
 # Advance the current position (read in new data if needed).
 # Delete outdated string info. Find a match string for current position.
 def GetNextMatch():
-    global mRemainder, mPos, mSrc, mSrcAdd, mSrcUpperLimit, mText, mOrigSize
+    global mRemainder, mPos, mSrc, mSrcAdd, mSrcUpperLimit, mOrigSize
     mRemainder -= 1
     mPos += 1
     if mPos == WNDSIZ * 2:
@@ -756,7 +761,8 @@ def FreadCrc(start: int, size: int):
 
     # Update CRC table
     Index = WNDSIZ
-    while i - 1 >= 0:
+    i -= 1
+    while i >= 0:
         UPDATE_CRC(mText[Index])
         Index += 1
         i -= 1
@@ -766,20 +772,16 @@ def FreadCrc(start: int, size: int):
 
 # The main controlling routine for compression process.
 def Encode() -> int:
-    global mBufSiz, mBuf, mRemainder, mMatchLen, mPos, mSrcAdd, mSrcUpperLimit, mText, mOrigSize
-    mBufSiz = 16 * 1024
-
+    global mBufSiz, mRemainder, mMatchLen, mPos, mSrcAdd, mSrcUpperLimit, mOrigSize
     InitSlide()
-
     HufEncodeStart()
 
-    # mRemainder = FreadCrc(&mText[WNDSIZ], WNDSIZ + MAXMATCH);
     mRemainder = FreadCrc(WNDSIZ, WNDSIZ + MAXMATCH)
 
     # Start compress data
     mMatchLen = 0
     mPos = WNDSIZ
-    Text = mText[mPos:]
+    # Text = mText[mPos:]
     InsertNode()
     if mMatchLen > mRemainder:
         mMatchLen = mRemainder
@@ -794,15 +796,12 @@ def Encode() -> int:
         if mMatchLen > LastMatchLen or LastMatchLen < THRESHOLD:
             # Not enough benefits are gained by outputting a pointer,
             # so just output the original character
-            print(hex(Text[mPos-WNDSIZ-1]))
-
-            print(hex(mText[mPos - 1]))
-            print(".........")
             Output(mText[mPos - 1], 0)
         else:
             # Outputting a pointer is beneficial enough, do it.
             Output(LastMatchLen + UINT8_MAX + 1 - THRESHOLD,
                    (mPos - LastMatchPos - 2) & (WNDSIZ - 1))
+
             LastMatchLen -= 1
             while LastMatchLen > 0:
                 GetNextMatch()
@@ -814,14 +813,23 @@ def Encode() -> int:
     return EFI_SUCCESS
 
 
-# The main compression routine.
+
 def EfiCompress(SrcSize: int, DstSize: int, SrcBuffer=b'', DstBuffer=b''):
+    """
+    The main compression routine.
+    :param SrcSize: The buffer storing the source data
+    :param DstSize: The size of source data
+    :param SrcBuffer: The buffer to store the compressed data
+    :param DstBuffer: On input, the size of DstBuffer; On output,
+                     the size of the actual compressed data.
+    :return:
+    """
     global mSrc, mSrcAdd, mSrcUpperLimit, mDst, mDstAdd, mDstUpperLimit, mOrigSize, mCompSize
     Status = EFI_SUCCESS
 
     mSrc = SrcBuffer
     mSrcUpperLimit = mSrcAdd + SrcSize
-    # print(mSrcUpperLimit)
+
     mDst = DstBuffer
     mDstUpperLimit = mDstAdd + DstSize
 
@@ -840,7 +848,7 @@ def EfiCompress(SrcSize: int, DstSize: int, SrcBuffer=b'', DstBuffer=b''):
 
     # Null terminate the compressed data
     if mDstAdd < mDstUpperLimit:
-        mDst += b'\0'
+        mDst += bytes(1)
         mDstAdd += 1
 
     # Fill in compressed size and original size
@@ -858,3 +866,79 @@ def EfiCompress(SrcSize: int, DstSize: int, SrcBuffer=b'', DstBuffer=b''):
     Status = EFI_SUCCESS
 
     return Status, mDst, DstSize
+
+
+# Node class
+class Node:
+    def __init__(self, name=None, freq=None):
+        self.freq = freq
+        self.name = name
+        self.lchild = None
+        self.rchild = None
+        self.code = None
+
+
+# Priority Queue
+class PriorityQueue:
+    def __init__(self, Freq=None):
+        if Freq is not None:
+            self.Queue = heapq.heapify(Freq)
+        else:
+            self.Queue = []
+
+    def push(self, item):
+        heapq.heappush(self.Queue, item)
+
+    def pop(self):
+        return heapq.heappop(self.Queue)
+
+    def __len__(self):
+        return len(self.Queue)
+
+
+# Huffman class
+class HuffmanTree:
+    def __init__(self, CFreq=None):
+        self.CFreq = CFreq
+        self.CreateForest()
+        # self.Root = None
+
+    def CreateForest(self):
+        Nodes = list()
+        for index in range(len(self.CFreq)):
+            if self.CFreq[index]:
+                Nodes.append(Node(index, self.CFreq[index]))
+        return Nodes
+
+    def PriorityQueue(self, Nodes):
+        return PriorityQueue(Nodes)
+
+    def MakeTree(self, Nodes):
+        Queue = self.PriorityQueue(Nodes)
+        while len(Queue) > 1:
+            lchild = Queue.pop()
+            rchild = Queue.pop()
+            Root = Node(None, lchild.freq + rchild.freq)
+            Root.lchild = lchild
+            Root.rchild = rchild
+            Queue.push(Root)
+
+        return Queue.pop()
+
+    def IsLeafNode(self, Node):
+        if Node.rchild == None and Node.lchild == None:
+            return True
+        else:
+            return False
+
+    def CreateHuffmanCodes(self, Tree, prefix, codes):
+        # prefix = ''
+        if self.IsLeafNode(Tree):
+            codes[Tree.code] = prefix
+        else:
+            left_prefix = prefix + '0'
+            self.CreateHuffmanCodes(Tree.lchild, left_prefix, codes)
+            right_prefix = prefix + '1'
+            self.CreateHuffmanCodes(Tree.rchild, right_prefix, codes)
+
+        return codes
