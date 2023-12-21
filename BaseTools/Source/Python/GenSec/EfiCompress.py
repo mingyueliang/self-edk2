@@ -53,6 +53,7 @@ mRight = [0] * (2 * NC - 1)
 mLenCnt = [0] * 17
 mFreq = []
 mHeapSize = 0
+Depth = 0
 
 mText = bytearray(WNDSIZ * 2 + MAXMATCH)
 
@@ -74,12 +75,12 @@ mLevel = [0] * (WNDSIZ + UINT8_MAX + 1)
 mChildCount = [0] * (WNDSIZ + UINT8_MAX + 1)
 mPosition = [0] * (WNDSIZ + UINT8_MAX + 1)
 mParent = [0] * (WNDSIZ * 2)
-mNext = [0] * (MAX_HASH_VAL + 1)
+mNext = [0] * ((MAX_HASH_VAL + 1) << 3)
 mPrev = [0] * (WNDSIZ * 2)
 
 
-def HASH(a, b):
-    return a + (b << (WNDBIT - 9)) + WNDSIZ * 2
+def HASH(p, c):
+    return p + (c << (WNDBIT - 9)) + WNDSIZ * 2
 
 
 # TODO: Error
@@ -195,14 +196,8 @@ def MakeChild(q: int, c: int, pos: int):
 # Split a node
 def Split(Old: int):
     global mAvail, mMatchPos, mMatchLen, mPos
-
     New = mAvail
-    print("new1: ", New)
     mAvail = mNext[New]
-    # if mAvail == 3217:
-    #     print("Here......")
-    print("new2: ", mAvail)
-    print("*" * 10)
     mChildCount[New] = 0
     t = mPrev[Old]
     mPrev[New] = t
@@ -226,11 +221,10 @@ def PutBits(n: int, x: int):
         mSubBitBuf |= x << mBitCount
     else:
         n -= mBitCount
-        Temp = mSubBitBuf | x >> n
-        # print(Temp)
+        Temp = (mSubBitBuf | (x >> n)) & 0xff
 
         if mDstAdd < mDstUpperLimit:
-            mDst += Temp.to_bytes(4, byteorder='little')
+            mDst += Temp.to_bytes(1, byteorder='little')
             # mDst = mDst.replace(mDst[mDstAdd:mDstAdd+1],Temp.to_bytes(1,byteorder ='little'))
             mDstAdd += 1
 
@@ -239,10 +233,10 @@ def PutBits(n: int, x: int):
             mBitCount = UINT8_BIT - n
             mSubBitBuf = x << mBitCount
         else:
-            Temp = int(x >> (n - UINT8_BIT))
+            Temp = (x >> (n - UINT8_BIT)) & 0xff
 
             if mDstAdd < mDstUpperLimit:
-                mDst += Temp.to_bytes(4, byteorder='little')
+                mDst += Temp.to_bytes(1, byteorder='little')
                 # mDst = mDst.replace(mDst[mDstAdd:mDstAdd+1],Temp.to_bytes(1,byteorder ='little'))
                 mDstAdd += 1
 
@@ -334,7 +328,7 @@ def CountTFreq():
                 i += 1
                 Count += 1
             if Count <= 2:
-                mTFreq[0] = mTFreq[0] + Count
+                mTFreq[0] = (mTFreq[0] + Count) & 0xffff
             elif Count <= 18:
                 mTFreq[1] += 1
             elif Count == 19:
@@ -348,7 +342,7 @@ def CountTFreq():
 
 def DownHeap(i: int):
     # Priority queue: send i-th entry down heap
-    global mHeapSize
+    # global mHeapSize
     k = mHeap[i]
     j = 2 * i
     while j <= mHeapSize:
@@ -364,6 +358,8 @@ def DownHeap(i: int):
 
 # Count the number of each code length for a Huffman tree.
 def CountLen(i: int):
+    global Depth
+
     if i < mN:
         mLenCnt[Depth if Depth < 16 else 16] += 1
     else:
@@ -371,24 +367,26 @@ def CountLen(i: int):
         CountLen(mLeft[i])
         CountLen(mRight[i])
         Depth -= 1
+    Depth = 0
 
 
 # Create code length array for a Huffman tree
 def MakeLen(Root: int):
     mSortPtrAdd = 0
-    for i in range(16):
+    for i in range(17):
         mLenCnt[i] = 0
     CountLen(Root)
+
 
     # Adjust the length count array so that
     # no code will be generated longer than its designated length
     Cum = 0
-    for i in range(15, 0, -1):
+    for i in range(16, 0, -1):
         Cum += mLenCnt[i] << (16 - i)
+
     while Cum != (1 << 16):
         mLenCnt[16] -= 1
         for i in range(15, 0, -1):
-            mLenCnt[16] -= 1
             if mLenCnt[i] != 0:
                 mLenCnt[i] -= 1
                 mLenCnt[i + 1] += 2
@@ -396,9 +394,11 @@ def MakeLen(Root: int):
         Cum -= 1
     for i in range(16, 0, -1):
         k = mLenCnt[i]
-        while (k - 1 >= 0):
+        k -= 1
+        while (k >= 0):
             mLen[mSortPtr[mSortPtrAdd]] = i
             mSortPtrAdd += 1
+            k -= 1
 
 
 def MakeCode(n: int, Len=[], Code=[]):
@@ -410,18 +410,17 @@ def MakeCode(n: int, Len=[], Code=[]):
         Code: stores codes for each symbol
 
     Returns:
-
     '''
-    Start = [] * 18
+    Start = [0] * 18
     Start[1] = 0
-    for i in range(17):
-        Start[i + 1] = (Start[i] + mLenCnt[i]) << 1
+    for i in range(1, 17):
+        Start[i + 1] = ((Start[i] + mLenCnt[i]) << 1) & 0xffff
     for i in range(n):
         Code[i] = Start[Len[i]]
         Start[Len[i]] += 1
 
 
-def MakeTree(NParm: int, FreqParm=[], LenParm=[], CodeParm=[]):
+def MakeTree(NParm: int, FreqParm, LenParm, CodeParm):
     '''
     Generates Huffman codes given a frequency distribution of symbols
     Args:
@@ -432,7 +431,7 @@ def MakeTree(NParm: int, FreqParm=[], LenParm=[], CodeParm=[]):
 
     Returns: Root of the Huffman tree.
     '''
-    global mN, mHeapSize, mSortPtr, mSortPtrAdd
+    global mN, mHeapSize, mSortPtr, mSortPtrAdd, mFreq, mLen
 
     mN = NParm
     mFreq = FreqParm
@@ -451,19 +450,19 @@ def MakeTree(NParm: int, FreqParm=[], LenParm=[], CodeParm=[]):
     for i in range(mHeapSize // 2, 0, -1):
         # Make priority queue
         DownHeap(i)
+
     mSortPtr = CodeParm
     mSortPtrAdd = 0
-
     i = mHeap[1]
     if i < mN:
-        mSortPtr = i
-        mSortPtr += 1
+        mSortPtr[mSortPtrAdd] = i & 0xffff
+        mSortPtrAdd += 1
     mHeap[1] = mHeap[mHeapSize]
     mHeapSize -= 1
     DownHeap(1)
     j = mHeap[1]
     if j < mN:
-        mSortPtr[mSortPtrAdd] = j
+        mSortPtr[mSortPtrAdd] = j & 0xffff
         mSortPtrAdd += 1
     k = Avail
     Avail += 1
@@ -476,24 +475,24 @@ def MakeTree(NParm: int, FreqParm=[], LenParm=[], CodeParm=[]):
     while mHeapSize > 1:
         i = mHeap[1]
         if i < mN:
-            mSortPtr = i
-            mSortPtr += 1
+            mSortPtr[mSortPtrAdd] = i & 0xffff
+            mSortPtrAdd += 1
         mHeap[1] = mHeap[mHeapSize]
         mHeapSize -= 1
         DownHeap(1)
         j = mHeap[1]
         if j < mN:
-            mSortPtr[mSortPtrAdd] = j
+            mSortPtr[mSortPtrAdd] = j & 0xffff
             mSortPtrAdd += 1
         k = Avail
         Avail += 1
-        mFreq[k] = (mFreq[i] + mFreq[j])
-        mHeap[1] = k
+        mFreq[k] = (mFreq[i] + mFreq[j]) & 0xffff
+        mHeap[1] = k & 0xffff
         DownHeap(1)
-        mLeft[k] = i
-        mRight[k] = j
+        mLeft[k] = i & 0xffff
+        mRight[k] = j & 0xffff
 
-    mSortPtr = CodeParm
+    # CodeParm = mSortPtr
     mSortPtrAdd = 0
     MakeLen(k)
     MakeCode(NParm, LenParm, CodeParm)
@@ -528,6 +527,7 @@ def SendBlock():
         PutBits(PBIT, 0)
         PutBits(PBIT, Root)
     Pos = 0
+    Flags = 0
     for i in range(Size):
         if i % UINT8_BIT == 0:
             Flags = mBuf[Pos]
@@ -550,15 +550,13 @@ def SendBlock():
     for i in range(NP):
         mPFreq[i] = 0
 
-
+bufsize = 0
 # Outputs an Original Character or a Pointer
 def Output(c: int, p: int):
-    global mOutputMask, mOutputPos, mBufSiz, mBuf
-    CPos = 0
+    global mOutputMask, mOutputPos, mBufSiz, mBuf, CPos, bufsize
     mOutputMask >>= 1
     if mOutputMask == 0:
         mOutputMask = 1 << (UINT8_BIT - 1)
-        # LZ77压缩结果，按块进行压缩
         if mOutputPos >= mBufSiz - 3 * UINT8_BIT:
             SendBlock()
             mOutputPos = 0
@@ -569,11 +567,9 @@ def Output(c: int, p: int):
     mBuf[mOutputPos] = c & 0xff
     mOutputPos += 1
     mCFreq[c] += 1
-
+    bufsize += 1
     if (c >= (1 << UINT8_BIT)):
-        t = mBuf[CPos]
-        mBuf[CPos] |= mOutputMask
-        t1 = mBuf[CPos]
+        mBuf[CPos] = mBuf[CPos] | mOutputMask
         # Pointer need 2 byte
         mBuf[mOutputPos] = (p >> UINT8_BIT) & 0xff
         mOutputPos += 1
@@ -586,7 +582,7 @@ def Output(c: int, p: int):
             p >>= 1
             c1 += 1
         mPFreq[c1] += 1
-
+        bufsize += 2
 
 # Insert string info for current position into the String Info Log
 def InsertNode():
@@ -619,7 +615,7 @@ def InsertNode():
     else:
         # Locate the target tree
         q = (mText[mPos] + WNDSIZ) & 0x7fff
-        c = mText[mPos + 1]
+        c = mText[mPos+1]
         r = Child(q, c)
         if r == NIL:
             MakeChild(q, c, mPos)
@@ -683,8 +679,7 @@ def DeleteNode():
     mPrev[s] = r
     r = mParent[mPos]
     mParent[mPos] = NIL
-    mChildCount[r] -= 1
-    if r >= WNDSIZ or mChildCount[r] > 1:
+    if r >= WNDSIZ or mChildCount[r] - 1 > 1:
         return
 
     t = (mPosition[r] & ~PERC_FLAG) & 0x7fff
@@ -781,7 +776,6 @@ def Encode() -> int:
     # Start compress data
     mMatchLen = 0
     mPos = WNDSIZ
-    # Text = mText[mPos:]
     InsertNode()
     if mMatchLen > mRemainder:
         mMatchLen = mRemainder
@@ -826,12 +820,13 @@ def EfiCompress(SrcSize: int, DstSize: int, SrcBuffer=b'', DstBuffer=b''):
     """
     global mSrc, mSrcAdd, mSrcUpperLimit, mDst, mDstAdd, mDstUpperLimit, mOrigSize, mCompSize
     Status = EFI_SUCCESS
-
+    # mDstAdd = 0
+    mSrcAdd = 0
     mSrc = SrcBuffer
-    mSrcUpperLimit = mSrcAdd + SrcSize
+    mSrcUpperLimit = SrcSize
 
     mDst = DstBuffer
-    mDstUpperLimit = mDstAdd + DstSize
+    mDstUpperLimit = DstSize
 
     PutDword(0)
     PutDword(0)
@@ -852,18 +847,18 @@ def EfiCompress(SrcSize: int, DstSize: int, SrcBuffer=b'', DstBuffer=b''):
         mDstAdd += 1
 
     # Fill in compressed size and original size
-    mDst = DstBuffer
+    # mDst = DstBuffer
     PutDword(mCompSize + 1)
     PutDword(mOrigSize)
-    print(len(mDst))
 
     # Return
-    # if mCompSize + 1 + 8 > DstSize:
-    #     DstSize = mCompSize + 1 + 8
-    #     Status = EFI_BUFFER_TOO_SMALL
-    # else:
-    DstSize = mCompSize + 1 + 8
-    Status = EFI_SUCCESS
+    if mCompSize + 1 + 8 > DstSize:
+        DstSize = mCompSize + 1 + 8
+        Status = EFI_BUFFER_TOO_SMALL
+    else:
+        DstSize = mCompSize + 1 + 8
+        Status = EFI_SUCCESS
+
 
     return Status, mDst, DstSize
 
@@ -942,3 +937,5 @@ class HuffmanTree:
             self.CreateHuffmanCodes(Tree.rchild, right_prefix, codes)
 
         return codes
+
+

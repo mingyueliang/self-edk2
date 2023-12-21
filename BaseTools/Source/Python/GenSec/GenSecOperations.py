@@ -219,7 +219,7 @@ def GetSectionContents(InputFileNum: int, InputFileName=[], InputFileAlign=[],
                     TeOffset = TeHeader.StrippedSize - sizeof(TeHeader)
 
             elif TempSectHeader.Type == EFI_SECTION_GUID_DEFINED:
-                GuidSectHeader = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data[HeaderSize])
+                GuidSectHeader = EFI_GUID_DEFINED_SECTION.from_buffer_copy(Data[HeaderSize:])
                 if GuidSectHeader.Attributes & EFI_GUIDED_SECTION_PROCESSING_REQUIRED == 0:
                     HeaderSize = GuidSectHeader.DataOffset
             # Revert TeOffset to the converse value relative to Alignment
@@ -313,20 +313,20 @@ def GenSectionCompressionSection(InputFileNum: int, SectCompSubType: c_uint8, In
             CompressedLength = res[2]
 
 
-        # if Status == EFI_BUFFER_TOO_SMALL:
-        #     HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER) + sizeof(EFI_COMPRESSION_SECTION)
-        #     if CompressedLength + HeaderLength >= MAX_SECTION_SIZE:
-        #         HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER2) + sizeof(EFI_COMPRESSION_SECTION2)
-        #     TotalLength = CompressedLength + HeaderLength
-        #     # OutputBuffer = b'\0' * TotalLength
-        #     res = CompressFunction(InputLength, CompressedLength, FileBuffer, OutputBuffer)
-        #     if isinstance(res, int):
-        #         Status = res
-        #     else:
-        #         Status = res[0]
-        #         OutputBuffer = res[1]
-        #         CompressedLength = res[2]
-        #         # print(res)
+        if Status == EFI_BUFFER_TOO_SMALL:
+            HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER) + sizeof(EFI_COMPRESSION_SECTION)
+            if CompressedLength + HeaderLength >= MAX_SECTION_SIZE:
+                HeaderLength = sizeof(EFI_COMMON_SECTION_HEADER2) + sizeof(EFI_COMPRESSION_SECTION2)
+            TotalLength = CompressedLength + HeaderLength
+            # OutputBuffer = b'\0' * TotalLength
+            res = CompressFunction(InputLength, CompressedLength, FileBuffer, OutputBuffer)
+            if isinstance(res, int):
+                Status = res
+            else:
+                Status = res[0]
+                OutputBuffer = res[1]
+                CompressedLength = res[2]
+                # print(res)
 
         FileBuffer = OutputBuffer
 
@@ -433,7 +433,7 @@ def GenSectionGuidDefinedSection(InputFileNum: int, VendorGuid: GUID, DataAttrib
             GuidSectionHeader.Attributes = EFI_GUIDED_SECTION_AUTH_STATUS_VALID
             GuidSectionHeader.DataOffset = sizeof(EFI_COMMON_SECTION_HEADER2) + sizeof(EFI_GUID_DEFINED_SECTION) + sizeof(CRC32_SECTION_HEADER)
             Crc32GuidSect2.CRC32Checksum = Crc32Checksum
-            FileBuffer = struct2stream(EFI_COMMON_SECTION_HEADER2) + struct2stream(GuidSectionHeader) + struct2stream(Crc32GuidSect2) + FileBuffer
+            FileBuffer = struct2stream(CommonHeader) + struct2stream(GuidSectionHeader) + struct2stream(Crc32GuidSect2) + FileBuffer
         else:
             CommonHeader = EFI_COMMON_SECTION_HEADER()
             GuidSectionHeader = EFI_GUID_DEFINED_SECTION()
@@ -444,7 +444,7 @@ def GenSectionGuidDefinedSection(InputFileNum: int, VendorGuid: GUID, DataAttrib
             GuidSectionHeader.Attributes = EFI_GUIDED_SECTION_AUTH_STATUS_VALID
             GuidSectionHeader.DataOffset = sizeof(CRC32_SECTION_HEADER)
             Crc32GuidSect.CRC32Checksum = Crc32Checksum
-            FileBuffer = struct2stream(EFI_COMMON_SECTION_HEADER) + struct2stream(GuidSectionHeader) + struct2stream(Crc32GuidSect) + FileBuffer
+            FileBuffer = struct2stream(CommonHeader) + struct2stream(GuidSectionHeader) + struct2stream(Crc32GuidSect) + FileBuffer
     else:
         if TotalLength >= MAX_SECTION_SIZE:
             CommonHeader = EFI_COMMON_SECTION_HEADER2()
