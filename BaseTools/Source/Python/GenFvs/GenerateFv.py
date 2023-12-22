@@ -441,7 +441,7 @@ class GenerateFvFile(object):
 
             # FvMapName = self.MapFileName
         else:
-            self.MapFileName = os.path.splitext(self.OutFileName)[0] + ".map"
+            self.MapFileName = self.OutFileName + ".map"
             if len(self.MapFileName) > MAX_LONG_FILE_PATH + 1:
                 EdkLogger.error("", OPTION_VALUE_INVALID,
                                 "Invalid option value, FvFileName %s is too long!" % self.MapFileName)
@@ -1569,7 +1569,7 @@ class GenerateFvFile(object):
                 self.FvImage[self.VtfFileImageAddress:] = VtfImage
 
                 FileGuidToString = PrintGuidToBuffer(FfsHeader.Name, True)
-                with open(self.FvReportName, 'w') as FRF:
+                with open(self.FvReportName, 'a') as FRF:
                     FRF.write("0x%08X %s\n" % (
                         self.VtfFileImageAddress, FileGuidToString))
                 EdkLogger.info("Add VTF FFS file in FV image.")
@@ -2148,7 +2148,7 @@ class GenerateFvFile(object):
                     for key in matchList:
                         if key.split(' ')[1] == "Size":
                             IsUseClang = True
-                            FunctionType = 1
+                            # FunctionType = 1
                             continue
                     FunctionType = 1
 
@@ -2173,30 +2173,29 @@ class GenerateFvFile(object):
                             ModuleContent += "%s\n" % FunctionTypeName
                 else:
                     match = re.match(
-                        r'\s*\S+\s+\w+\s+[a-zA-Z0-9]+\s+[a-zA-Z]{1}\b',
+                        r'\s*(\S+)\s+(\S+)\s+([a-zA-Z0-9]+)\s+([a-zA-Z]{1})\b',
                         line)
                     if match:
-                        matchObjlst = [i for i in match.group().split(' ') if i]
-                        FunctionName = matchObjlst[1].strip()
-                        FunctionAddress = int(matchObjlst[2].strip(), 16)
-                        FunctionTypeName = matchObjlst[3].strip()
+
+                        FunctionName = match.group(2).strip()
+                        FunctionAddress = int(match.group(3).strip(), 16)
+                        FunctionTypeName = match.group(4).strip()
                         if FunctionTypeName[0] == 'f' or FunctionTypeName[
                             0] == 'F':
                             ModuleContent += '  0x%010x    ' % (
                                 ImageBaseAddress + FunctionAddress - LinkTimeBaseAddress)
                             ModuleContent += '%s\n' % FunctionName
             elif FunctionType == 2:
-                match = re.match(r'\s*\w+\s+\w+\s+[a-zA-Z0-9]+\s+[a-zA-Z]{1}\b',
+                match = re.match(r'\s*(\S+)\s+(\S+)\s+([a-zA-Z0-9]+)\s+([a-zA-Z]{1})\b',
                                  line)
                 if match:
-                    matchObjlst = match.group().split(' ')
-                    FunctionAddress = int(matchObjlst[2].strip(), 16)
-                    FunctionTypeName = matchObjlst[3].strip()
-                    FunctionName = matchObjlst[1].strip()
+                    FunctionAddress = int(match.group(3), 16)
+                    FunctionTypeName = match.group(4).strip()
+                    FunctionName = match.group(2).strip()
                     if FunctionTypeName[0] == 'f' or FunctionTypeName[0] == 'F':
                         ModuleContent += "  0x%010x     " % (
                             ImageBaseAddress + FunctionAddress - LinkTimeBaseAddress)
-                        ModuleContent += "%s\n"
+                        ModuleContent += "%s\n" % FunctionName
         ModuleContent += "\n\n"
         with open(FvMapFile, 'a') as mapfile:
             mapfile.write(ModuleContent)
