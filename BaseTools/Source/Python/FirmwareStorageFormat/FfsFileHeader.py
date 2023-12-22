@@ -67,6 +67,10 @@ EFI_FILE_HEADER_INVALID       = 0x20
 #
 EFI_FFS_SECTION_ALIGNMENT_PADDING_GUID = ModifyGuidFormat("04132C8D-0A22-4FA8-826E8BBFEFDB836C")
 
+#
+# VTF file Guid
+#
+EFI_FFS_VOLUME_TOP_FILE_GUID = ModifyGuidFormat("1ba0062e-c779-4582-8566-336ae8f78f09")
 class CHECK_SUM(Structure):
     _pack_ = 1
     _fields_ = [

@@ -23,6 +23,7 @@ from Common.BuildToolError import *
 from Common import EdkLogger
 from GenFvs.common import *
 from GenFvs.ParseInf import *
+from GenFvs.GenerateFv import GenerateFvFile
 
 # Different file separator for Linux and Windows
 FILE_SEP_CHAR = '/'
@@ -205,11 +206,26 @@ mArm = False
 mLoongArch = False
 mRiscV = False
 mFvBaseAddress = list()
+
+
+def SIGNATURE_16(A, B):
+    return (A | (B << 8))
+
+
+def SIGNATURE_32(A, B, C, D):
+    return SIGNATURE_16(A, B) | (SIGNATURE_16(C, D) << 16)
+
+
+def SIGNATURE_64(A, B, C, D, E, F, G, H):
+    return (SIGNATURE_32(A, B, C, D) | (
+        (SIGNATURE_32(E, F, G, H)) << 32) & 0xffffffffffffffff)
+
+
 #
 # VTF (Firmware Volume Top File) signatures
 #
 IA32_X64_VTF_SIGNATURE_OFFSET = 0x14
-# IA32_X64_VTF0_SIGNATURE = SIGNATURE_32('V','T','F',0)
+IA32_X64_VTF0_SIGNATURE = SIGNATURE_32(ord('V'), ord('T'), ord('F'), 0)
 
 #
 # Defines to calculate the offset for PEI CORE entry points
@@ -309,7 +325,8 @@ class FvLibrary(object):
             FvBuffer)
         FvHeaderLength = FvHeader.HeaderLength
         HeaderBuffer = FvBuffer[:FvHeaderLength]
-        Nums = (len(HeaderBuffer) - sizeof(EFI_FIRMWARE_VOLUME_HEADER) + sizeof(EFI_FV_BLOCK_MAP_ENTRY)) // sizeof(EFI_FV_BLOCK_MAP_ENTRY)
+        Nums = (len(HeaderBuffer) - sizeof(EFI_FIRMWARE_VOLUME_HEADER) + sizeof(
+            EFI_FV_BLOCK_MAP_ENTRY)) // sizeof(EFI_FV_BLOCK_MAP_ENTRY)
         return Refine_FV_Header(Nums).from_buffer_copy(HeaderBuffer)
 
     def VerifyFfsFile(self, FfsFileBuffer: bytes):
@@ -428,8 +445,6 @@ class FvLibrary(object):
             NextFileOff += 1
         return NextFileOff
 
-
-
     def GetFileByType(self, FileType, Instance):
         if self.FvHeader == None or self.FvLength == 0:
             EdkLogger.error(None, PARAMETER_INVALID,
@@ -445,6 +460,8 @@ class FvLibrary(object):
 
         while CurrentFileOff:
             CurrentFile = GetFfsHeader(self.FvBuffer[CurrentFileOff:])
+            if not CurrentFile:
+                return
             if FileType == EFI_FV_FILETYPE_ALL or CurrentFile.Type == FileType:
                 FileCount += 1
 
@@ -475,7 +492,7 @@ def GetSectionByType(FfsBuffer: bytes, SectionType: str, Instance: int):
 
     # We have already verified the FFS header before this.
     # So pass
-    FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsBuffer)
+    FfsHeader = GetFfsHeader(FfsBuffer)
 
     # Initialize the number of matching sections found.
     SectionCount = 0
@@ -515,13 +532,13 @@ def SearchSectionByType(FirstSectionOff, FfsBuffer, SectionType, StartIndex,
                 CurrentCommonSection = EFI_COMMON_SECTION_HEADER.from_buffer_copy(
                     FfsBuffer[CurrentSectionOff:])
             GuidSection = EFI_GUID_DEFINED_SECTION.from_buffer_copy(FfsBuffer[
-                                                                    CurrentSectionOff + CurrentCommonSection.Common_Header_Size:])
+                                                                    CurrentSectionOff + CurrentCommonSection.Common_Header_Size():])
             GuidSecAttr = GuidSection.Attributes
             GuidDataOffset = GuidSection.DataOffset
 
         if SectionType != EFI_SECTION_GUID_DEFINED and CurrentCommonSection.Type == EFI_SECTION_GUID_DEFINED and not (
             GuidSecAttr & EFI_GUIDED_SECTION_PROCESSING_REQUIRED):
-            InnerCommonSectionOff = FirstSectionOff + CurrentCommonSection.Common_Header_Size + GuidDataOffset
+            InnerCommonSectionOff = FirstSectionOff + CurrentCommonSection.Common_Header_Size() + GuidDataOffset
 
             SearchSectionByType(InnerCommonSectionOff, FfsBuffer, SectionType,
                                 StartIndex, Instance)
@@ -533,8 +550,9 @@ def SearchSectionByType(FirstSectionOff, FfsBuffer, SectionType, StartIndex,
     # EdkLogger.warn(None, 0, "%s not found in this FFS file." % SectionType)
     return
 
-
     # @staticmethod
+
+
 def GetFfsHeader(FfsBuffer: bytes):
     if len(FfsBuffer) == 0:
         return
@@ -542,6 +560,7 @@ def GetFfsHeader(FfsBuffer: bytes):
     if FfsHeader.Attributes & FFS_ATTRIB_LARGE_FILE:
         FfsHeader = EFI_FFS_FILE_HEADER2.from_buffer_copy(FfsBuffer)
     return FfsHeader
+
 
 def _ARM_JUMP_TO_THUMB(Imm32):
     return (0xfa000000 |

@@ -9,6 +9,7 @@
 #
 
 import argparse
+import ctypes
 import os.path
 import logging
 import re
@@ -17,6 +18,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from GenFvs.FvInternalLib import *
 from GenFvs.UefiCapsule import *
+from FirmwareStorageFormat.FfsFileHeader import EFI_FFS_VOLUME_TOP_FILE_GUID
 
 from Common.LongFilePathSupport import LongFilePath
 from Common.BuildVersion import gBUILD_VERSION
@@ -181,13 +183,6 @@ def GenFvApi():
         GenFvObject.FvTotalSize - GenFvObject.FvTakenSize))
 
 
-class MemoryFile:
-    def __init__(self):
-        self.FileImage = None
-        self.CurrentFilePointer = None
-        self.Eof = None
-
-
 class GenerateFvFile(object):
     def __init__(self, Options):
         self.Options = Options
@@ -224,6 +219,7 @@ class GenerateFvFile(object):
         self.MaxFfsAlignment = 0
 
         self.VtfFileImageAddress = None
+        self.VtfFileFlag = False
 
         # self.Arm = None
 
@@ -474,7 +470,6 @@ class GenerateFvFile(object):
         if self.FvDataInfo.FvAttributes == 0:
             # Set Default Fv Attribute
             self.FvDataInfo.FvAttributes = FV_DEFAULT_ATTRIBUTE
-
 
         if self.FvDataInfo.FvAttributes & EFI_FVB2_ERASE_POLARITY:
             # Init FvImage is 0xff
@@ -931,16 +926,17 @@ class GenerateFvFile(object):
                 else:
                     FfsHeaderSize = sizeof(EFI_FFS_FILE_HEADER())
                 # Read ffs file header
-                FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsData)
+                # FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsData)
+                FfsHeader = self.GetFfsHeader(FfsData)
 
                 if self.FvDataInfo.IsPiFvImage:
                     # Check whether this ffs file is vtf file
                     if self.IsVtfFile(FfsHeader):
-                        if VtfFileFlag:
+                        if self.VtfFileFlag:
                             EdkLogger.error('', FILE_CHECKSUM_FAILURE,
                                             "Invalid, One Fv image can't have two vtf files.")
                             # return FILE_CHECKSUM_FAILURE
-                        VtfFileFlag = True
+                        self.VtfFileFlag = True
                         VtfFileSize = FfsFileSize
                         continue
                     # Get the alignment of FFS file
@@ -1062,7 +1058,7 @@ class GenerateFvFile(object):
 
     @staticmethod
     def IsVtfFile(FfsHeader):
-        if not FfsHeader.Name.__cmp__(EFI_FFS_VOLUME_TOP_FILE_GUID):
+        if FfsHeader.Name.__cmp__(EFI_FFS_VOLUME_TOP_FILE_GUID):
             return True
         return False
 
@@ -1252,10 +1248,12 @@ class GenerateFvFile(object):
         # Initialize FV library
         FvLib = FvLibrary(self.FvImage)
         # Verify VTF file
-        FvLib.VerifyFfsFile(FvImage[self.VtfFileImageAddress:])
+        FvLib.VerifyFfsFile(bytes(self.FvImage[self.VtfFileImageAddress:]))
 
-        if (self.VtfFileImageAddress >= IA32_X64_VTF_SIGNATURE_OFFSET) and (
-            self.VtfFileImageAddress - IA32_X64_VTF_SIGNATURE_OFFSET == IA32_X64_VTF0_SIGNATURE):
+        if (self.FvImagePointer >= IA32_X64_VTF_SIGNATURE_OFFSET) and (
+            int.from_bytes(self.FvImage[
+                           self.FvImagePointer - IA32_X64_VTF_SIGNATURE_OFFSET:self.FvImagePointer - IA32_X64_VTF_SIGNATURE_OFFSET + 4],
+                           'little') == IA32_X64_VTF0_SIGNATURE):
             Vtf0Detected = True
         else:
             Vtf0Detected = False
@@ -1268,6 +1266,7 @@ class GenerateFvFile(object):
                 return
             EdkLogger.error(None, 0,
                             "Could not find the SEC core file in the FV.")
+
         SecCoreFileBuffer = FvLib.FvBuffer[SecCoreFileOff:]
         # Sec Core found, now find PE32 section
         Pe32SectionOff = GetSectionByType(SecCoreFileBuffer, EFI_SECTION_PE32,
@@ -1280,7 +1279,7 @@ class GenerateFvFile(object):
                             "Could not find a PE32 seciton in the SEC core file.")
 
         SecHeaderSize = self.GetCommonSectionByBuffer(
-            SecCoreFileBuffer[Pe32SectionOff:]).Common_Header_Size
+            SecCoreFileBuffer[Pe32SectionOff:]).Common_Header_Size()
         EntryPoint, BaseOfCode, MachineType = self.GetPe32Info(
             SecCoreFileBuffer[Pe32SectionOff + SecHeaderSize:])
 
@@ -1288,14 +1287,13 @@ class GenerateFvFile(object):
             MachineType == IMAGE_FILE_MACHINE_I386 or MachineType == IMAGE_FILE_MACHINE_X64):
             return
         # Physical address is FV base + offset of PE32 + offset of the entry point
-        SecCorePhysicalAddress = FvInfo.BaseAddress + Pe32SectionOff + SecHeaderSize + EntryPoint
+        SecCorePhysicalAddress = self.FvDataInfo.BaseAddress + Pe32SectionOff + SecHeaderSize + EntryPoint
         EdkLogger.info(
             "SecCore physical entry point address, Address = 0x%X" % SecCorePhysicalAddress)
         #
         # Find the PEI Core
         #
         PeiCorePhysicalAddress = 0
-        Pe32SectionOff = None
         PeiCoreFileOff = FvLib.GetFileByType(EFI_FV_FILETYPE_PEI_CORE, 1)
         if PeiCoreFileOff:
             # PEI Core found, now find PE32 or TE section
@@ -1326,21 +1324,27 @@ class GenerateFvFile(object):
                 # Get the location to update
                 # Write lower 32 bits of physical address for Pei Core entry
                 self.FvImage[
-                    self.VtfFileImageAddress - IA32_PEI_CORE_ENTRY_OFFSET] = PeiCorePhysicalAddress
+                self.VtfFileImageAddress - IA32_PEI_CORE_ENTRY_OFFSET:self.VtfFileImageAddress - IA32_PEI_CORE_ENTRY_OFFSET + 4] = (
+                    ctypes.c_uint32(PeiCorePhysicalAddress).value).to_bytes(4,
+                                                                            'little')
             # Write SecCore Entry point relative address into the jmp instruction in reset vector.
-            Ia32SecEntryOffset = SecCorePhysicalAddress - (
-                FV_IMAGES_TOP_ADDRESS - IA32_SEC_CORE_ENTRY_OFFSET + 2)
+            Ia32SecEntryOffset = ctypes.c_int32(SecCorePhysicalAddress - (
+                FV_IMAGES_TOP_ADDRESS - IA32_SEC_CORE_ENTRY_OFFSET + 2)).value
             if Ia32SecEntryOffset <= (-65536):
                 EdkLogger.error(None, 0,
                                 "The SEC EXE file size is too large, it must be less than 64K.")
+
             self.FvImage[
-                self.VtfFileImageAddress - IA32_SEC_CORE_ENTRY_OFFSET] = Ia32SecEntryOffset
+            self.VtfFileImageAddress - IA32_SEC_CORE_ENTRY_OFFSET:self.VtfFileImageAddress - IA32_SEC_CORE_ENTRY_OFFSET + 2] = (
+                ctypes.c_uint16(Ia32SecEntryOffset).value).to_bytes(2, 'little')
 
             # Update the BFV base address
             self.FvImage[
-                self.VtfFileImageAddress - 4] = self.FvDataInfo.BaseAddress
+            self.VtfFileImageAddress - 4:self.VtfFileImageAddress - 4 + 4] = (
+                ctypes.c_uint32(self.FvDataInfo.BaseAddress).value).to_bytes(4,
+                                                                             'little')
             EdkLogger.info(
-                "update BFV base address in the top FV image, BFV base address = 0x%X." % FvInfo.BaseAddress)
+                "update BFV base address in the top FV image, BFV base address = 0x%X." % self.FvDataInfo.BaseAddress)
         elif MachineType == IMAGE_FILE_MACHINE_ARMTHUMB_MIXED:
             # Since the ARM reset vector is in the FV Header you really don't need a
             # Volume Top File, but if you have one for some reason don't crash...
@@ -1369,9 +1373,10 @@ class GenerateFvFile(object):
 
         VtfFile.State = SavedState
         VtfFileBuffer = struct2stream(VtfFile) + self.FvImage[
-                                                 self.VtfFileImageAddress + VtfFile.HeaderLenth:]
+                                                 self.VtfFileImageAddress + VtfFile.HeaderLength:]
         self.FvImage[
         self.VtfFileImageAddress:self.VtfFileImageAddress + VtfFile.FFS_FILE_SIZE] = VtfFileBuffer
+
 
     @staticmethod
     def GetPe32Info(Pe32: bytes) -> tuple:
@@ -1428,6 +1433,7 @@ class GenerateFvFile(object):
 
         return EntryPoint, BaseOfCode, MachineType
 
+
     def PadFvImage(self, FvImageSize: int):
         # If there is no VTF or the VTF naturally follows the previous file without a
         # pad file, then there's nothing to do
@@ -1439,14 +1445,16 @@ class GenerateFvFile(object):
                             "FV space is full, cannot add pad file between the last file and the VTF file.")
 
         # Pad file starts at beginning of free space
-        PadFile = EFI_FFS_FILE_HEADER()
+        PadFile = EFI_FFS_FILE_HEADER.from_buffer_copy(
+            self.FvImage[self.FvImagePointer:])
         # write PadFile FFS header with PadType, don't need to set PAD file guid in its header.
         PadFile.Type = EFI_FV_FILETYPE_FFS_PAD
         PadFile.Attributes = 0
         # FileSize includes the EFI_FFS_FILE_HEADER
         FileSize = self.VtfFileImageAddress - self.FvImagePointer
         if FileSize > MAX_FFS_SIZE:
-            PadFile = EFI_FFS_FILE_HEADER2()
+            PadFile = EFI_FFS_FILE_HEADER2.from_buffer_copy(
+                self.FvImage[self.FvImagePointer:])
             PadFile.Attributes |= FFS_ATTRIB_LARGE_FILE
             PadFile.ExtendedSize = FileSize
             global mIsLargeFfs
@@ -1462,14 +1470,18 @@ class GenerateFvFile(object):
         PadFile.State = 0
         PadFile.IntegrityCheck.Checksum.Header = CalculateChecksum8(
             struct2stream(PadFile))
+        PadFile.IntegrityCheck.Checksum.File = FFS_FIXED_CHECKSUM
         PadFile.State = EFI_FILE_HEADER_CONSTRUCTION | EFI_FILE_HEADER_VALID | EFI_FILE_DATA_VALID
         PadFile = self.UpdateFfsFileState(PadFile,
                                           Refine_FV_Header(
                                               self.NumOfBlocks + 1).from_buffer_copy(
-                                              FvImage))
-        self.FvImage[self.FvImagePointer:FvImageSize] = struct2stream(PadFile)
+                                              self.FvImage))
+        self.FvImage[
+        self.FvImagePointer:self.FvImagePointer + PadFile.HeaderLength] = struct2stream(
+            PadFile)
         # Update the current FV pointer
         self.FvImagePointer = FvImageSize
+
 
     def AddFile(self, Index):
         # Verify input parameters.
@@ -1513,7 +1525,8 @@ class GenerateFvFile(object):
                             self.FvDataInfo.FvFiles[Index])
 
         # Verify the input file is the duplicated file in this Fv image
-        FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(NewFileBuffer)
+        # FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(NewFileBuffer)
+        FfsHeader = self.GetFfsHeader(NewFileBuffer)
         if FfsHeader.Name in mFileGuidArray:
             EdkLogger.error(None, PARAMETER_INVALID,
                             "Invalid parameter, the %s file have the same GUID." % FfsHeader.Name)
@@ -1585,14 +1598,14 @@ class GenerateFvFile(object):
                 NewFileBuffer)
 
             FileGuidString = PrintGuidToBuffer(
-                EFI_FFS_FILE_HEADER.from_buffer_copy(NewFileBuffer).Name, True)
+                self.GetFfsHeader(NewFileBuffer).Name, True)
             with open(self.FvReportName, 'a') as Fp:
                 Fp.write("0x%08X %s\n" % (self.FvImagePointer, FileGuidString))
             self.FvImagePointer += NewFileSize
         else:
             EdkLogger.error(None, 0,
                             "FV space is full, cannot add file %s" %
-                            FvInfo.FvFiles[
+                            self.FvDataInfo.FvFiles[
                                 Index])
 
         # Make next file start at QWord Boundary
@@ -1600,6 +1613,7 @@ class GenerateFvFile(object):
             self.FvImagePointer += 1
 
         return
+
 
     @staticmethod
     def GetFfsHeader(FfsBuffer: bytes):
@@ -1609,6 +1623,7 @@ class GenerateFvFile(object):
         if FfsHeader.Attributes & FFS_ATTRIB_LARGE_FILE:
             FfsHeader = EFI_FFS_FILE_HEADER2.from_buffer_copy(FfsBuffer)
         return FfsHeader
+
 
     def AdjustInternalFfsPadding(self, FfsBuffer: bytes, Alignment: int,
                                  FileSize: int):
@@ -1697,6 +1712,7 @@ class GenerateFvFile(object):
 
         return True, NewFfsBuffer
 
+
     def FfsRebase(self, FfsFile: str, FfsBuffer: bytes,
                   XipOffset: int) -> bytes:
         NewFfsFileBuffer = bytearray(FfsBuffer)
@@ -1710,7 +1726,8 @@ class GenerateFvFile(object):
             return bytes(NewFfsFileBuffer)
 
         XipBase = self.FvDataInfo.BaseAddress + XipOffset
-        FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsBuffer)
+        # FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(FfsBuffer)
+        FfsHeader = self.GetFfsHeader(FfsBuffer)
         # We only process files potentially containing PE32 sections.
         if FfsHeader.Type == EFI_FV_FILETYPE_FIRMWARE_VOLUME_IMAGE:
             self.GetChildFvFromFfs(FfsBuffer, XipOffset)
@@ -1876,8 +1893,9 @@ class GenerateFvFile(object):
                                     ImgHdr.Pe32.OptionalHeader.Magic, FfsFile))
 
             # Now update file checksum
-            NewFfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(
-                NewFfsFileBuffer)
+            # NewFfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(
+            #     NewFfsFileBuffer)
+            NewFfsHeader = self.GetFfsHeader(NewFfsFileBuffer)
             if NewFfsHeader.Attributes & FFS_ATTRIB_CHECKSUM:
                 SavedState = NewFfsHeader.State
                 NewFfsHeader.IntegrityCheck.Checksum.File = 0
@@ -2005,7 +2023,8 @@ class GenerateFvFile(object):
             TeSection:TeSection + sizeof(EFI_TE_IMAGE_HEADER)] = struct2stream(
                 TeHeader)
             # Now update file checksum
-            FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(NewFfsFileBuffer)
+            # FfsHeader = EFI_FFS_FILE_HEADER.from_buffer_copy(NewFfsFileBuffer)
+            FfsHeader = self.GetFfsHeader(NewFfsFileBuffer)
             if FfsHeader.Attributes & FFS_ATTRIB_CHECKSUM:
                 SavedState = FfsHeader.State
                 FfsHeader.IntegrityCheck.Checksum.File = 0
@@ -2025,6 +2044,7 @@ class GenerateFvFile(object):
                               OrigImageContext, NewFfsFileBuffer)
 
         return bytes(NewFfsFileBuffer)
+
 
     @staticmethod
     def WriteMapFile(FvMapFile: str, FfsFileName: str,
@@ -2181,12 +2201,17 @@ class GenerateFvFile(object):
         with open(FvMapFile, 'a') as mapfile:
             mapfile.write(ModuleContent)
 
+
     def GetChildFvFromFfs(self, FfsBuffer: bytes, XipOffset: int):
         Index = 1
         while True:
-            SubFvSectionPointer, SubFvSection = GetSectionByType(FfsBuffer,
-                                                                 EFI_SECTION_FIRMWARE_VOLUME_IMAGE,
-                                                                 Index)
+            FvSection = GetSectionByType(FfsBuffer,
+                                         EFI_SECTION_FIRMWARE_VOLUME_IMAGE,
+                                         Index)
+            if not FvSection:
+                break
+            SubFvSectionPointer = FvSection[0]
+            SubFvSection = FvSection[1]
 
             SubFvImagePointer = SubFvSectionPointer + SubFvSection.SECTION_SIZE
 
@@ -2215,6 +2240,7 @@ class GenerateFvFile(object):
             SubFvBaseAddress = self.FvDataInfo.BaseAddress + SubFvImagePointer + XipOffset
             mFvBaseAddress.append(SubFvBaseAddress)
 
+
     @staticmethod
     def GetCommonSectionByBuffer(Buffer: bytes):
         CommonHeader = EFI_COMMON_SECTION_HEADER.from_buffer_copy(Buffer)
@@ -2223,6 +2249,7 @@ class GenerateFvFile(object):
 
         return CommonHeader
 
+
     def GetCoreMachineType(self, Pe32Section: bytes, CorePe32SectionHeader):
         res = self.GetPe32Info(Pe32Section[sizeof(CorePe32SectionHeader):])
         if not res:
@@ -2230,6 +2257,7 @@ class GenerateFvFile(object):
                             "Could not get the PE32 machine type for the core.")
         MachineType = res[2]
         return MachineType
+
 
     def FindCorePeSection(self, ImageBuffer: bytes, FileType: int):
         # Initialize FV library, saving previous values
@@ -2283,11 +2311,13 @@ class GenerateFvFile(object):
 
         return
 
+
     @staticmethod
     def UpdateFfsFileState(FfsFile, FvHeader):
         if FvHeader.Attributes & EFI_FVB2_ERASE_POLARITY:
             FfsFile.State = GetReverseCode(FfsFile.State)
         return FfsFile
+
 
     def AddPadFile(self, DataAlignment: int, NextFfsSize: int, FvExtHeader=None,
                    FvExtBuffer=None):
@@ -2373,7 +2403,7 @@ class GenerateFvFile(object):
                     if FvExtEntryHeader.ExtEntryType == EFI_FV_EXT_TYPE_USED_SIZE_TYPE:
                         FvExtEryUSTypeHdr = EFI_FIRMWARE_VOLUME_EXT_ENTRY_USED_SIZE_TYPE.from_buffer_copy(
                             ExtFileBuffer[Index:])
-                        if VtfFileFlag:
+                        if self.VtfFileFlag:
                             FvExtEryUSTypeHdr.UsedSize = mFvTotalSize
                         else:
                             FvExtEryUSTypeHdr.UsedSize = mFvTakenSize
@@ -2394,6 +2424,7 @@ class GenerateFvFile(object):
                 self.FvImagePointer += 1
 
         return
+
 
     def WriteFile(self):
         with open(LongFilePath(self.OutFileName), 'wb') as file:
