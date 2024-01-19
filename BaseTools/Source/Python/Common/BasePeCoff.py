@@ -207,49 +207,54 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                         if DebugEntry.RVA == 0 and DebugEntry.FileOffset != 0:
                             ImageContext.ImageSize += DebugEntry.SizeOfData
                         return ImageContext
-        else:
-            ImageContext.ImageSize = 0
-            ImageContext.SectionAlignment = 4096
-            ImageContext.SizeOfHeaders = sizeof(
-                EFI_TE_IMAGE_HEADER) + TeHdr.BaseOfCode - TeHdr.StrippedSize
+                    Size += sizeof(EFI_IMAGE_DEBUG_DIRECTORY_ENTRY)
+    else:
+        ImageContext.ImageSize = 0
+        ImageContext.SectionAlignment = 4096
+        ImageContext.SizeOfHeaders = sizeof(
+            EFI_TE_IMAGE_HEADER) + TeHdr.BaseOfCode - TeHdr.StrippedSize
 
-            DebugDirectoryEntry = TeHdr.DataDirectory[1]
-            DebugDirectoryEntryRva = DebugDirectoryEntry.VirtualAddress
-            SectionHeaderOffset = sizeof(EFI_TE_IMAGE_HEADER)
+        DebugDirectoryEntry = TeHdr.DataDirectory[1]
+        DebugDirectoryEntryRva = DebugDirectoryEntry.VirtualAddress
+        SectionHeaderOffset = sizeof(EFI_TE_IMAGE_HEADER)
 
-            DebugDirectoryEntryFileOffset = 0
+        DebugDirectoryEntryFileOffset = 0
+        Index = 0
+        while Index < TeHdr.NumberOfSections:
+            SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
+                ImageBuffer[SectionHeaderOffset:])
+            if DebugDirectoryEntryRva >= SectionHeader.VirtualAddress and DebugDirectoryEntryRva < SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize:
+                DebugDirectoryEntryFileOffset = DebugDirectoryEntryRva - \
+                                                SectionHeader.VirtualAddress + SectionHeader.PointerToRawData \
+                                                + sizeof(
+                    EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
 
-            for Index in range(TeHdr.NumberOfSections):
-                SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
-                    ImageBuffer[SectionHeaderOffset:])
-                if DebugDirectoryEntryRva >= SectionHeader.VirtualAddress and DebugDirectoryEntryRva < SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize:
-                    DebugDirectoryEntryFileOffset = DebugDirectoryEntryRva - \
-                                                    SectionHeader.VirtualAddress + SectionHeader.PointerToRawData \
-                                                    + sizeof(
-                        EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
+                # File offset of the debug directory was found, if this is not the last
+                # section,then skip to the last section for calculating the image size
+                if Index < TeHdr.NumberOfSections - 1:
+                    SectionHeaderOffset += (
+                                               TeHdr.NumberOfSections - 1 - Index) * sizeof(
+                        EFI_IMAGE_SECTION_HEADER)
+                    Index = TeHdr.NumberOfSections - 1
+                    continue
 
-                    # File offset of the debug directory was found, if this is not the last
-                    # section,then skip to the last section for calculating the image size
-                    if Index < TeHdr.NumberOfSections - 1:
-                        SectionHeaderOffset += (
-                                                   TeHdr.NumberOfSections - 1 - Index) * sizeof(
-                            EFI_IMAGE_SECTION_HEADER)
-                        Index = TeHdr.NumberOfSections - 1
-                        continue
+            Index += 1
+            if Index == TeHdr.NumberOfSections:
+                ImageContext.ImageSize = SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize + \
+                                         ImageContext.SectionAlignment - 1 & ~ (
+                    ImageContext.SectionAlignment - 1)
+            SectionHeaderOffset += sizeof(EFI_IMAGE_SECTION_HEADER)
 
-                if Index + 1 == TeHdr.NumberOfSections:
-                    ImageContext.ImageSize = SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize + \
-                                             ImageContext.SectionAlignment - 1 & ~ (
-                        ImageContext.SectionAlignment - 1)
-                SectionHeaderOffset += sizeof(EFI_IMAGE_SECTION_HEADER)
+        if DebugDirectoryEntryFileOffset != 0:
+            index = 0
+            while index < DebugDirectoryEntry.Size:
+                DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
+                    ImageBuffer[DebugDirectoryEntryFileOffset+index:])
 
-                if DebugDirectoryEntryFileOffset != 0:
-                    DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
-                        ImageBuffer[DebugDirectoryEntryFileOffset:])
-
-                    if DebugEntry.Type == EFI_IMAGE_DEBUG_TYPE_CODEVIEW:
-                        ImageContext.DebugDirectoryEntryRva = DebugDirectoryEntryRva + Index
-                        return ImageContext
+                if DebugEntry.Type == EFI_IMAGE_DEBUG_TYPE_CODEVIEW:
+                    ImageContext.DebugDirectoryEntryRva = c_uint32(DebugDirectoryEntryRva + index).value
+                    return ImageContext
+                index += sizeof(EFI_IMAGE_DEBUG_DIRECTORY_ENTRY)
     return ImageContext
 
 
@@ -440,12 +445,12 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             return
 
     # Read the entire PE/COFF or TE header into memory
-    HeadersBuffer = ImageBuffer[:ImageContext.SizeOfHeaders]
+    # HeadersBuffer = ImageBuffer[:ImageContext.SizeOfHeaders]
     if not ImageContext.IsTeImage:
         PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION.from_buffer_copy(
-            HeadersBuffer[ImageContext.PeCoffHeaderOffset:])
+            ImageBuffer[ImageContext.PeCoffHeaderOffset:])
         OptionHeader = EFI_IMAGE_OPTIONAL_HEADER_POINTER.from_buffer_copy(
-            HeadersBuffer[
+            ImageBuffer[
             ImageContext.PeCoffHeaderOffset + sizeof(c_uint32) + sizeof(
                 EFI_IMAGE_FILE_HEADER):])
 
@@ -455,8 +460,8 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
         NumOfSections = PeHdr.Pe32.FileHeader.NumberOfSections
     else:
-        TeHdr = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
-            HeadersBuffer[sizeof(EFI_TE_IMAGE_HEADER):])
+        TeHdr = EFI_TE_IMAGE_HEADER.from_buffer_copy(
+            ImageBuffer)
         FirstSectionOff = sizeof(EFI_TE_IMAGE_HEADER)
         NumOfSections = TeHdr.NumberOfSections
 
@@ -469,7 +474,7 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
         Base = PeCoffLoaderImageAddress(ImageContext, Section.VirtualAddress)
         End = PeCoffLoaderImageAddress(ImageContext,
-                                       Section.VirtualAddress + Section.Misc.VirtualSize)
+                                       Section.VirtualAddress + Section.Misc.VirtualSize - 1)
 
         if ImageContext.IsTeImage:
             Base = Base + sizeof(EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize

@@ -221,7 +221,6 @@ class GenerateFvFile(object):
         self.VtfFileImageAddress = None
         self.VtfFileFlag = False
 
-        # self.Arm = None
 
     def ParseMyOptions(self):
         if self.Options.verbose:
@@ -1172,7 +1171,7 @@ class GenerateFvFile(object):
         if not UpdateVectorSec and not UpdateVectorPei:
             return
 
-        if MachineType == IMAGE_FILE_MACHINE_ARMTHUMB_MIXED:
+        if MachineType == IMAGE_FILE_MACHINE_ARMT:
             # ARM: Array of 4 UINT32s:
             # 0 - is branch relative to SEC entry point
             # 1 - PEI Entry Point
@@ -1345,7 +1344,7 @@ class GenerateFvFile(object):
                                                                              'little')
             EdkLogger.info(
                 "update BFV base address in the top FV image, BFV base address = 0x%X." % self.FvDataInfo.BaseAddress)
-        elif MachineType == IMAGE_FILE_MACHINE_ARMTHUMB_MIXED:
+        elif MachineType == IMAGE_FILE_MACHINE_ARMT:
             # Since the ARM reset vector is in the FV Header you really don't need a
             # Volume Top File, but if you have one for some reason don't crash...
             pass
@@ -1424,7 +1423,7 @@ class GenerateFvFile(object):
             if MachineType != IMAGE_FILE_MACHINE_I386 and \
                 MachineType != IMAGE_FILE_MACHINE_X64 and \
                 MachineType != IMAGE_FILE_MACHINE_EBC and \
-                MachineType != IMAGE_FILE_MACHINE_ARMTHUMB_MIXED and \
+                MachineType != IMAGE_FILE_MACHINE_ARMT and \
                 MachineType != IMAGE_FILE_MACHINE_ARM64 and \
                 MachineType != IMAGE_FILE_MACHINE_RISCV64 and \
                 MachineType != IMAGE_FILE_MACHINE_LOONGARCH64:
@@ -1938,15 +1937,14 @@ class GenerateFvFile(object):
             TeSecHdrSize = TeSecHdr.Common_Header_Size()
             TeSecLength = TeSecHdr.SECTION_SIZE
 
-            TeHeader = self.GetCommonSectionByBuffer(
-                FfsBuffer[TeSection:])
+            TeHeader = EFI_TE_IMAGE_HEADER.from_buffer_copy(FfsBuffer[TeSection+TeSecHdrSize:])
             ImageContext = PE_COFF_LOADER_IMAGE_CONTEXT()
             ImageContext.Handle = TeSection + TeSecHdrSize
             TeImage = FfsBuffer[
                       TeSection + TeSecHdrSize: TeSection + TeSecHdrSize + TeSecLength]
             ImageContext = PeCoffLoaderGetImageInfo(ImageContext, TeImage)
 
-            if ImageContext.Machine == IMAGE_FILE_MACHINE_ARMTHUMB_MIXED or \
+            if ImageContext.Machine == IMAGE_FILE_MACHINE_ARMT or \
                 ImageContext.Machine == IMAGE_FILE_MACHINE_ARM64:
                 mArm = True
 
@@ -2014,7 +2012,8 @@ class GenerateFvFile(object):
                                          EFI_TE_IMAGE_HEADER) - TeHeader.StrippedSize \
                                      + TeSectionHeader.PointerToRawData + TeSectionHeader.SizeOfRawData \
                     ] = NewTeImage[
-                        TeSectionHeader.VirtualAddress:TeSectionHeader.VirtualAddress + TeSectionHeader.SizeOfRawData]
+                        sizeof(EFI_TE_IMAGE_HEADER) - TeHeader.StrippedSize + TeSectionHeader.VirtualAddress:sizeof(
+                            EFI_TE_IMAGE_HEADER) - TeHeader.StrippedSize + TeSectionHeader.VirtualAddress + TeSectionHeader.SizeOfRawData]
 
                 TeSectionHeaderOff += sizeof(EFI_IMAGE_SECTION_HEADER)
             # Update Image Base Address
@@ -2041,7 +2040,7 @@ class GenerateFvFile(object):
 
             self.WriteMapFile(self.MapFileName, PdbPointer, FfsHeader,
                               NewPe32BaseAddress,
-                              OrigImageContext, NewFfsFileBuffer)
+                              OrigImageContext, NewTeImage)
 
         return bytes(NewFfsFileBuffer)
 
@@ -2084,7 +2083,7 @@ class GenerateFvFile(object):
                 FileBuffer)
             AddressOfEntryPoint = TeImageHeader.AddressOfEntryPoint
             Offset = TeImageHeader.StrippedSize - sizeof(EFI_TE_IMAGE_HEADER)
-            SectionHeaderOff = 1
+            SectionHeaderOff = sizeof(EFI_TE_IMAGE_HEADER)
             SectionNumber = TeImageHeader.NumberOfSections
 
         # Open map file
@@ -2227,7 +2226,7 @@ class GenerateFvFile(object):
                 MachineType = self.GetCoreMachineType(FfsBuffer[CorePe32:],
                                                       CommonHeader)
 
-            if MachineType == IMAGE_FILE_MACHINE_ARMTHUMB_MIXED or MachineType == IMAGE_FILE_MACHINE_ARM64:
+            if MachineType == IMAGE_FILE_MACHINE_ARMT or MachineType == IMAGE_FILE_MACHINE_ARM64:
                 EdkLogger.info("Located ARM/AArch64 SEC/PEI core in child FV")
                 mArm = True
 

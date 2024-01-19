@@ -126,7 +126,7 @@ class ParseInf(object):
             return FV_BASE_ADDRESS_STRING[1:-1]
 
     def DealStreamToDcit(self):
-        EndOfPattern = re.compile(b"\r\n")
+        EndOfPattern = re.compile(b"\r\n|\n")
         section = ""
         while self.Stream:
             # Read a line
