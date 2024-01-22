@@ -619,7 +619,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
     # If there are not relocation entries, then we return done
     if ImageContext.RelocationsStripped:
-        return
+        return SectionImage, ImageContext
 
     # Use DestinationAddress field of ImageContext as the relocation address even if it is 0.
     BaseAddress = ImageContext.DestinationAddress
@@ -656,7 +656,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                     RelocBaseEnd = RelocDir.VirtualAddress + RelocDir.Size - 1
                     if RelocBaseEnd < RelocBase:
                         ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-                        return
+                        EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
                 else:
                     # Set base and end to bypass processing below.
                     RelocBase = RelocBaseEnd = 0
@@ -715,7 +715,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
         if RelocEnd < ImageContext.ImageAddress or RelocEnd > ImageContext.ImageAddress + ImageContext.ImageSize:
             ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-            return
+            EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
 
         # Run this relocation record
         while Reloc < RelocEnd:
@@ -766,7 +766,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
             elif FixupType == EFI_IMAGE_REL_BASED_HIGHADJ:
                 ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-                return
+                EdkLogger.error(None, 0, "Unsupport Fixup type.")
             else:
                 Res = None
                 if MachineType == IMAGE_FILE_MACHINE_I386:
@@ -787,7 +787,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
                 if not Res:
                     ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-                    return
+                    EdkLogger.error(None, 0, "Load Fix data error.")
                 Fixup = Res[0]
                 FixupData = Res[1]
                 SectionImage = Res[2]
