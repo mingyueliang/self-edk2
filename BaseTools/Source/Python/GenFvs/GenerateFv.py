@@ -2208,8 +2208,8 @@ class GenerateFvFile(object):
                                          Index)
             if not FvSection:
                 break
-            SubFvSectionPointer = FvSection[0]
-            SubFvSection = FvSection[1]
+            SubFvSectionPointer = FvSection
+            SubFvSection = self.GetCommonSectionByBuffer(FfsBuffer[SubFvSectionPointer:])
 
             SubFvImagePointer = SubFvSectionPointer + SubFvSection.SECTION_SIZE
 
