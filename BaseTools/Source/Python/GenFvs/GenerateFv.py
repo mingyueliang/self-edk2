@@ -1978,10 +1978,11 @@ class GenerateFvFile(object):
                         ImageContext.RelocationsStripped = False
 
             if ImageContext.RelocationsStripped:
+                EdkLogger.warn(None, 0, "The file %s has no .reloc section." % FfsFile)
                 continue
 
-            # ImageContext.ImageAddress = (ImageContext.SectionAlignment - 1) & (
-            #     ~(ImageContext.SectionAlignment - 1))
+            ImageContext.ImageAddress = (ImageContext.ImageSize + ImageContext.SectionAlignment + ImageContext.SectionAlignment - 1) & (
+                ~(ImageContext.SectionAlignment - 1))
 
             NewTeImage, ImageContext = PeCoffLoaderLoadImage(ImageContext,
                                                              TeImage)

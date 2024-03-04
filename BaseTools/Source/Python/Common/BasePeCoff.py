@@ -605,7 +605,8 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 def PeCoffLoaderImageAddress(ImageContext, Address):
     if Address >= ImageContext.ImageSize:
         ImageContext.ImageError = IMAGE_ERROR_INVALID_IMAGE_ADDRESS
-        return
+        EdkLogger.error(None, 0, "Invalid image address.")
+        # return
 
     return ImageContext.ImageAddress + Address
 
@@ -713,9 +714,11 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             FixupBase = ImageContext.ImageAddress + RelocBaseStruct.VirtualAddress + sizeof(
                 EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
 
-        if RelocEnd < ImageContext.ImageAddress or RelocEnd > ImageContext.ImageAddress + ImageContext.ImageSize:
-            ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-            EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
+        # if RelocEnd < ImageContext.ImageAddress or RelocEnd > ImageContext.ImageAddress + ImageContext.ImageSize:
+        #     ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
+        #     EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
+        if RelocEnd > ImageContext.ImageSize:
+            EdkLogger.error(None, 0, "Relocation infomation failed.")
 
         # Run this relocation record
         while Reloc < RelocEnd:
@@ -783,11 +786,11 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                                                                FixupData,
                                                                Adjust)
                 else:
-                    EdkLogger.error(None, 0, "Unsupported.")
+                    EdkLogger.error(None, 0, "Unsupported machine type.")
 
                 if not Res:
                     ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-                    EdkLogger.error(None, 0, "Load Fix data error.")
+                    EdkLogger.error(None, 0, "Load Fix data failed.")
                 Fixup = Res[0]
                 FixupData = Res[1]
                 SectionImage = Res[2]
