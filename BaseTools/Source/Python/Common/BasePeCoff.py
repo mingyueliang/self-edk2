@@ -249,10 +249,11 @@ def PeCoffLoaderGetImageInfo(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             index = 0
             while index < DebugDirectoryEntry.Size:
                 DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
-                    ImageBuffer[DebugDirectoryEntryFileOffset+index:])
+                    ImageBuffer[DebugDirectoryEntryFileOffset + index:])
 
                 if DebugEntry.Type == EFI_IMAGE_DEBUG_TYPE_CODEVIEW:
-                    ImageContext.DebugDirectoryEntryRva = c_uint32(DebugDirectoryEntryRva + index).value
+                    ImageContext.DebugDirectoryEntryRva = c_uint32(
+                        DebugDirectoryEntryRva + index).value
                     return ImageContext
                 index += sizeof(EFI_IMAGE_DEBUG_DIRECTORY_ENTRY)
     return ImageContext
@@ -306,14 +307,16 @@ def PeCoffLoaderGetPdbPointer(Pe32Data: bytes):
 
             # Get the DebugEntry offset in the raw data image.
             NumOfSections = Hdr.Te.NumberOfSections
-            SectionHeaderOff = PeHeaderOff + sizeof(Hdr.Te)
+            # SectionHeaderOff = PeHeaderOff + sizeof(Hdr.Te)
             SectionOff = PeHeaderOff + sizeof(Hdr.Te)
             # TODO SectionHeader[Index] ？
             for Index in range(NumOfSections):
                 SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
                     Pe32Data[SectionOff:])
                 if DirectoryEntry.VirtualAddress >= SectionHeader.VirtualAddress and DirectoryEntry.VirtualAddress < SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize:
-                    DebugEntry = PeHeaderOff + DirectoryEntry.VirtualAddress - SectionHeader.VirtualAddress + SectionHeader.PointerToRawData + TEImageAdjust
+                    DebugEntryOff = PeHeaderOff + DirectoryEntry.VirtualAddress - SectionHeader.VirtualAddress + SectionHeader.PointerToRawData + TEImageAdjust
+                    DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
+                        Pe32Data[DebugEntryOff:])
                     break
 
                 SectionOff += sizeof(EFI_IMAGE_SECTION_HEADER)
@@ -367,33 +370,34 @@ def PeCoffLoaderGetPdbPointer(Pe32Data: bytes):
         return
 
     # Scan the directory to find the debug entry.
-    DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
-        Pe32Data[DebugEntry:])
+    # DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
+    #     Pe32Data[DebugEntryOff:])
     DirCount = 0
     while DirCount < DirectoryEntry.Size:
         if DebugEntry.Type == EFI_IMAGE_DEBUG_TYPE_CODEVIEW:
             if DebugEntry.SizeOfData > 0:
                 # Get the DebugEntry offset in the raw data image.
-                CodeViewEntryPointer = None
+                CodeViewEntryPointer = 0
                 Index = 0
+                SectionOff = PeHeaderOff + sizeof(Hdr.Te)
                 for Index in range(NumOfSections):
-                    SectionOff = SectionHeaderOff
                     SectionHeader = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
                         Pe32Data[SectionOff:])
                     if DebugEntry.RVA >= SectionHeader.VirtualAddress and DirectoryEntry.VirtualAddress < (
                         SectionHeader.VirtualAddress + SectionHeader.Misc.VirtualSize):
                         CodeViewEntryPointer = DebugEntry.RVA - SectionHeader.VirtualAddress + SectionHeader.PointerToRawData + TEImageAdjust
+                        CodeViewEvtryValue = int.from_bytes(Pe32Data[CodeViewEntryPointer:CodeViewEntryPointer+4], 'little')
                         break
                     SectionOff += sizeof(EFI_IMAGE_SECTION_HEADER)
                 if Index > NumOfSections:
                     continue
 
-                if CodeViewEntryPointer == CODEVIEW_SIGNATURE_NB10:
+                if CodeViewEvtryValue == CODEVIEW_SIGNATURE_NB10:
                     return CodeViewEntryPointer + sizeof(
                         EFI_IMAGE_DEBUG_CODEVIEW_NB10_ENTRY)
-                elif CodeViewEntryPointer == CODEVIEW_SIGNATURE_RSDS:
-                    return CodeViewEntryPointer + EFI_IMAGE_DEBUG_CODEVIEW_RSDS_ENTRY
-                elif CodeViewEntryPointer == CODEVIEW_SIGNATURE_MTOC:
+                elif CodeViewEvtryValue == CODEVIEW_SIGNATURE_RSDS:
+                    return CodeViewEntryPointer + sizeof(EFI_IMAGE_DEBUG_CODEVIEW_RSDS_ENTRY)
+                elif CodeViewEvtryValue == CODEVIEW_SIGNATURE_MTOC:
                     return CodeViewEntryPointer + sizeof(
                         EFI_IMAGE_DEBUG_CODEVIEW_MTOC_ENTRY)
                 else:
@@ -657,7 +661,8 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                     RelocBaseEnd = RelocDir.VirtualAddress + RelocDir.Size - 1
                     if RelocBaseEnd < RelocBase:
                         ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
-                        EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
+                        EdkLogger.error(None, 0,
+                                        "Invalid, LocateImage() call failed on rebase of Current ffs file")
                 else:
                     # Set base and end to bypass processing below.
                     RelocBase = RelocBaseEnd = 0
@@ -717,7 +722,7 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
         # if RelocEnd < ImageContext.ImageAddress or RelocEnd > ImageContext.ImageAddress + ImageContext.ImageSize:
         #     ImageContext.ImageError = IMAGE_ERROR_FAILED_RELOCATION
         #     EdkLogger.error(None,0, "Invalid, LocateImage() call failed on rebase of Current ffs file")
-        if RelocEnd > ImageContext.ImageSize:
+        if RelocEnd < Reloc or RelocEnd > ImageContext.ImageSize:
             EdkLogger.error(None, 0, "Relocation infomation failed.")
 
         # Run this relocation record
@@ -733,8 +738,9 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             elif FixupType == EFI_IMAGE_REL_BASED_HIGH:
                 SectionImage[Fixup:Fixup + 2] = (
                     int.from_bytes(SectionImage[Fixup:Fixup + 2],
-                                   'little') + (Adjust & 0xffffffff) >> 16).to_bytes(2,
-                                                                      "little")
+                                   'little') + (
+                            Adjust & 0xffffffff) >> 16).to_bytes(2,
+                                                                 "little")
                 if FixupData != None:
                     FixupData = Fixup
                     FixupData = FixupData + sizeof(c_uint16)
@@ -742,7 +748,8 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             elif FixupType == EFI_IMAGE_REL_BASED_LOW:
                 SectionImage[Fixup:Fixup + 2] = (
                     int.from_bytes(SectionImage[Fixup:Fixup + 2],
-                                   'little') + (Adjust & 0xffff)).to_bytes(2, 'little')
+                                   'little') + (Adjust & 0xffff)).to_bytes(2,
+                                                                           'little')
                 if FixupData != None:
                     FixupData = Fixup
                     FixupData = FixupData + sizeof(c_uint16)
@@ -762,7 +769,8 @@ def PeCoffLoaderRelocateImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             elif FixupType == EFI_IMAGE_REL_BASED_DIR64:
                 SectionImage[Fixup:Fixup + 8] = (
                     int.from_bytes(SectionImage[Fixup:Fixup + 8],
-                                   "little") + (Adjust & 0xffffffffffffffff)).to_bytes(8, 'little')
+                                   "little") + (
+                            Adjust & 0xffffffffffffffff)).to_bytes(8, 'little')
                 if FixupData != None:
                     FixupData = ALIGN_POINTER(FixupData, sizeof(
                         c_uint64)) + sizeof(c_uint64)

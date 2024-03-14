@@ -1778,7 +1778,10 @@ class GenerateFvFile(object):
                 struct2stream(ImageContext))
 
             # Get file Pdb pointer
-            PdbPointer = PeCoffLoaderGetPdbPointer(PeImage)
+            PdbPointerOff = PeCoffLoaderGetPdbPointer(PeImage)
+            offset = PeImage[PdbPointerOff:].find(b'.pdb')
+            PdbPointer = str(PeImage[PdbPointerOff: PdbPointerOff + offset + 4],
+                             encoding='utf-8')
 
             # Get PeHeader pointer
             ImgHdrOff = PE32Section + CurSecHdrSize + ImageContext.PeCoffHeaderOffset
@@ -1908,7 +1911,7 @@ class GenerateFvFile(object):
 
             # Get this module function address from ModulePeMapFile and add them into FvMap file
             # Default use FileName as map file path
-            if PdbPointer == None:
+            if not PdbPointer:
                 PdbPointer = FfsFile
 
             self.WriteMapFile(self.MapFileName, PdbPointer, NewFfsHeader,
@@ -1954,7 +1957,9 @@ class GenerateFvFile(object):
             OrigImageContext = PE_COFF_LOADER_IMAGE_CONTEXT.from_buffer_copy(
                 struct2stream(ImageContext))
 
-            PdbPointer = PeCoffLoaderGetPdbPointer(TeImage)
+            PdbPointerOff = PeCoffLoaderGetPdbPointer(TeImage)
+            offset = TeImage[PdbPointerOff:].find(b'.pdb')
+            PdbPointer = str(TeImage[PdbPointerOff: PdbPointerOff+offset+4], encoding='utf-8')
 
             NewPe32BaseAddress = XipBase + TeSection + TeSecHdrSize + sizeof(
                 EFI_TE_IMAGE_HEADER) \
@@ -1981,8 +1986,9 @@ class GenerateFvFile(object):
                 EdkLogger.warn(None, 0, "The file %s has no .reloc section." % FfsFile)
                 continue
 
-            ImageContext.ImageAddress = (ImageContext.ImageSize + ImageContext.SectionAlignment + ImageContext.SectionAlignment - 1) & (
-                ~(ImageContext.SectionAlignment - 1))
+            #
+            # ImageContext.ImageAddress = (ImageContext.ImageSize + ImageContext.SectionAlignment + ImageContext.SectionAlignment - 1) & (
+            #     ~(ImageContext.SectionAlignment - 1))
 
             NewTeImage, ImageContext = PeCoffLoaderLoadImage(ImageContext,
                                                              TeImage)
@@ -2036,7 +2042,7 @@ class GenerateFvFile(object):
             NewFfsFileBuffer[:FfsHeader.HeaderLength] = struct2stream(
                 FfsHeader)
 
-            if PdbPointer == None:
+            if not PdbPointer:
                 PdbPointer = FfsFile
 
             self.WriteMapFile(self.MapFileName, PdbPointer, FfsHeader,
