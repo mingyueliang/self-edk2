@@ -1,0 +1,92 @@
+EFI_FV_TOTAL_SIZE = 0x14a000
+EFI_FV_TAKEN_SIZE = 0x846f0
+EFI_FV_SPACE_SIZE = 0xc5910
+
+FspSecCoreS (Fixed Flash Address, BaseAddress=0x00ff9b6230, EntryPoint=0x00ff9b62ea, Type=TE)
+(GUID=53AB1ACD-EDB1-4E3A-A2C7-978D721D179D .textbaseaddress=0x00ff9b62d0 .databaseaddress=0x00ff9b60b0)
+
+  0x00ff9b6455    _FspApiCallingCheck
+  0x00ff9b64d3    _SwapStack
+
+
+DxeIpl (Fixed Flash Address, BaseAddress=0x00ff9b672c, EntryPoint=0x00ff9b699a, Type=TE)
+(GUID=86D70125-BAA3-4296-A62F-602BEBBB9081 .textbaseaddress=0x00ff9b6804 .databaseaddress=0x00ff9bbe24)
+
+  0x00ff9b699a    __ModuleEntryPoint
+  0x00ff9b69d5    _PeimInitializeDxeIpl
+  0x00ff9b6ae8    _InstallIplPermanentMemoryPpis
+  0x00ff9b6be3    _DxeLoadCore
+  0x00ff9b6f6c    _DxeIplFindDxeCore
+  0x00ff9b6fef    _CustomGuidedSectionExtract
+  0x00ff9b70d5    _Decompress
+  0x00ff9b7239    _UpdateStackHob
+  0x00ff9b7299    _HandOffToDxeCore
+  0x00ff9b74f4    _IsEnableNonExecNeeded
+  0x00ff9b7538    _EnableExecuteDisableBit
+  0x00ff9b756b    _InitializePageTablePool
+  0x00ff9b75cb    _AllocatePageTableMemory
+  0x00ff9b7609    _SetPageTablePoolReadOnly
+  0x00ff9b783c    _EnablePageTableProtection
+  0x00ff9b78e1    _CreateIdentityMappingPageTables
+  0x00ff9b7baa    _GetPeiServicesTablePointer
+  0x00ff9b7bdf    _DebugPrint
+  0x00ff9b7c54    _VaListToBaseList
+  0x00ff9b7d5a    _DebugAssert
+  0x00ff9b7d94    _CpuDeadLoop
+  0x00ff9b7da8    _AsmCpuid
+  0x00ff9b7de6    _LShiftU64
+  0x00ff9b7e1e    _RShiftU64
+  0x00ff9b7e56    _GetHobList
+  0x00ff9b7eb4    _GetNextHob
+  0x00ff9b7eff    _GetBootModeHob
+  0x00ff9b7f44    _InternalPeiCreateHob
+  0x00ff9b7f92    _BuildModuleHob
+  0x00ff9b802f    _BuildGuidHob
+  0x00ff9b808d    _BuildGuidDataHob
+  0x00ff9b80d2    _BuildMemoryAllocationHob
+  0x00ff9b814e    _PeiServicesInstallPpi
+  0x00ff9b8161    _PeiServicesLocatePpi
+  0x00ff9b8182    _PeiServicesAllocatePages
+  0x00ff9b819c    _PeiServicesFreePages
+  0x00ff9b81bb    _CopyMem
+  0x00ff9b821c    _CopyGuid
+  0x00ff9b82a7    _CompareGuid
+  0x00ff9b8359    _ZeroMem
+  0x00ff9b83a6    _SetMem
+  0x00ff9b83dd    _InternalAllocatePages
+  0x00ff9b83fd    _InternalAllocateAlignedPages
+  0x00ff9b84ff    _AllocatePool
+  0x00ff9b8527    _GetPiPcdPpiPointer
+  0x00ff9b856c    _PeiGetExtractGuidedSectionHandlerInfo
+  0x00ff9b8607    _ExtractGuidedSectionRegisterHandlers
+  0x00ff9b86ce    _ExtractGuidedSectionGetInfo
+  0x00ff9b87e9    _ExtractGuidedSectionDecode
+  0x00ff9b88ec    _FillBuf
+  0x00ff9b897d    _GetBits
+  0x00ff9b8995    _MakeTable
+  0x00ff9b8c7a    _DecodeP
+  0x00ff9b8cec    _ReadPTLen
+  0x00ff9b8e26    _ReadCLen
+  0x00ff9b8f99    _DecodeC
+  0x00ff9b9050    _Decode
+  0x00ff9b90ee    _UefiDecompressGetInfo
+  0x00ff9b91a7    _UefiTianoDecompress
+  0x00ff9b928c    _InternalReportStatusCode
+  0x00ff9b92d5    _LzmaGuidedSectionGetInfo
+  0x00ff9b93d4    _LzmaGuidedSectionExtraction
+  0x00ff9b94a0    _SzAlloc
+  0x00ff9b94d9    _SzFree
+  0x00ff9b94dc    _GetDecodedSizeOfBuf
+  0x00ff9b9525    _LzmaUefiDecompressGetInfo
+  0x00ff9b956d    _LzmaUefiDecompress
+  0x00ff9ba783    _LzmaDec_DecodeToDic
+  0x00ff9baad5    _LzmaProps_Decode
+  0x00ff9bab8a    _LzmaDecode
+  0x00ff9bac86    _SetMem16
+  0x00ff9b95d0    @LzmaDec_DecodeReal_3@12
+  0x00ff9ba0d6    @LzmaDec_WriteRem@8
+  0x00ff9ba154    @LzmaDec_DecodeReal2@12
+  0x00ff9ba1d1    _LzmaDec_TryDummy
+  0x00ff9bab2e    _LzmaDec_AllocateProbs2
+
+

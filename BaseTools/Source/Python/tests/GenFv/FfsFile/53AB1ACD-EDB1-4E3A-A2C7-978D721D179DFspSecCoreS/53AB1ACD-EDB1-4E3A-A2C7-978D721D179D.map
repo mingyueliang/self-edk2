@@ -1,0 +1,74 @@
+ FspSecCoreS
+
+ Timestamp is 65e7b7f0 (Wed Mar  6 08:25:20 2024)
+
+ Preferred load address is 00000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000185H .text                   CODE
+ 0001:00000185 0000008fH .text$mn                CODE
+ 0002:00000000 00000054H .rdata                  DATA
+ 0002:00000054 00000020H .rdata$voltmd           DATA
+ 0002:00000074 00000110H .rdata$zzzdbg           DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___hybrid_auxiliary_iat_copy 00000000     <absolute>
+ 0000:00000000       ___x64_code_ranges_to_entry_points_count 00000000     <absolute>
+ 0000:00000000       ___guard_iat_count         00000000     <absolute>
+ 0000:00000000       ___guard_eh_cont_table     00000000     <absolute>
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_count     00000000     <absolute>
+ 0000:00000000       ___arm64x_native_entrypoint 00000000     <absolute>
+ 0000:00000000       ___guard_check_icall_a64n_fptr 00000000     <absolute>
+ 0000:00000000       ___guard_longjmp_table     00000000     <absolute>
+ 0000:00000000       ___arm64x_redirection_metadata_count 00000000     <absolute>
+ 0000:00000000       ___arm64x_extra_rfe_table  00000000     <absolute>
+ 0000:00000000       ___arm64x_redirection_metadata 00000000     <absolute>
+ 0000:00000000       ___guard_iat_table         00000000     <absolute>
+ 0000:00000000       ___guard_eh_cont_count     00000000     <absolute>
+ 0000:00000000       ___hybrid_code_map_count   00000000     <absolute>
+ 0000:00000000       ___x64_code_ranges_to_entry_points 00000000     <absolute>
+ 0000:00000000       ___enclave_config          00000000     <absolute>
+ 0000:00000000       ___AbsoluteZero            00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000000       ___hybrid_code_map         00000000     <absolute>
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0000:00000000       ___arm64x_extra_rfe_table_size 00000000     <absolute>
+ 0000:00000000       ___hybrid_auxiliary_iat    00000000     <absolute>
+ 0000:00000000       ___dynamic_value_reloc_table 00000000     <absolute>
+ 0001:00000000       _NotifyPhaseApi            00000220     FspSecCoreS:FspApiEntryS.obj
+ 0001:0000000a       _FspSiliconInitApi         0000022a     FspSecCoreS:FspApiEntryS.obj
+ 0001:00000014       _FspApiCommonContinue      00000234     FspSecCoreS:FspApiEntryS.obj
+ 0001:00000017       _TempRamInitApi            00000237     FspSecCoreS:FspApiEntryS.obj
+ 0001:0000001a       __ModuleEntryPoint         0000023a     FspSecCoreS:FspApiEntryS.obj
+ 0001:00000020       _FspApiCommon              00000240     FspSecCoreS:FspApiEntryCommon.obj
+ 0001:00000070       _FspInfoHeaderRelativeOff  00000290     FspSecCoreS:FspHelper.obj
+ 0001:00000074       _AsmGetFspBaseAddress      00000294     FspSecCoreS:FspHelper.obj
+ 0001:0000007f       _AsmGetFspInfoHeader       0000029f     FspSecCoreS:FspHelper.obj
+ 0001:00000093       _AsmGetFspInfoHeaderNoStack 000002b3     FspSecCoreS:FspHelper.obj
+ 0001:000000a0       _Pei2LoaderSwitchStack     000002c0     BaseFspSwitchStackLib:Stack.obj
+ 0001:000000a4       _Loader2PeiSwitchStack     000002c4     BaseFspSwitchStackLib:Stack.obj
+ 0001:000000a6       _FspSwitchStack            000002c6     BaseFspSwitchStackLib:Stack.obj
+ 0001:000000d0       _InternalMemSetMem         000002f0     BaseMemoryLibRepStr:SetMem.obj
+ 0001:000000f0       _InternalMemCopyMem        00000310     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:00000130       _InternalMemZeroMem        00000350     BaseMemoryLibRepStr:ZeroMem.obj
+ 0001:00000150       _InternalMemSetMem64       00000370     BaseMemoryLibRepStr:SetMem64.obj
+ 0001:00000170       _InternalMemSetMem32       00000390     BaseMemoryLibRepStr:SetMem32.obj
+ 0001:00000185       _FspApiCallingCheck        000003a5 f   FspSecCoreS:SecFspApiChk.obj
+ 0001:00000203       _SwapStack                 00000423 f   BaseFspSwitchStackLib:FspSwitchStackLib.obj
+ 0002:00000054       ___volatile_metadata       00000494     <linker-defined>
+
+ entry point at        0001:0000001a
+
+ Static symbols
+
+ 0001:00000031       FspApiCommon1              00000251     FspSecCoreS:FspApiEntryCommon.obj
+ 0001:00000049       exit                       00000269     FspSecCoreS:FspApiEntryCommon.obj
+ 0001:0000004a       FspApiCommon2              0000026a     FspSecCoreS:FspApiEntryCommon.obj
+ 0001:00000064       FspApiCommon3              00000284     FspSecCoreS:FspApiEntryCommon.obj
+ 0001:00000084       _NextInstruction           000002a4     FspSecCoreS:FspHelper.obj
+ 0001:0000010a       _InternalMemCopyMem.0      0000032a     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:00000116       @CopyBackward              00000336     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:0000011d       @CopyBytes                 0000033d     BaseMemoryLibRepStr:CopyMem.obj
+ 0001:00000161       _InternalMemSetMem64.0     00000381     BaseMemoryLibRepStr:SetMem64.obj

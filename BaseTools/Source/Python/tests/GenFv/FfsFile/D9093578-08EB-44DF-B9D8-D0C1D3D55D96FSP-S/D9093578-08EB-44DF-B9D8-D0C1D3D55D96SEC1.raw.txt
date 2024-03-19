@@ -1,0 +1,1 @@
+GenSec -s EFI_SECTION_RAW -o f:\birchstreamrp\intel\Build\BirchStreamFspPkg\DEBUG_VS2019\FV\Ffs\D9093578-08EB-44DF-B9D8-D0C1D3D55D96FSP-S\D9093578-08EB-44DF-B9D8-D0C1D3D55D96SEC1.raw F:\BirchStreamRp\Intel\BirchStreamFspPkg\FspDescription\FspDescriptionBuild.txt

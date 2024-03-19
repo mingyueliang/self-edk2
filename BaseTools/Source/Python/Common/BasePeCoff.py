@@ -442,19 +442,21 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             return
 
     # Make sure the allocated space has the proper section alignment
-    if not ImageContext.IsTeImage:
-        if ImageContext.ImageAddress & (
-            CheckContext.SectionAlignment - 1) != 0:
-            ImageContext.ImageError = IMAGE_ERROR_INVALID_SECTION_ALIGNMENT
-            return
-
+    # if not ImageContext.IsTeImage:
+    #     if ImageContext.ImageAddress & (
+    #         CheckContext.SectionAlignment - 1) != 0:
+    #         ImageContext.ImageError = IMAGE_ERROR_INVALID_SECTION_ALIGNMENT
+    #         return
+    Image = bytearray((ImageContext.ImageSize + ImageContext.SectionAlignment + ImageContext.SectionAlignment - 1) & (
+                ~(ImageContext.SectionAlignment - 1)))
     # Read the entire PE/COFF or TE header into memory
     # HeadersBuffer = ImageBuffer[:ImageContext.SizeOfHeaders]
     if not ImageContext.IsTeImage:
+        Image[:ImageContext.SizeOfHeaders] = ImageBuffer[:ImageContext.SizeOfHeaders]
         PeHdr = EFI_IMAGE_OPTIONAL_HEADER_UNION.from_buffer_copy(
-            ImageBuffer[ImageContext.PeCoffHeaderOffset:])
+            Image[ImageContext.PeCoffHeaderOffset:])
         OptionHeader = EFI_IMAGE_OPTIONAL_HEADER_POINTER.from_buffer_copy(
-            ImageBuffer[
+            Image[
             ImageContext.PeCoffHeaderOffset + sizeof(c_uint32) + sizeof(
                 EFI_IMAGE_FILE_HEADER):])
 
@@ -464,21 +466,20 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
 
         NumOfSections = PeHdr.Pe32.FileHeader.NumberOfSections
     else:
+        Image[:ImageContext.SizeOfHeaders] = ImageBuffer[:ImageContext.SizeOfHeaders]
         TeHdr = EFI_TE_IMAGE_HEADER.from_buffer_copy(
-            ImageBuffer)
+            Image)
         FirstSectionOff = sizeof(EFI_TE_IMAGE_HEADER)
         NumOfSections = TeHdr.NumberOfSections
 
     # Load each section of the image
-    PeOrTeImage = bytearray(ImageBuffer)
     for Index in range(NumOfSections):
         Section = EFI_IMAGE_SECTION_HEADER.from_buffer_copy(
             ImageBuffer[
             FirstSectionOff:FirstSectionOff + sizeof(EFI_IMAGE_SECTION_HEADER)])
 
-        Base = PeCoffLoaderImageAddress(ImageContext, Section.VirtualAddress)
-        End = PeCoffLoaderImageAddress(ImageContext,
-                                       Section.VirtualAddress + Section.Misc.VirtualSize - 1)
+        Base = Section.VirtualAddress
+        End = Section.VirtualAddress + Section.Misc.VirtualSize - 1
 
         if ImageContext.IsTeImage:
             Base = Base + sizeof(EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize
@@ -490,17 +491,17 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
             Size = Section.SizeOfRawData
         if Section.SizeOfRawData:
             if not ImageContext.IsTeImage:
-                PeOrTeImage[Base:End] = ImageBuffer[
+                Image[Base:Base+Size] = ImageBuffer[
                                         Section.PointerToRawData:Section.PointerToRawData + Size]
             else:
-                PeOrTeImage[Base:End] = ImageBuffer[
+                Image[Base:Base+Size] = ImageBuffer[
                                         Section.PointerToRawData + sizeof(
                                             EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize:Section.PointerToRawData + sizeof(
                                             EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize + Size]
 
-        # If raw size is less then virt size, zero fill the remaining
+        # If raw size is less than virtual size, zero fill the remaining
         if Size < Section.Misc.VirtualSize:
-            PeOrTeImage[Base + Size:Base + Size + (
+            Image[Base + Size:Base + Size + (
                 Section.Misc.VirtualSize - Size)] = bytes(
                 Section.Misc.VirtualSize - Size)
 
@@ -548,11 +549,11 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
     if ImageContext.DebugDirectoryEntryRva != 0:
         if not ImageContext.IsTeImage:
             DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
-                PeOrTeImage[PeCoffLoaderImageAddress(ImageContext,
+                Image[PeCoffLoaderImageAddress(ImageContext,
                                                      ImageContext.DebugDirectoryEntryRva):])
         else:
             DebugEntry = EFI_IMAGE_DEBUG_DIRECTORY_ENTRY.from_buffer_copy(
-                PeOrTeImage[ImageContext.DebugDirectoryEntryRva + sizeof(
+                Image[ImageContext.DebugDirectoryEntryRva + sizeof(
                     EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize:])
 
         if DebugEntry != None:
@@ -580,17 +581,17 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                 if DebugEntry.RVA == 0:
                     Size = DebugEntry.SizeOfData
                     if not ImageContext.IsTeImage:
-                        PeOrTeImage[
+                        Image[
                         ImageContext.CodeView:ImageContext.CodeView + Size] = ImageBuffer[
                                                                               DebugEntry.FileOffset:DebugEntry.FileOffset + Size]
                     else:
-                        PeOrTeImage[
+                        Image[
                         ImageContext.CodeView:ImageContext.CodeView + Size] = ImageBuffer[
                                                                               DebugEntry.FileOffset + sizeof(
                                                                                   EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize:DebugEntry.FileOffset + sizeof(
                                                                                   EFI_TE_IMAGE_HEADER) - TeHdr.StrippedSize + Size]
                     DebugEntry.RVA = TempDebugEntryRva
-                CodeView = int.from_bytes(PeOrTeImage[
+                CodeView = int.from_bytes(Image[
                                           ImageContext.CodeView:ImageContext.CodeView + 4],
                                           "little")
                 if CodeView == CODEVIEW_SIGNATURE_NB10:
@@ -603,7 +604,7 @@ def PeCoffLoaderLoadImage(ImageContext: PE_COFF_LOADER_IMAGE_CONTEXT,
                     ImageContext.PdbPointer = ImageContext.CodeView + sizeof(
                         EFI_IMAGE_DEBUG_CODEVIEW_MTOC_ENTRY)
 
-    return PeOrTeImage, ImageContext
+    return Image, ImageContext
 
 
 def PeCoffLoaderImageAddress(ImageContext, Address):
